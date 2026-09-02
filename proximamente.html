@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>restaura.do — Próximamente</title>
+<meta name="description" content="Algo se está restaurando. Muy pronto vas a entender por qué. — restaura.do">
+<meta property="og:title" content="restaura.do — Próximamente">
+<meta property="og:description" content="Nadie necesita reinventarse. Necesita recordar.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #142847;
+    --navy-dark: #0D1F3C;
+    --gold: #C8922A;
+    --orange: #E07B39;
+    --cream: #F4E9D8;
+    --bronze: #9C7B4A;
+    --rust: #8A5233;
+    --font-display: 'Sora', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--navy-dark);
+    scrollbar-color: var(--bronze) var(--navy-dark);
+  }
+  body {
+    font-family: var(--font-body);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(224,123,57,0.16), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(156,123,74,0.18), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(200,146,42,0.1), transparent 40%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-dark) 100%);
+  }
+  .card {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 640px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 6px 16px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease-out 0.2s forwards;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(48px, 12vw, 108px);
+    letter-spacing: -0.023em;
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+  .wordmark span { color: var(--cream); opacity: 0; animation: letterIn 0.5s ease-out forwards; }
+  .wordmark span:nth-child(1) { animation-delay: 0.5s; }
+  .wordmark span:nth-child(2) { animation-delay: 0.62s; }
+  .wordmark span:nth-child(3) { animation-delay: 0.74s; }
+  .wordmark span:nth-child(4) { animation-delay: 0.86s; }
+  .wordmark span:nth-child(5) { animation-delay: 0.98s; }
+  .wordmark span:nth-child(6) { animation-delay: 1.1s; }
+  .wordmark span:nth-child(7) { animation-delay: 1.22s; }
+  .wordmark span:nth-child(8) { animation-delay: 1.34s; }
+  .wordmark .wm-dot { color: var(--gold); opacity: 0; animation: dotIn 0.4s ease-out forwards; }
+  .wordmark .wm-dot:nth-child(9) { animation-delay: 1.5s; }
+  .wordmark .wm-dot:nth-child(10) { animation-delay: 1.58s; }
+  .wordmark .wm-dot:nth-child(11) { animation-delay: 1.66s; }
+
+  @keyframes letterIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: var(--final-opacity, 1); transform: translateY(0); }
+  }
+  .wordmark span:nth-child(1) { --final-opacity: 0.2; }
+  .wordmark span:nth-child(2) { --final-opacity: 0.32; }
+  .wordmark span:nth-child(3) { --final-opacity: 0.44; }
+  .wordmark span:nth-child(4) { --final-opacity: 0.56; }
+  .wordmark span:nth-child(5) { --final-opacity: 0.68; }
+  .wordmark span:nth-child(6) { --final-opacity: 0.8; }
+  .wordmark span:nth-child(7) { --final-opacity: 0.9; }
+  .wordmark span:nth-child(8) { --final-opacity: 1; }
+  @keyframes dotIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .anchor-phrase {
+    margin-top: 28px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--gold);
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out 1.8s forwards;
+  }
+
+  .teaser {
+    margin-top: 22px;
+    font-size: clamp(15px, 2.4vw, 17px);
+    line-height: 1.6;
+    color: var(--cream);
+    opacity: 0;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeUp 0.7s ease-out 2s forwards;
+  }
+  .teaser strong { color: var(--cream); }
+
+  .cta-row {
+    margin-top: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out 2.2s forwards;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 26px;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy-dark);
+    box-shadow: 0 8px 20px rgba(200,146,42,0.25);
+  }
+  .btn-primary:hover { background: #d6a13c; }
+  .btn-outline {
+    background: transparent;
+    border-color: rgba(244,233,216,0.35);
+    color: var(--cream);
+  }
+  .btn-outline:hover { border-color: var(--cream); }
+
+  .footer-note {
+    margin-top: 44px;
+    font-size: 12.5px;
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out 2.4s forwards;
+  }
+  .footer-note a { color: var(--cream); opacity: 0.7; text-decoration: none; }
+  .footer-note a:hover { opacity: 1; color: var(--gold); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tag, .wordmark span, .wordmark .wm-dot, .anchor-phrase, .teaser, .cta-row, .footer-note {
+      animation: none !important;
+      opacity: 1;
+    }
+    .wordmark span:nth-child(1) { opacity: 0.2; }
+    .wordmark span:nth-child(2) { opacity: 0.32; }
+    .wordmark span:nth-child(3) { opacity: 0.44; }
+    .wordmark span:nth-child(4) { opacity: 0.56; }
+    .wordmark span:nth-child(5) { opacity: 0.68; }
+    .wordmark span:nth-child(6) { opacity: 0.8; }
+    .wordmark span:nth-child(7) { opacity: 0.9; }
+    .wordmark span:nth-child(8) { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <div class="card">
+    <span class="tag">Próximamente</span>
+
+    <div class="wordmark" aria-label="restaura.do">
+      <span>r</span><span>e</span><span>s</span><span>t</span><span>a</span><span>u</span><span>r</span><span>a</span><span class="wm-dot">.</span><span class="wm-dot">d</span><span class="wm-dot">o</span>
+    </div>
+
+    <p class="anchor-phrase">"Nadie necesita reinventarse. Necesita recordar."</p>
+
+    <p class="teaser">Algo se está restaurando. <strong>Un método para devolver a las personas y a los equipos comerciales a su diseño original</strong> — no reinventarlos, recordarlos. Muy pronto vas a entender por qué.</p>
+
+    <div class="cta-row">
+      <a href="#" class="btn btn-primary" data-wa-msg="Hola Oscar, vi que restaura.do viene en camino. Quiero contarte algo / hacerte una pregunta:">Cuéntame qué piensas</a>
+      <a href="https://www.instagram.com/oscargelves/" class="btn btn-outline" target="_blank" rel="noopener noreferrer">Síguelo en Instagram</a>
+    </div>
+
+    <p class="footer-note">
+      Un proyecto de <a href="#" title="[LLENAR: URL de oscargelves.com si se quiere enlazar de vuelta]">Oscar Gelves</a> · Maestro Restaurador
+    </p>
+  </div>
+
+  <script>
+    // [PENDIENTE-WHATSAPP] Mismo número pendiente que el sitio principal — reemplazar
+    // aquí y en js/main.js cuando exista.
+    const WHATSAPP_NUMBER = 'PENDIENTE-WHATSAPP';
+    document.querySelectorAll('[data-wa-msg]').forEach((el) => {
+      const msg = el.getAttribute('data-wa-msg') || '';
+      const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`;
+      el.setAttribute('href', url);
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener noreferrer');
+    });
+  </script>
+</body>
+</html>

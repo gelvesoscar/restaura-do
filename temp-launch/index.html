@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>restaura.do — Restauración de Capacidades Organizacionales</title>
+<meta name="description" content="Las organizaciones no dejan de crecer por falta de estrategia. Dejan de crecer cuando pierden capacidades esenciales. Restaura.do identifica y restaura esas capacidades.">
+<meta property="og:title" content="restaura.do — Restauración de Capacidades Organizacionales">
+<meta property="og:description" content="Un diagnóstico profundo. Claridad sobre lo que hoy te está limitando. Decisiones mejores. Resultados sostenibles.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #142847;
+    --navy-dark: #0D1F3C;
+    --gold: #C8922A;
+    --text-dark-bg: #F1F3F6;
+    --light-bg: #F7F8FA;
+    --text-body: #3C4656;
+    --border: #E2E5EA;
+    --font-display: 'Sora', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --radius: 8px;
+    --container: 1140px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scrollbar-color: var(--gold) var(--navy-dark); }
+  body {
+    margin: 0;
+    background: var(--light-bg);
+    color: var(--text-body);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); color: var(--navy); margin: 0; line-height: 1.2; }
+  p { margin: 0; }
+  .container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+  section { padding: 88px 0; }
+
+  .category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(200,146,42,0.4);
+    border-radius: var(--radius);
+    padding: 7px 16px;
+  }
+
+  /* ---------- Wordmark (sin cambios) ---------- */
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.023em;
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+  .wordmark span { color: var(--text-dark-bg); }
+  .wordmark span:nth-child(1) { opacity: 0.2; }
+  .wordmark span:nth-child(2) { opacity: 0.32; }
+  .wordmark span:nth-child(3) { opacity: 0.44; }
+  .wordmark span:nth-child(4) { opacity: 0.56; }
+  .wordmark span:nth-child(5) { opacity: 0.68; }
+  .wordmark span:nth-child(6) { opacity: 0.8; }
+  .wordmark span:nth-child(7) { opacity: 0.9; }
+  .wordmark span:nth-child(8) { opacity: 1; }
+  .wordmark .wm-dot { color: var(--gold); opacity: 1; }
+  .wordmark--dark span { color: var(--navy); }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15.5px;
+    padding: 14px 28px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--gold); color: var(--navy-dark); box-shadow: 0 8px 20px rgba(200,146,42,0.22); }
+  .btn-primary:hover { background: #d6a13c; }
+  .btn-outline-dark { background: transparent; border-color: rgba(241,243,246,0.35); color: var(--text-dark-bg); }
+  .btn-outline-dark:hover { border-color: var(--text-dark-bg); }
+  .btn-outline-light { background: transparent; border-color: var(--navy); color: var(--navy); }
+  .btn-outline-light:hover { background: var(--navy); color: var(--text-dark-bg); }
+
+  /* ---------- Header ---------- */
+  .site-header { position: sticky; top: 0; z-index: 50; background: var(--navy-dark); border-bottom: 1px solid rgba(241,243,246,0.08); }
+  .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background:
+      radial-gradient(circle at 85% 10%, rgba(200,146,42,0.14), transparent 45%),
+      radial-gradient(circle at 10% 90%, rgba(200,146,42,0.08), transparent 45%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-dark) 100%);
+    color: var(--text-dark-bg);
+    padding: 90px 0 96px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(241,243,246,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(241,243,246,0.045) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at 70% 30%, black, transparent 65%);
+  }
+  .hero .container { position: relative; z-index: 1; max-width: 760px; text-align: center; margin: 0 auto; }
+  .hero .category-badge { margin-bottom: 28px; }
+  .hero h1 {
+    color: var(--text-dark-bg);
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .hero .subtitle {
+    margin-top: 22px;
+    font-size: clamp(16px, 2vw, 18.5px);
+    color: var(--text-dark-bg);
+    opacity: 0.85;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero .credibility {
+    margin-top: 18px;
+    font-size: 13.5px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.9;
+  }
+  .hero-ctas { margin-top: 36px; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+
+  /* ---------- Section head ---------- */
+  .eyebrow {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .section-head { max-width: 680px; margin-bottom: 44px; }
+  .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+  .section-head h2 { font-size: clamp(26px, 3.6vw, 34px); font-weight: 700; }
+  .section-head p { margin-top: 14px; font-size: 17px; }
+  .on-dark .section-head h2 { color: var(--text-dark-bg); }
+  .on-dark .eyebrow { color: var(--gold); }
+  .on-dark .section-head p { color: var(--text-dark-bg); opacity: 0.82; }
+
+  .on-dark { background: linear-gradient(160deg, var(--navy) 0%, var(--navy-dark) 100%); color: var(--text-dark-bg); }
+  .on-light { background: var(--light-bg); }
+  .on-white { background: #fff; }
+
+  /* ---------- Icon chip ---------- */
+  .icon-chip {
+    width: 44px; height: 44px;
+    border-radius: var(--radius);
+    background: rgba(200,146,42,0.12);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .on-dark .icon-chip { background: rgba(241,243,246,0.08); }
+  .icon-chip svg { width: 22px; height: 22px; }
+
+  /* ---------- El problema real ---------- */
+  .problem-grid { display: grid; gap: 20px; }
+  @media (min-width: 700px) { .problem-grid { grid-template-columns: repeat(2, 1fr); } }
+  .problem-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: 0 6px 20px rgba(20,40,71,0.05);
+  }
+  .problem-card h3 { font-size: 17px; margin-bottom: 8px; }
+  .problem-card p { font-size: 14.5px; color: var(--text-body); }
+
+  /* ---------- Por qué ocurre ---------- */
+  .causes-list { display: grid; gap: 16px; max-width: 780px; }
+  .cause-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 18px 20px;
+    background: rgba(241,243,246,0.04);
+    border: 1px solid rgba(241,243,246,0.12);
+    border-radius: var(--radius);
+  }
+  .cause-item .icon-chip { margin-bottom: 0; flex-shrink: 0; }
+  .cause-item p { font-size: 15px; opacity: 0.9; }
+  .cause-item strong { color: var(--text-dark-bg); }
+
+  /* ---------- Nuestra propuesta / método ---------- */
+  .method-lead {
+    max-width: 700px;
+    font-size: 19px;
+    font-weight: 600;
+    font-family: var(--font-display);
+    color: var(--navy);
+    margin-bottom: 40px;
+  }
+  .phases-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .phase-pill {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 4px 14px rgba(20,40,71,0.05);
+  }
+  .phase-pill .num { font-family: var(--font-display); font-weight: 800; color: var(--gold); font-size: 16px; }
+  .phase-pill .name { font-family: var(--font-display); font-weight: 600; color: var(--navy); font-size: 14.5px; }
+  .phase-arrow { color: var(--gold); opacity: 0.5; font-size: 15px; }
+  @media (max-width: 640px) { .phases-row { flex-direction: column; align-items: stretch; } .phase-arrow { display: none; } }
+  .fronts-note { margin-top: 20px; font-size: 14.5px; color: var(--text-body); opacity: 0.85; }
+
+  /* ---------- El diagnóstico ---------- */
+  .diagnostico-band {
+    display: grid;
+    gap: 40px;
+  }
+  @media (min-width: 850px) { .diagnostico-band { grid-template-columns: 1.1fr 0.9fr; align-items: center; } }
+  .diag-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 28px; }
+  .diag-fact { background: rgba(241,243,246,0.05); border: 1px solid rgba(241,243,246,0.12); border-radius: var(--radius); padding: 16px; }
+  .diag-fact .num { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: var(--gold); display: block; }
+  .diag-fact .label { font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase; opacity: 0.75; }
+
+  /* ---------- Para quién es ---------- */
+  .profiles-grid { display: grid; gap: 20px; }
+  @media (min-width: 700px) { .profiles-grid { grid-template-columns: repeat(3, 1fr); } }
+  .profile-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: 0 6px 20px rgba(20,40,71,0.05);
+  }
+  .profile-card h3 { font-size: 17px; margin-bottom: 10px; }
+  .profile-card p { font-size: 14.5px; }
+
+  /* ---------- Resultados ---------- */
+  .results-grid { display: grid; gap: 18px; }
+  @media (min-width: 700px) { .results-grid { grid-template-columns: repeat(2, 1fr); } }
+  .result-item { display: flex; gap: 14px; align-items: flex-start; }
+  .result-item .check {
+    width: 26px; height: 26px; flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(200,146,42,0.15);
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+  }
+  .result-item p { font-size: 15px; padding-top: 2px; }
+
+  /* ---------- Próximo paso (CTA final) ---------- */
+  .cta-final { text-align: center; }
+  .cta-final h2 { font-size: clamp(26px, 4vw, 36px); max-width: 640px; margin: 0 auto; }
+  .cta-final .lead { margin-top: 16px; font-size: 17px; opacity: 0.85; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .cta-final .hero-ctas { margin-top: 32px; }
+
+  /* ---------- Prueba social ---------- */
+  .social-proof-box {
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 36px 28px;
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .social-proof-box .tag {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 4px 12px;
+    margin-bottom: 12px;
+  }
+  .social-proof-box p { font-size: 14.5px; color: var(--text-body); opacity: 0.85; }
+
+  /* ---------- Footer ---------- */
+  .site-footer { background: var(--navy-dark); color: var(--text-dark-bg); padding: 40px 0; }
+  .footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; }
+  .footer-links { display: flex; gap: 22px; list-style: none; padding: 0; margin: 0; }
+  .footer-links a { font-family: var(--font-display); font-size: 14px; opacity: 0.8; }
+  .footer-links a:hover { opacity: 1; color: var(--gold); }
+  .footer-note { margin-top: 20px; font-size: 12.5px; opacity: 0.5; }
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="#hero" class="wordmark" aria-label="restaura.do — inicio">
+        <span>r</span><span>e</span><span>s</span><span>t</span><span>a</span><span>u</span><span>r</span><span>a</span><span class="wm-dot">.</span><span class="wm-dot">d</span><span class="wm-dot">o</span>
+      </a>
+      <a href="#" class="btn btn-primary" style="padding:10px 20px;font-size:14px;" data-wa-msg="Hola, quiero solicitar mi Diagnóstico de Restauración de Capacidades Organizacionales.">Solicitar Diagnóstico</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 1. HERO -->
+    <section class="hero" id="hero">
+      <div class="container">
+        <span class="category-badge">Restauración de Capacidades Organizacionales</span>
+        <h1>Las organizaciones no dejan de crecer por falta de estrategia. Dejan de crecer cuando pierden capacidades esenciales.</h1>
+        <p class="subtitle">Restaura.do identifica el deterioro de las capacidades que limitan los resultados y acompaña su restauración para que personas, equipos y organizaciones vuelvan a generar valor de forma sostenible.</p>
+        <p class="credibility">Basado en teoría sólida, metodología propia y práctica consultiva</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn btn-primary" data-wa-msg="Hola, quiero solicitar mi Diagnóstico de Restauración de Capacidades Organizacionales.">Solicitar Diagnóstico</a>
+          <a href="#propuesta" class="btn btn-outline-dark">Conoce la teoría</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. EL PROBLEMA REAL -->
+    <section class="on-white" id="problema">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">El problema real</span>
+          <h2>Los síntomas que ya conoces, con otro nombre</h2>
+        </div>
+        <div class="problem-grid">
+          <div class="problem-card">
+            <h3>Crecimiento que se estanca</h3>
+            <p>La facturación deja de moverse aunque el esfuerzo del equipo aumenta. Se trabaja más, no mejor.</p>
+          </div>
+          <div class="problem-card">
+            <h3>Ejecución sin resultado sostenible</h3>
+            <p>Los equipos cumplen lo operativo, pero los resultados de fondo no se mueven en la misma proporción.</p>
+          </div>
+          <div class="problem-card">
+            <h3>Cambios que no se sostienen</h3>
+            <p>Se implementa una iniciativa, mejora por unas semanas, y vuelve al patrón anterior sin que nadie lo decida así.</p>
+          </div>
+          <div class="problem-card">
+            <h3>Liderazgo que sostiene todo solo</h3>
+            <p>El progreso depende de que un líder específico esté presente y empujando. Sin esa presencia, se revierte.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. POR QUÉ OCURRE -->
+    <section class="on-dark" id="por-que-ocurre">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Por qué ocurre</span>
+          <h2>Las capacidades no desaparecen de un día para otro. Se deterioran.</h2>
+          <p>Casi siempre por una combinación de cuatro causas, rara vez nombradas de forma explícita.</p>
+        </div>
+        <div class="causes-list">
+          <div class="cause-item">
+            <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3v18M3 9h18" stroke-linecap="round"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+            <p><strong>Procesos que dependen de la memoria, no de un sistema.</strong> El trabajo se sostiene porque alguien recuerda cómo se hace, no porque exista un método documentado y repetible.</p>
+          </div>
+          <div class="cause-item">
+            <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3" stroke-linecap="round"/></svg></div>
+            <p><strong>Tecnología y datos que no reflejan la realidad del negocio.</strong> Las herramientas existen, pero se llenan por obligación y nadie confía en sus números para decidir.</p>
+          </div>
+          <div class="cause-item">
+            <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg></div>
+            <p><strong>Incentivos que premian, sin querer, lo contrario de lo que se pide.</strong> Se exige una cosa y el esquema de compensación paga otra.</p>
+          </div>
+          <div class="cause-item">
+            <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7l8-4z"/></svg></div>
+            <p><strong>Estilo de liderazgo que revierte el cambio.</strong> La forma de liderar del jefe directo refuerza lo nuevo, o lo apaga apenas nadie externo está mirando.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. NUESTRA PROPUESTA -->
+    <section class="on-light" id="propuesta">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Nuestra propuesta</span>
+          <h2>No reinventamos. Restauramos.</h2>
+        </div>
+        <p class="method-lead">Un método estructurado en cinco fases y ocho frentes de capacidades, aplicable a una persona, un equipo o una organización completa.</p>
+        <div class="phases-row">
+          <div class="phase-pill"><span class="num">01</span><span class="name">Diagnóstico</span></div>
+          <span class="phase-arrow">→</span>
+          <div class="phase-pill"><span class="num">02</span><span class="name">Desmontaje</span></div>
+          <span class="phase-arrow">→</span>
+          <div class="phase-pill"><span class="num">03</span><span class="name">Ensamblaje</span></div>
+          <span class="phase-arrow">→</span>
+          <div class="phase-pill"><span class="num">04</span><span class="name">Ajuste</span></div>
+          <span class="phase-arrow">→</span>
+          <div class="phase-pill"><span class="num">05</span><span class="name">Apropiación</span></div>
+        </div>
+        <p class="fronts-note">Cada fase evalúa y restaura ocho frentes de capacidad, uno por uno, con hallazgos clasificados en Reparación, Recambio o Mejora — nunca una lista plana sin prioridad.</p>
+      </div>
+    </section>
+
+    <!-- 5. EL DIAGNÓSTICO -->
+    <section class="on-dark" id="diagnostico">
+      <div class="container">
+        <div class="diagnostico-band">
+          <div>
+            <span class="eyebrow">El diagnóstico</span>
+            <h2 style="color:var(--text-dark-bg);">El punto de entrada a todo el proceso</h2>
+            <p style="margin-top:16px; font-size:16px; opacity:0.85;">Un diagnóstico profundo. Claridad sobre lo que hoy te está limitando. Decisiones mejores. Resultados sostenibles. Se entrega en dos a tres semanas, con cada hallazgo priorizado y listo para actuar.</p>
+            <div style="margin-top:28px;">
+              <a href="#" class="btn btn-primary" data-wa-msg="Hola, quiero solicitar mi Diagnóstico de Restauración de Capacidades Organizacionales.">Solicitar Diagnóstico</a>
+            </div>
+          </div>
+          <div class="diag-facts">
+            <div class="diag-fact"><span class="num">2-3</span><span class="label">Semanas de entrega</span></div>
+            <div class="diag-fact"><span class="num">8</span><span class="label">Frentes de capacidad</span></div>
+            <div class="diag-fact"><span class="num">5</span><span class="label">Fases del método</span></div>
+            <div class="diag-fact"><span class="num">3</span><span class="label">Niveles de hallazgo</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PARA QUIÉN ES -->
+    <section class="on-white" id="para-quien">
+      <div class="container">
+        <div class="section-head center">
+          <span class="eyebrow">Para quién es</span>
+          <h2>Para quien toma decisiones sobre el crecimiento</h2>
+        </div>
+        <div class="profiles-grid">
+          <div class="profile-card">
+            <h3>CEOs</h3>
+            <p>Necesitan claridad sobre qué está limitando el crecimiento antes de comprometer más presupuesto o más estrategia.</p>
+          </div>
+          <div class="profile-card">
+            <h3>Directores Comerciales</h3>
+            <p>Ven el esfuerzo del equipo, pero no ven el resultado proporcional, y necesitan saber en qué frente está la fuga real.</p>
+          </div>
+          <div class="profile-card">
+            <h3>Gerentes Generales</h3>
+            <p>Responden por resultados sostenibles, no solo por iniciativas ejecutadas, y necesitan que el cambio se sostenga sin su presencia constante.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. RESULTADOS QUE GENERAMOS -->
+    <section class="on-light" id="resultados">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Resultados que generamos</span>
+          <h2>El crecimiento sostenible no ocurre por más esfuerzo</h2>
+          <p>Ocurre cuando restauras lo que te hace único.</p>
+        </div>
+        <div class="results-grid">
+          <div class="result-item"><span class="check">✓</span><p>Claridad concreta sobre qué capacidad está rota y por qué, no una lista genérica de recomendaciones.</p></div>
+          <div class="result-item"><span class="check">✓</span><p>Decisiones de inversión y estrategia basadas en un diagnóstico real, no en intuición.</p></div>
+          <div class="result-item"><span class="check">✓</span><p>Cambios que se sostienen después de la entrega, con compromisos concretos y seguimiento.</p></div>
+          <div class="result-item"><span class="check">✓</span><p>Equipos que ejecutan con consistencia, sin depender de que un líder esté empujando todo el tiempo.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. PRUEBA SOCIAL (oculta hasta que existan casos reales) -->
+    <section class="on-white" id="prueba-social">
+      <div class="container">
+        <div class="social-proof-box">
+          <span class="tag">Próximamente</span>
+          <p>Los primeros casos documentados de Restauración de Capacidades Organizacionales llegan después del primer diagnóstico piloto.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. PRÓXIMO PASO -->
+    <section class="on-dark cta-final" id="proximo-paso">
+      <div class="container">
+        <h2 style="color:var(--text-dark-bg);">El crecimiento sostenible no ocurre por más esfuerzo. Ocurre cuando restauras lo que te hace único.</h2>
+        <p class="lead">Empieza con un Diagnóstico de Restauración de Capacidades Organizacionales.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn btn-primary" data-wa-msg="Hola, quiero solicitar mi Diagnóstico de Restauración de Capacidades Organizacionales.">Solicitar Diagnóstico</a>
+          <a href="#" class="btn btn-outline-dark" data-wa-msg="Hola, quiero conversar sobre restaura.do antes de solicitar el diagnóstico.">o conversemos primero</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 10. FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-row">
+        <a href="#hero" class="wordmark" aria-label="restaura.do — inicio">
+          <span>r</span><span>e</span><span>s</span><span>t</span><span>a</span><span>u</span><span>r</span><span>a</span><span class="wm-dot">.</span><span class="wm-dot">d</span><span class="wm-dot">o</span>
+        </a>
+        <ul class="footer-links">
+          <li><a href="#" data-wa-msg="Hola, quiero conversar sobre restaura.do.">WhatsApp</a></li>
+          <li><a href="#" title="[LLENAR: URL de LinkedIn de Oscar]">LinkedIn</a></li>
+          <li><a href="https://www.instagram.com/oscargelves/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        </ul>
+      </div>
+      <p class="footer-note">© <span id="year"></span> restaura.do — Restauración de Capacidades Organizacionales · [PENDIENTE-WHATSAPP] número de WhatsApp Business por confirmar</p>
+    </div>
+  </footer>
+
+  <script>
+    const WHATSAPP_NUMBER = 'PENDIENTE-WHATSAPP';
+    document.querySelectorAll('[data-wa-msg]').forEach((el) => {
+      const msg = el.getAttribute('data-wa-msg') || '';
+      const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`;
+      el.setAttribute('href', url);
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener noreferrer');
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
