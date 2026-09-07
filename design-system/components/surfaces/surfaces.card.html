@@ -1,0 +1,12 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Surfaces" subtitle="Card en 4 tonos, Badge de estado y Tag interactivo" -->
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script><script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script><script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script><script src="../../_ds_bundle.js"></script><style>body{margin:0;padding:20px 24px;background:var(--surface-page)}#root{display:flex;flex-direction:column;gap:16px}.lbl{font-family:var(--font-body);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px}.grp{display:flex;gap:12px;align-items:center;flex-wrap:wrap}</style></head><body><div id="root"></div><script type="text/babel">
+const { Card, Badge, Tag, Icon } = window.ComounluloDesignSystem_63fbf1;
+function Demo(){return (<>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:14}}>
+<Card eyebrow="Ingrediente" title="Lulo entero"><p style={{fontSize:14,lineHeight:1.55,margin:0}}>La fruta completa, no un extracto aislado.</p></Card>
+<Card tone="pulpa" eyebrow="Ciencia" title="Vitamina C real"><p style={{fontSize:14,lineHeight:1.55,margin:0}}>Antioxidantes que el cuerpo ya sabe usar.</p></Card>
+<Card tone="inverse" eyebrow="Promesa" title="De adentro hacia afuera"><p style={{fontSize:14,lineHeight:1.55,margin:0,color:'var(--cream-300)'}}>Nada que reinventar; todo por restaurar.</p></Card></div>
+<div className="grp"><Badge tone="brand">Nuevo</Badge><Badge tone="pulpa">Vegano</Badge><Badge tone="neutral">Envío 2–4 días</Badge><Badge tone="warn">Últimas unidades</Badge><Badge tone="stop">Agotado</Badge>
+<Tag icon="sprout" selected>Energía</Tag><Tag>Piel</Tag><Tag onRemove={()=>{}}>Sueño</Tag></div></>);}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script></body></html>

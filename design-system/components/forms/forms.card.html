@@ -1,0 +1,16 @@
+<!-- @dsCard group="Components" viewport="700x330" name="Forms" subtitle="Campos, selects y controles booleanos con foco verde pulpa" -->
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script><script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script><script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script><script src="../../_ds_bundle.js"></script><style>body{margin:0;padding:20px 24px;background:var(--surface-page)}#root{display:flex;flex-direction:column;gap:16px}.lbl{font-family:var(--font-body);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px}.grp{display:flex;gap:12px;align-items:center;flex-wrap:wrap}</style></head><body><div id="root"></div><script type="text/babel">
+const { Input, Select, Checkbox, Radio, Switch, Icon } = window.ComounluloDesignSystem_63fbf1;
+function Demo(){const [plan,setPlan]=React.useState('mes');return (<>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
+<Input label="Correo" type="email" placeholder="tu@correo.co" hint="Solo para tu pedido." />
+<Input label="Correo" defaultValue="ana@" error="Parece incompleto." />
+<Select label="Frecuencia" options={["Cada 30 días","Cada 60 días","Una sola vez"]} />
+<Input label="Ciudad" size="sm" prefix={<Icon name="map-pin" size="sm" />} placeholder="Bogotá" /></div>
+<div className="grp" style={{gap:28,alignItems:'flex-start'}}>
+<Checkbox label="Quiero la guía de rutinas" description="Un correo al mes." defaultChecked />
+<Radio name="p" label="Suscripción" description="Ahorra 15%" checked={plan==='mes'} onChange={()=>setPlan('mes')} />
+<Radio name="p" label="Compra única" checked={plan==='uno'} onChange={()=>setPlan('uno')} />
+<Switch label="Recordatorio diario" defaultOn /></div></>);}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script></body></html>

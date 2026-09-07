@@ -1,0 +1,45 @@
+<!-- @dsCard group="Brand" viewport="700x420" name="Etiqueta en botella" subtitle="Mockup cilíndrico: curvatura, zona segura y franja de pulpa" -->
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><style>
+body{margin:0;padding:24px;background:var(--surface-page);display:flex;gap:30px;align-items:center}
+.bottle{width:230px;height:360px;border-radius:26px 26px 20px 20px/40px 40px 20px 20px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg);
+ background:linear-gradient(90deg,#7A4A18 0%,#A8641F 12%,#D08A38 38%,#E9AC63 52%,#C07C2C 74%,#8A5219 92%,#6B3F13 100%)}
+.cap{position:absolute;left:50%;transform:translateX(-50%);top:0;width:126px;height:38px;border-radius:6px 6px 4px 4px;background:linear-gradient(90deg,#2F4A24,#446634 40%,#6FA05A 54%,#3A5A2C 78%,#243B1C);z-index:3}
+.shoulder{position:absolute;left:0;right:0;top:34px;height:62px;background:linear-gradient(180deg,rgba(31,43,26,.28),rgba(31,43,26,0));z-index:2}
+.label{position:absolute;left:0;right:0;top:104px;height:214px;background:var(--cream-100);display:flex;flex-direction:column;justify-content:space-between;padding:20px 30px 0;overflow:hidden}
+.curve{position:absolute;inset:0;pointer-events:none;z-index:4;background:linear-gradient(90deg,rgba(31,43,26,.30) 0%,rgba(31,43,26,.11) 12%,rgba(255,255,255,.16) 46%,rgba(255,255,255,.20) 54%,rgba(31,43,26,.11) 88%,rgba(31,43,26,.30) 100%)}
+.pulpa{position:absolute;left:0;right:0;bottom:0;height:30px;background:var(--gradient-pulpa)}
+.safe{position:absolute;left:26%;right:26%;top:0;bottom:0;border-left:1px dashed rgba(31,43,26,.28);border-right:1px dashed rgba(31,43,26,.28)}
+.flat{width:300px}
+.flatlabel{height:150px;border-radius:var(--radius-sm);background:var(--cream-100);box-shadow:var(--shadow-sm);padding:16px 22px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.note{font-family:var(--font-body);font-size:12px;line-height:1.6;color:var(--text-muted);margin-top:12px}
+.note b{color:var(--text-strong);font-weight:500}</style></head><body>
+<div class="bottle"><div class="cap"></div><div class="shoulder"></div>
+ <div class="label">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+   <img src="../assets/logo-lulo.svg" alt="" style="width:34px;height:34px">
+   <span class="wordmark" style="font-size:24px">comounlulo<em>.co</em></span>
+   <span style="font-family:var(--font-body);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted)">Adentro hacia afuera</span>
+  </div>
+  <div style="text-align:center;padding-bottom:38px">
+   <div style="font-family:var(--font-display);font-size:15px;color:var(--ink-700);line-height:1.3">Cápsulas de<br>lulo entero</div>
+   <div style="font-family:var(--font-body);font-size:9px;color:var(--text-muted);margin-top:6px">60 cápsulas vegetales · 500 mg</div>
+  </div>
+  <div class="pulpa"></div><div class="safe"></div>
+ </div>
+ <div class="curve"></div>
+</div>
+<div class="flat">
+ <div class="flatlabel">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+   <div style="display:flex;align-items:center;gap:10px"><img src="../assets/logo-lulo.svg" alt="" style="width:26px;height:26px"><span class="wordmark" style="font-size:18px">comounlulo<em>.co</em></span></div>
+   <span style="font-family:var(--font-body);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--brand-strong)">Hecho en Colombia</span>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:22px">
+   <span style="font-family:var(--font-display);font-size:16px;color:var(--ink-700)">Cápsulas de lulo entero</span>
+   <span style="font-family:var(--font-body);font-size:9px;color:var(--text-muted);text-align:right">60 cápsulas<br>500 mg</span>
+  </div>
+  <div class="pulpa" style="height:22px"></div>
+ </div>
+ <p class="note"><b>Arte plano.</b> El logo y el wordmark viven centrados en el frente. Zona segura: 26% del ancho a cada lado (líneas punteadas) — la curvatura del frasco esconde todo lo que quede fuera. La franja de pulpa ancla la base y da el punto de corte al envolver.</p>
+</div>
+</body></html>
