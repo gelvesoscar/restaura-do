@@ -1,0 +1,13 @@
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--surface-page);color:var(--text-body);font:var(--type-body);text-wrap:pretty}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:var(--fw-regular);color:var(--text-strong);letter-spacing:var(--ls-heading);line-height:var(--lh-heading);margin:0}
+h1{font-size:var(--fs-display-l);line-height:var(--lh-display);letter-spacing:var(--ls-display)}
+h2{font-size:var(--fs-display-m)}h3{font-size:var(--fs-title)}h4{font-size:var(--fs-subtitle)}
+p{margin:0}
+a{color:var(--text-link);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--text-link) 35%,transparent);transition:var(--transition-base)}
+a:hover{color:var(--text-link-hover);border-bottom-color:var(--text-link-hover)}
+*:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;border-radius:var(--radius-xs)}
+::selection{background:var(--accent-soft);color:var(--ink-900)}
+.eyebrow{font:var(--type-eyebrow);letter-spacing:var(--ls-eyebrow);text-transform:uppercase;color:var(--text-muted)}
+.wordmark{font-family:var(--font-display);font-weight:var(--fw-medium);letter-spacing:-0.015em;color:var(--ink-900)}
+.wordmark em{font-style:normal;color:var(--brand)}

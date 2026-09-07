@@ -1,0 +1,32 @@
+:root{
+/* --- Naranja lulo (cáscara) — primary --- */
+--orange-50:#FDF3EA;--orange-100:#F9E1CB;--orange-200:#F4C79F;--orange-300:#F2934D;
+--orange-400:#E8813A;--orange-500:#D96F28;--orange-600:#B75A1D;--orange-700:#8C4315;
+/* --- Verde lulo (pulpa) — secondary/accent --- */
+--green-50:#F2F7EC;--green-100:#DEEBD0;--green-200:#BCD9A2;--green-300:#8CC152;
+--green-400:#6FA05A;--green-500:#5A8747;--green-600:#446634;--green-700:#2F4A24;
+/* --- Crema (neutro base, cálido — nunca blanco clínico) --- */
+--cream-50:#FEFCF8;--cream-100:#FAF6EF;--cream-200:#F3EDE1;--cream-300:#E8DFCD;--cream-400:#D8CDB6;
+/* --- Tinta (verde oscuro casi negro) --- */
+--ink-900:#1F2B1A;--ink-700:#36462E;--ink-500:#5C6B52;--ink-400:#7E8B74;--ink-300:#A3AE99;
+/* --- Semánticos --- */
+--signal-good:#5A8747;--signal-warn:#C98A1E;--signal-stop:#B8452C;--signal-info:#3F6E7A;
+
+/* ============ Aliases semánticos ============ */
+--brand:var(--orange-400);--brand-strong:var(--orange-500);--brand-soft:var(--orange-100);--brand-tint:var(--orange-50);
+--accent:var(--green-400);--accent-strong:var(--green-500);--accent-soft:var(--green-100);--accent-tint:var(--green-50);
+
+--surface-page:var(--cream-100);--surface-card:var(--cream-50);--surface-sunken:var(--cream-200);
+--surface-inverse:var(--ink-900);--surface-brand:var(--orange-400);--surface-accent:var(--green-600);
+
+--text-body:var(--ink-700);--text-strong:var(--ink-900);--text-muted:var(--ink-500);--text-faint:var(--ink-400);
+--text-on-brand:#FFFFFF;--text-on-inverse:var(--cream-100);--text-link:var(--orange-600);--text-link-hover:var(--orange-700);
+
+--border-hairline:var(--cream-300);--border-default:var(--cream-400);--border-strong:var(--ink-300);
+--border-brand:var(--orange-300);--border-accent:var(--green-300);
+
+--focus-ring:var(--green-400);
+--gradient-lulo:linear-gradient(135deg,var(--orange-400) 0%,var(--orange-300) 42%,var(--green-300) 100%);/* @kind color */
+--gradient-pulpa:linear-gradient(180deg,var(--green-300) 0%,var(--green-500) 100%);/* @kind color */
+--gradient-protect:linear-gradient(180deg,rgba(31,43,26,0) 0%,rgba(31,43,26,.62) 100%);/* @kind color */
+}

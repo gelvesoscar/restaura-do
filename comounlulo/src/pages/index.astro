@@ -1,0 +1,42 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base>
+  <main>
+    <img src="/assets/logo-lulo.svg" alt="Comounlulo.co" width="64" height="64" />
+    <p class="eyebrow">Comounlulo.co — en construcción</p>
+    <h1>Nadie necesita reinventarse. Necesita recordar.</h1>
+    <p>
+      Andamiaje listo: tokens, tipografía y logo del sistema de diseño ya están
+      cargados. Las seis secciones ancladas llegan en las próximas tandas.
+    </p>
+  </main>
+</Base>
+
+<style>
+  main {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    text-align: center;
+    padding: var(--gutter-page);
+  }
+
+  main img {
+    width: 64px;
+    height: 64px;
+  }
+
+  main h1 {
+    max-width: 20ch;
+  }
+
+  main p:not(.eyebrow) {
+    max-width: var(--max-prose);
+    color: var(--text-body);
+  }
+</style>
