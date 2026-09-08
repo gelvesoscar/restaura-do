@@ -1,0 +1,259 @@
+---
+import SectionHead from "../components/SectionHead.astro";
+import Photo from "../components/Photo.astro";
+import Badge from "../components/Badge.astro";
+import Card from "../components/Card.astro";
+import Select from "../components/Select.astro";
+import IconButton from "../components/IconButton.astro";
+import Button from "../components/Button.astro";
+import Icon from "../components/Icon.astro";
+
+const SKU = {
+  nombre: "Botella inteligente Comounlulo",
+  variante: "600 ml · material: TODO",
+  colores: ["Cáscara (naranja)", "Pulpa (verde)", "Tinta (verde oscuro)"],
+  bullets: [
+    "Tapa con recordatorio de toma: se ilumina cuando llevas mucho tiempo sin tomar agua.",
+    "Registra cuánto tomas en el día y lo muestra en el aro de la tapa.",
+    "Doble pared: mantiene fría el agua o el jugo de lulo — TODO (tiempo por confirmar).",
+    "Se carga por USB-C — autonomía de batería: TODO (por confirmar).",
+  ],
+};
+---
+
+<section id="tienda" class="tienda">
+  <div class="tienda-inner">
+    <SectionHead
+      eyebrow="Tienda"
+      title="Empezamos con una sola botella, la que ya podemos entregar."
+      lead="Preferimos vender lo que tenemos confirmado con proveedor antes que mostrar un catálogo que no podemos cumplir. Las demás gamas entran cuando estén listas."
+    />
+    <div class="tienda-grid">
+      <div class="tienda-photos">
+        <Photo label="Botella inteligente de pie, tapa con aro de luz, fondo crema" ratio="1 / 1" tone="flat" />
+        <div class="tienda-photos-row">
+          <Photo label="Detalle de la tapa" ratio="1 / 1" tone="flat" radius="var(--radius-md)" />
+          <Photo label="En la mano" ratio="1 / 1" radius="var(--radius-md)" />
+          <Photo label="Con jugo de lulo" ratio="1 / 1" tone="pulpa" radius="var(--radius-md)" />
+        </div>
+      </div>
+
+      <div class="tienda-info">
+        <div class="tienda-badges">
+          <Badge tone="pulpa">Único SKU disponible</Badge>
+          <Badge tone="neutral">Envío: TODO</Badge>
+        </div>
+        <h3 class="tienda-nombre">{SKU.nombre}</h3>
+        <span class="tienda-variante">{SKU.variante}</span>
+        <p class="tienda-desc">
+          La botella es el objeto más honesto que podíamos hacer primero: no promete nada por dentro de ti, solo
+          te recuerda tomar agua. Restaurar no es un evento; es acordarse todos los días. Esto es un recordatorio
+          que cabe en la mano.
+        </p>
+        <ul class="tienda-bullets">
+          {SKU.bullets.map((b) => <li>{b}</li>)}
+        </ul>
+
+        <Card elevation="sm" class="tienda-card">
+          <div class="tienda-precio-row">
+            <span class="tienda-precio">Precio: TODO</span>
+            <span class="tienda-precio-nota">IVA y envío: TODO — pendientes de pasarela de pago y transportadora</span>
+          </div>
+          <Select label="Color" id="tienda-color" options={SKU.colores} />
+          <div class="tienda-compra">
+            <div class="tienda-stepper">
+              <IconButton icon="minus" label="Quitar uno" size={32} id="tienda-menos" />
+              <span id="tienda-cant" class="tienda-cant">1</span>
+              <IconButton icon="plus" label="Agregar uno" size={32} id="tienda-mas" />
+            </div>
+            <Button size="lg" class="tienda-agregar-btn">Agregar a la bolsa</Button>
+          </div>
+          <div class="tienda-envio">
+            <Icon name="truck" size={16} color="var(--text-muted)" />
+            Tiempo y cobertura de envío: TODO — pendiente de transportadora
+          </div>
+        </Card>
+
+        <Card tone="pulpa" class="tienda-proximo">
+          <span class="eyebrow">Lo que viene</span>
+          <h4>Las demás gamas, cuando estén confirmadas</h4>
+          <p>
+            Estamos cerrando proveedor para dos referencias más. Cuando la producción esté asegurada, aparecen
+            aquí — no antes.
+          </p>
+        </Card>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tienda {
+    scroll-margin-top: 72px;
+  }
+  .tienda-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .tienda-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+  .tienda-photos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .tienda-photos-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+  .tienda-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .tienda-badges {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .tienda-nombre {
+    font-family: var(--font-display);
+    font-size: var(--fs-display-m);
+    margin: 0;
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+  }
+  .tienda-variante {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-muted);
+  }
+  .tienda-desc {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    max-width: 46ch;
+    margin: 0;
+  }
+  .tienda-bullets {
+    margin: 0;
+    padding-left: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-body);
+    line-height: var(--lh-body);
+  }
+  .tienda-card {
+    gap: var(--space-4) !important;
+  }
+  .tienda-precio-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .tienda-precio {
+    font-family: var(--font-display);
+    font-size: var(--fs-title);
+    color: var(--signal-warn, #8a5d10);
+  }
+  .tienda-precio-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+  }
+  .tienda-compra {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .tienda-stepper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex: none;
+  }
+  .tienda-cant {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    min-width: 16px;
+    text-align: center;
+  }
+  .tienda-agregar-btn {
+    flex: 1;
+    width: 100%;
+  }
+  .tienda-envio {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+  }
+  .tienda-proximo h4 {
+    font-family: var(--font-display);
+    font-size: var(--fs-body);
+    margin: 0;
+    color: var(--text-strong);
+  }
+  .tienda-proximo p {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    margin: 0;
+    color: var(--text-body);
+  }
+  @media (max-width: 900px) {
+    .tienda-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+  }
+  @media (max-width: 600px) {
+    .tienda-compra {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
+
+<script>
+  import { addItem } from "../lib/cart";
+
+  const menosBtn = document.getElementById("tienda-menos");
+  const masBtn = document.getElementById("tienda-mas");
+  const cantEl = document.getElementById("tienda-cant");
+  const agregarBtn = document.querySelector(".tienda-agregar-btn");
+  const colorSelect = document.getElementById("tienda-color") as HTMLSelectElement | null;
+
+  let cantidad = 1;
+
+  function render() {
+    if (cantEl) cantEl.textContent = String(cantidad);
+  }
+
+  menosBtn?.addEventListener("click", () => {
+    cantidad = Math.max(1, cantidad - 1);
+    render();
+  });
+
+  masBtn?.addEventListener("click", () => {
+    cantidad += 1;
+    render();
+  });
+
+  agregarBtn?.addEventListener("click", () => {
+    addItem({
+      nombre: "Botella inteligente Comounlulo",
+      color: colorSelect?.value ?? "",
+      cantidad,
+    });
+  });
+</script>

@@ -6,4 +6,4 @@ icon: "droplet"
 order: 1
 ---
 
-Un vaso antes del café. Es el hábito más fácil de sostener y el que más rápido se siente.
+Un vaso antes del café. Es el hábito más fácil de sostener y el que se nota desde el primer día.

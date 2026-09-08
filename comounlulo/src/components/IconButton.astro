@@ -5,13 +5,15 @@ interface Props {
   icon: string;
   label: string;
   size?: number;
+  id?: string;
+  class?: string;
 }
 
-const { icon, label, size = 40 } = Astro.props;
+const { icon, label, size = 40, id, class: className = "" } = Astro.props;
 const iconSize = size <= 32 ? 16 : 20;
 ---
 
-<button aria-label={label} title={label} class="icon-btn" style={`width:${size}px;height:${size}px;`}>
+<button id={id} aria-label={label} title={label} class={`icon-btn ${className}`} style={`width:${size}px;height:${size}px;`}>
   <Icon name={icon} size={iconSize} />
 </button>
 

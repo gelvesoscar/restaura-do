@@ -1,0 +1,63 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  label?: string;
+  hint?: string;
+  options: string[];
+  name?: string;
+  id?: string;
+  class?: string;
+}
+
+const { label, hint, options, name, id, class: className = "" } = Astro.props;
+const uid = id ?? `sel-${Math.random().toString(36).slice(2, 7)}`;
+---
+
+<label class={`field ${className}`} for={uid}>
+  {label && <span class="field-label">{label}</span>}
+  <span class="field-control select-control">
+    <select id={uid} name={name} class="field-select">
+      {options.map((o) => <option value={o}>{o}</option>)}
+    </select>
+    <Icon name="chevron-down" size={16} color="var(--text-muted)" />
+  </span>
+  {hint && <span class="field-hint">{hint}</span>}
+</label>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .field-label {
+    font: var(--type-button);
+    color: var(--text-strong);
+  }
+  .field-control {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    transition: var(--transition-base);
+  }
+  .field-control:focus-within {
+    border-color: var(--accent);
+  }
+  .field-select {
+    all: unset;
+    flex: 1;
+    cursor: pointer;
+    font: var(--type-body);
+    color: var(--text-strong);
+  }
+  .field-hint {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+  }
+</style>

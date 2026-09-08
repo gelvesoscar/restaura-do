@@ -1,0 +1,87 @@
+---
+interface Props {
+  label: string;
+  description?: string;
+  name?: string;
+  checked?: boolean;
+  class?: string;
+}
+
+const { label, description, name, checked = false, class: className = "" } = Astro.props;
+---
+
+<label class={`checkbox ${className}`}>
+  <input type="checkbox" name={name} checked={checked} class="checkbox-input" />
+  <span class="checkbox-box">
+    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+      <path
+        d="M20 6L9 17l-5-5"
+        fill="none"
+        stroke="#fff"
+        stroke-width="2.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+    </svg>
+  </span>
+  <span class="checkbox-copy">
+    <span class="checkbox-label">{label}</span>
+    {description && <span class="checkbox-description">{description}</span>}
+  </span>
+</label>
+
+<style>
+  .checkbox {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    cursor: pointer;
+  }
+  .checkbox-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .checkbox-box {
+    width: 22px;
+    height: 22px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    margin-top: 1px;
+    border-radius: var(--radius-xs);
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    transition: var(--transition-base);
+  }
+  .checkbox-box svg {
+    opacity: 0;
+  }
+  .checkbox-input:checked + .checkbox-box {
+    background: var(--accent-strong);
+    border-color: var(--accent-strong);
+  }
+  .checkbox-input:checked + .checkbox-box svg {
+    opacity: 1;
+  }
+  .checkbox-input:focus-visible + .checkbox-box {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+  .checkbox-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .checkbox-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-strong);
+  }
+  .checkbox-description {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+  }
+</style>

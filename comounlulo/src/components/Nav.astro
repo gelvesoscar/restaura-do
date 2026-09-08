@@ -22,7 +22,10 @@ const links = SECCIONES.slice(1);
       }
     </nav>
     <div class="nav-actions">
-      <IconButton icon="shopping-bag" label="Tu bolsa" />
+      <span class="bag-wrap">
+        <IconButton id="bag-button" icon="shopping-bag" label="Tu bolsa" />
+        <span id="bag-count" class="bag-count" hidden>0</span>
+      </span>
       <Button href="#tienda" size="sm" class="nav-cta">Ver la tienda</Button>
     </div>
   </div>
@@ -77,6 +80,25 @@ const links = SECCIONES.slice(1);
     align-items: center;
     gap: var(--space-3);
   }
+  .bag-wrap {
+    position: relative;
+    display: inline-flex;
+  }
+  .bag-count {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: var(--radius-pill);
+    background: var(--brand);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 10px;
+    display: grid;
+    place-items: center;
+    padding: 0 5px;
+  }
   @media (max-width: 780px) {
     .nav-cta {
       display: none;
@@ -112,4 +134,10 @@ const links = SECCIONES.slice(1);
   setActive();
   window.addEventListener("scroll", setActive, { passive: true });
   window.addEventListener("resize", setActive);
+
+  const bagButton = document.getElementById("bag-button");
+  bagButton?.addEventListener("click", () => {
+    const dialog = document.getElementById("bolsa-dialog") as HTMLDialogElement | null;
+    dialog?.showModal();
+  });
 </script>
