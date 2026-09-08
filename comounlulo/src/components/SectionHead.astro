@@ -1,0 +1,40 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  align?: "left" | "center";
+  maxWidth?: string;
+}
+
+const { eyebrow, title, lead, align = "left", maxWidth = "34ch" } = Astro.props;
+---
+
+<div class="section-head" data-align={align}>
+  <span class="eyebrow">{eyebrow}</span>
+  <h2 style={`max-width:${maxWidth};`}>{title}</h2>
+  {lead && <p class="section-lead">{lead}</p>}
+</div>
+
+<style>
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+  }
+  .section-head[data-align="left"] {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .section-head[data-align="center"] {
+    align-items: center;
+    text-align: center;
+  }
+  .section-lead {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-body);
+    color: var(--text-muted);
+    max-width: 52ch;
+  }
+</style>

@@ -1,31 +1,14 @@
 ---
 import Base from "../layouts/Base.astro";
+import Inicio from "../sections/Inicio.astro";
+import PorQueLulo from "../sections/PorQueLulo.astro";
+import Manifiesto from "../sections/Manifiesto.astro";
 ---
 
 <Base>
-  <section id="inicio" class="stub">
-    <div class="stub-inner">
-      <p class="eyebrow">Comounlulo.co</p>
-      <h1>Nadie necesita reinventarse. Necesita recordar.</h1>
-      <p>Contenido real en la Tanda C.</p>
-    </div>
-  </section>
-
-  <section id="lulo" class="stub stub-card">
-    <div class="stub-inner">
-      <p class="eyebrow">Contenido informativo</p>
-      <h2>Por qué el lulo</h2>
-      <p>Contenido real en la Tanda C.</p>
-    </div>
-  </section>
-
-  <section id="manifiesto" class="stub stub-gradient">
-    <div class="stub-inner">
-      <p class="eyebrow">En primera persona</p>
-      <h2>Verse como un lulo</h2>
-      <p>Contenido real en la Tanda C.</p>
-    </div>
-  </section>
+  <Inicio />
+  <PorQueLulo />
+  <Manifiesto />
 
   <section id="tips" class="stub">
     <div class="stub-inner">
@@ -72,11 +55,5 @@ import Base from "../layouts/Base.astro";
     background: var(--surface-card);
     border-top: 1px solid var(--border-hairline);
     border-bottom: 1px solid var(--border-hairline);
-  }
-  .stub-gradient {
-    background: var(--gradient-lulo);
-  }
-  #inicio h1 {
-    max-width: 20ch;
   }
 </style>

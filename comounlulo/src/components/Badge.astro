@@ -1,0 +1,52 @@
+---
+interface Props {
+  tone?: "brand" | "pulpa" | "neutral" | "good" | "warn" | "stop" | "solid";
+}
+
+const { tone = "brand" } = Astro.props;
+---
+
+<span class={`badge badge-${tone}`}><slot /></span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+  }
+  .badge-brand {
+    background: var(--brand-soft);
+    color: var(--orange-700);
+  }
+  .badge-pulpa {
+    background: var(--accent-soft);
+    color: var(--green-700);
+  }
+  .badge-neutral {
+    background: var(--cream-200);
+    color: var(--text-muted);
+  }
+  .badge-good {
+    background: var(--accent-soft);
+    color: var(--green-700);
+  }
+  .badge-warn {
+    background: #f7ebd2;
+    color: #8a5d10;
+  }
+  .badge-stop {
+    background: #f6ded8;
+    color: #8c2f1c;
+  }
+  .badge-solid {
+    background: var(--brand);
+    color: var(--text-on-brand);
+  }
+</style>

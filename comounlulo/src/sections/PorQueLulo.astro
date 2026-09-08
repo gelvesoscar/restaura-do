@@ -1,0 +1,130 @@
+---
+import SectionHead from "../components/SectionHead.astro";
+import Photo from "../components/Photo.astro";
+import Card from "../components/Card.astro";
+import Icon from "../components/Icon.astro";
+
+const datos: [string, string, string][] = [
+  [
+    "sprout",
+    "Del piedemonte andino",
+    "Se cultiva en las laderas templadas de Colombia y Ecuador. En los mercados se vende por docenas, todavía con el polvillo de la cáscara.",
+  ],
+  [
+    "droplet",
+    "Pulpa ácida y verde",
+    "Su jugo es el estándar de la mesa colombiana: en agua, en leche, en el almuerzo de todos los días.",
+  ],
+  [
+    "leaf",
+    "Fruta con vitamina C y antioxidantes",
+    "Como muchas frutas frescas, aporta vitamina C y compuestos antioxidantes propios de la fruta entera.",
+  ],
+  [
+    "sun",
+    "Símbolo de frescura",
+    "En la cultura popular “como un lulo” significa estar fresco, entero, en forma. No lo inventamos nosotros: lo heredamos.",
+  ],
+];
+---
+
+<section id="lulo" class="lulo">
+  <div class="lulo-inner">
+    <SectionHead
+      eyebrow="Por qué el lulo"
+      title="Una fruta que ya era un dicho antes de ser una marca."
+      lead="Esta sección es cultural y botánica, no médica: de dónde viene el lulo, cómo se toma y por qué su nombre ya cargaba la idea de estar bien."
+    />
+    <div class="lulo-grid">
+      <Photo
+        label="canastos de lulo en mercado campesino: naranja apilado, textura de cáscara"
+        ratio="4 / 5"
+      />
+      <div class="datos-grid">
+        {
+          datos.map(([icon, title, desc]) => (
+            <Card elevation="none" class="dato-card">
+              <span class="dato-icon">
+                <Icon name={icon} size={20} color="var(--green-700)" />
+              </span>
+              <h4>{title}</h4>
+              <p>{desc}</p>
+            </Card>
+          ))
+        }
+      </div>
+    </div>
+    <p class="lulo-nota">
+      Información general sobre la fruta y su lugar en la cocina colombiana.
+      No constituye una afirmación de salud ni una recomendación de
+      tratamiento.
+    </p>
+  </div>
+</section>
+
+<style>
+  .lulo {
+    background: var(--surface-card);
+    border-top: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    scroll-margin-top: 72px;
+  }
+  .lulo-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .lulo-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+  .datos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  .dato-card {
+    background: var(--surface-page);
+    border: 1px solid var(--border-hairline);
+    gap: var(--space-3);
+  }
+  .dato-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-pill);
+    background: var(--accent-soft);
+    display: grid;
+    place-items: center;
+  }
+  .dato-card h4 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    margin: 0;
+    line-height: var(--lh-heading);
+  }
+  .dato-card p {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .lulo-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-faint);
+    margin-top: var(--space-8);
+    max-width: 70ch;
+  }
+  @media (max-width: 860px) {
+    .lulo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 540px) {
+    .datos-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

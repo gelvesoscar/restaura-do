@@ -1,0 +1,81 @@
+---
+import Button from "../components/Button.astro";
+import Icon from "../components/Icon.astro";
+import Badge from "../components/Badge.astro";
+import Photo from "../components/Photo.astro";
+---
+
+<section id="inicio" class="inicio">
+  <div class="inicio-copy">
+    <span class="eyebrow">Adentro hacia afuera</span>
+    <h1>Vitalidad que se nota por fuera, porque se cuida por dentro.</h1>
+    <p class="lead">
+      Tomamos el nombre de una fruta colombiana: naranja por fuera, verde
+      intenso por dentro. La usamos como recordatorio de que lo que se ve
+      empieza donde no se ve.
+    </p>
+    <div class="inicio-actions">
+      <Button href="#tienda" size="lg">Ir a la tienda</Button>
+      <Button href="#manifiesto" variant="ghost" size="lg">
+        Por qué nos llamamos así <Icon name="arrow-right" size={16} />
+      </Button>
+    </div>
+    <div class="inicio-badges">
+      <Badge tone="pulpa">Hecho en Colombia</Badge>
+      <Badge tone="neutral">Envíos nacionales</Badge>
+      <Badge tone="neutral">Hábitos, no promesas</Badge>
+    </div>
+  </div>
+  <Photo
+    label="lulo partido a la mitad, cáscara naranja y pulpa verde, luz natural sobre madera"
+    ratio="1 / 1"
+  />
+</section>
+
+<style>
+  .inicio {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: var(--space-16);
+    align-items: center;
+    scroll-margin-top: 72px;
+  }
+  .inicio-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .inicio-copy h1 {
+    font-size: var(--fs-display-xl);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-display);
+    max-width: 20ch;
+  }
+  .lead {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    max-width: 44ch;
+  }
+  .inicio-actions {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .inicio-badges {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+  }
+  @media (max-width: 860px) {
+    .inicio {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

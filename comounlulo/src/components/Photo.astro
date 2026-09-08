@@ -1,0 +1,44 @@
+---
+interface Props {
+  label: string;
+  ratio?: string;
+  tone?: "lulo" | "pulpa" | "flat";
+  radius?: string;
+  class?: string;
+}
+
+const {
+  label,
+  ratio = "4 / 3",
+  tone = "lulo",
+  radius = "var(--radius-xl)",
+  class: className = "",
+} = Astro.props;
+
+const bg =
+  tone === "pulpa" ? "var(--gradient-pulpa)" : tone === "flat" ? "var(--cream-200)" : "var(--gradient-lulo)";
+---
+
+<div class={`photo-slot ${className}`} style={`aspect-ratio:${ratio};background:${bg};border-radius:${radius};`}>
+  <span class="photo-label">TODO — {label}</span>
+</div>
+
+<style>
+  .photo-slot {
+    position: relative;
+    border: 1px solid var(--border-hairline);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+  }
+  .photo-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: rgba(255, 255, 255, 0.92);
+    text-align: center;
+    max-width: 32ch;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+</style>
