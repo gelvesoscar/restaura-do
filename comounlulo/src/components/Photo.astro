@@ -5,6 +5,7 @@ interface Props {
   tone?: "lulo" | "pulpa" | "flat";
   radius?: string;
   class?: string;
+  src?: string;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   tone = "lulo",
   radius = "var(--radius-xl)",
   class: className = "",
+  src,
 } = Astro.props;
 
 const bg =
@@ -22,9 +24,15 @@ const bg =
 <div
   class={`photo-slot ${className}`}
   data-tone={tone}
-  style={`aspect-ratio:${ratio};background:${bg};border-radius:${radius};`}
+  style={`aspect-ratio:${ratio};background:${src ? "var(--cream-200)" : bg};border-radius:${radius};${src ? "padding:0;" : ""}`}
 >
-  <span class="photo-label">TODO — {label}</span>
+  {
+    src ? (
+      <img class="photo-real" src={src} alt={label} loading="lazy" />
+    ) : (
+      <span class="photo-label">TODO — {label}</span>
+    )
+  }
 </div>
 
 <style>
@@ -36,6 +44,13 @@ const bg =
     align-items: center;
     justify-content: center;
     padding: var(--space-4);
+  }
+  .photo-real {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .photo-label {
     font-family: var(--font-body);
