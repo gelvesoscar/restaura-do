@@ -24,6 +24,16 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
     <style is:global>
+      /*
+        El design system copiado (styles.css/tokens/) no trae un reset de
+        box-sizing. Sin esto, elementos con width:100% + padding (p.ej. el
+        dialogo de la bolsa) se desbordan del viewport en pantallas angostas.
+      */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
       html {
         scroll-behavior: smooth;
         scroll-padding-top: 72px;
@@ -35,6 +45,17 @@ const {
       }
       main {
         flex: 1;
+      }
+      :root {
+        /*
+          Corrección de contraste (WCAG AA, Tanda F): --text-on-brand venía en
+          #FFFFFF, y blanco sobre var(--brand) (naranja-400) da 2.75:1 — no
+          alcanza el 4.5:1 requerido para texto normal. Usamos ink-900 (ya
+          existente en la paleta) sobre ese mismo naranja: 5.38:1. No se
+          modifica design-system/tokens/colors.css; esto solo redefine el
+          alias semántico después de importarlo.
+        */
+        --text-on-brand: var(--ink-900);
       }
     </style>
   </head>

@@ -47,7 +47,7 @@ const datos: [string, string, string][] = [
               <span class="dato-icon">
                 <Icon name={icon} size={20} color="var(--green-700)" />
               </span>
-              <h4>{title}</h4>
+              <h3>{title}</h3>
               <p>{desc}</p>
             </Card>
           ))
@@ -98,7 +98,7 @@ const datos: [string, string, string][] = [
     display: grid;
     place-items: center;
   }
-  .dato-card h4 {
+  .dato-card h3 {
     font-family: var(--font-display);
     font-size: var(--fs-subtitle);
     margin: 0;
@@ -113,7 +113,7 @@ const datos: [string, string, string][] = [
   .lulo-nota {
     font-family: var(--font-body);
     font-size: var(--fs-caption);
-    color: var(--text-faint);
+    color: var(--text-muted);
     margin-top: var(--space-8);
     max-width: 70ch;
   }

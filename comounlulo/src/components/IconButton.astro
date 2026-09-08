@@ -1,19 +1,34 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import Icon from "./Icon.astro";
 
-interface Props {
+interface Props extends HTMLAttributes<"button"> {
   icon: string;
   label: string;
   size?: number;
-  id?: string;
-  class?: string;
 }
 
-const { icon, label, size = 40, id, class: className = "" } = Astro.props;
+const {
+  icon,
+  label,
+  size = 40,
+  id,
+  class: className = "",
+  type = "button",
+  ...rest
+} = Astro.props;
 const iconSize = size <= 32 ? 16 : 20;
 ---
 
-<button id={id} aria-label={label} title={label} class={`icon-btn ${className}`} style={`width:${size}px;height:${size}px;`}>
+<button
+  id={id}
+  type={type}
+  aria-label={label}
+  title={label}
+  class={`icon-btn ${className}`}
+  style={`width:${size}px;height:${size}px;`}
+  {...rest}
+>
   <Icon name={icon} size={iconSize} />
 </button>
 

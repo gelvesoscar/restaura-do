@@ -9,7 +9,7 @@ const links = SECCIONES.slice(1);
 
 <header class="nav">
   <div class="nav-inner">
-    <a href="#inicio" class="nav-brand" aria-label="Ir a inicio">
+    <a href="#inicio" class="nav-brand">
       <Wordmark size={22} />
     </a>
     <nav class="nav-links" aria-label="Secciones">
@@ -27,8 +27,25 @@ const links = SECCIONES.slice(1);
         <span id="bag-count" class="bag-count" hidden>0</span>
       </span>
       <Button href="#tienda" size="sm" class="nav-cta">Ver la tienda</Button>
+      <IconButton
+        id="menu-button"
+        icon="menu"
+        label="Abrir menú"
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="menu-panel"
+      />
     </div>
   </div>
+  <nav id="menu-panel" class="menu-panel" aria-label="Secciones" hidden>
+    {
+      links.map(([id, label]) => (
+        <a href={`#${id}`} data-menu-link={id} class="menu-panel-link">
+          {label}
+        </a>
+      ))
+    }
+  </nav>
 </header>
 
 <style>
@@ -99,17 +116,51 @@ const links = SECCIONES.slice(1);
     place-items: center;
     padding: 0 5px;
   }
-  @media (max-width: 780px) {
+  .menu-toggle {
+    display: none;
+  }
+  .menu-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--gutter-page) var(--space-5);
+    background: var(--surface-card);
+    border-top: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-md);
+  }
+  .menu-panel[hidden] {
+    display: none;
+  }
+  .menu-panel-link {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    color: var(--text-body);
+    text-decoration: none;
+    padding: var(--space-3) var(--space-3);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-base);
+  }
+  .menu-panel-link:hover {
+    background: var(--cream-200);
+  }
+  .menu-panel-link.is-active {
+    color: var(--text-strong);
+    background: var(--brand-tint);
+  }
+  @media (max-width: 760px) {
+    .nav-links {
+      display: none;
+    }
     .nav-cta {
       display: none;
     }
-  }
-  @media (max-width: 620px) {
-    .nav-links {
-      gap: var(--space-3);
+    .menu-toggle {
+      display: inline-flex;
     }
-    .nav-link {
-      font-size: var(--fs-caption);
+  }
+  @media (min-width: 761px) {
+    .menu-panel {
+      display: none !important;
     }
   }
 </style>
@@ -117,6 +168,9 @@ const links = SECCIONES.slice(1);
 <script>
   const navLinks = Array.from(
     document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"),
+  );
+  const menuLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("[data-menu-link]"),
   );
   const ids = ["inicio", ...navLinks.map((a) => a.dataset.navLink!)];
 
@@ -129,6 +183,9 @@ const links = SECCIONES.slice(1);
     navLinks.forEach((a) => {
       a.classList.toggle("is-active", a.dataset.navLink === current);
     });
+    menuLinks.forEach((a) => {
+      a.classList.toggle("is-active", a.dataset.menuLink === current);
+    });
   }
 
   setActive();
@@ -139,5 +196,65 @@ const links = SECCIONES.slice(1);
   bagButton?.addEventListener("click", () => {
     const dialog = document.getElementById("bolsa-dialog") as HTMLDialogElement | null;
     dialog?.showModal();
+  });
+
+  // Menú hamburguesa (móvil)
+  const menuButton = document.getElementById("menu-button") as HTMLButtonElement | null;
+  const menuPanel = document.getElementById("menu-panel") as HTMLElement | null;
+  const menuIcon = menuButton?.querySelector("span") as HTMLElement | null;
+
+  function setMenuIcon(name: "menu" | "x") {
+    if (!menuIcon) return;
+    const url = `https://unpkg.com/lucide-static@0.436.0/icons/${name}.svg`;
+    const mask = `url('${url}') center / contain no-repeat`;
+    menuIcon.style.setProperty("-webkit-mask", mask);
+    menuIcon.style.setProperty("mask", mask);
+  }
+
+  function closeMenu() {
+    if (!menuButton || !menuPanel) return;
+    menuPanel.hidden = true;
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "Abrir menú");
+    menuButton.title = "Abrir menú";
+    setMenuIcon("menu");
+    document.removeEventListener("keydown", onKeydown);
+    document.removeEventListener("click", onClickOutside, true);
+  }
+
+  function openMenu() {
+    if (!menuButton || !menuPanel) return;
+    menuPanel.hidden = false;
+    menuButton.setAttribute("aria-expanded", "true");
+    menuButton.setAttribute("aria-label", "Cerrar menú");
+    menuButton.title = "Cerrar menú";
+    setMenuIcon("x");
+    document.addEventListener("keydown", onKeydown);
+    document.addEventListener("click", onClickOutside, true);
+  }
+
+  function onKeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      closeMenu();
+      menuButton?.focus();
+    }
+  }
+
+  function onClickOutside(e: MouseEvent) {
+    const header = menuButton?.closest("header");
+    if (header && e.target instanceof Node && !header.contains(e.target)) {
+      closeMenu();
+    }
+  }
+
+  menuButton?.addEventListener("click", () => {
+    if (menuPanel?.hidden) openMenu();
+    else closeMenu();
+  });
+
+  menuLinks.forEach((a) => a.addEventListener("click", closeMenu));
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 760) closeMenu();
   });
 </script>

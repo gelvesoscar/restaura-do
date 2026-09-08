@@ -174,7 +174,9 @@ import Checkbox from "./Checkbox.astro";
     color: var(--text-strong);
   }
   .bolsa-total-todo {
-    color: var(--signal-warn);
+    /* --signal-warn da 2.87:1 sobre cream-50, no alcanza 4.5:1.
+       --text-link-hover (naranja-700) da 7:1. */
+    color: var(--text-link-hover);
   }
   .bolsa-footer {
     display: flex;

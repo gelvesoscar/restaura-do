@@ -1,16 +1,17 @@
 ---
-interface Props {
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends Omit<HTMLAttributes<"a">, "type"> {
   href?: string;
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
-  class?: string;
 }
 
-const { href, variant = "primary", size = "md", class: className = "" } = Astro.props;
+const { href, variant = "primary", size = "md", class: className = "", ...rest } = Astro.props;
 const Tag = href ? "a" : "button";
 ---
 
-<Tag href={href} class={`btn btn-${variant} btn-${size} ${className}`}>
+<Tag href={href} class={`btn btn-${variant} btn-${size} ${className}`} {...rest}>
   <slot />
 </Tag>
 
@@ -75,7 +76,9 @@ const Tag = href ? "a" : "button";
   }
   .btn-ghost {
     background: transparent;
-    color: var(--text-link);
+    /* var(--text-link) (naranja-600) da 4.34:1 sobre crema, no alcanza 4.5:1.
+       var(--text-link-hover) (naranja-700) ya existe en el sistema y da 6.66:1. */
+    color: var(--text-link-hover);
   }
   .btn-ghost:hover {
     background: var(--brand-tint);

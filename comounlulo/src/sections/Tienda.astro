@@ -162,7 +162,9 @@ const SKU = {
   .tienda-precio {
     font-family: var(--font-display);
     font-size: var(--fs-title);
-    color: var(--signal-warn, #8a5d10);
+    /* --signal-warn (#C98A1E) da 2.87:1 sobre cream-50, no alcanza el
+       3:1 de texto grande. --text-link-hover (naranja-700) da 7:1. */
+    color: var(--text-link-hover);
   }
   .tienda-precio-nota {
     font-family: var(--font-body);

@@ -33,7 +33,16 @@ const gap = size * 0.45;
         class="wordmark"
         style={`font-size:${size}px;${inverse ? `color:var(--cream-50);` : ""}`}
       >
-        comounlulo<em style={inverse ? "font-style:normal;color:var(--orange-300);" : undefined}>.co</em>
+        comounlulo<em
+          style={
+            inverse
+              ? "font-style:normal;color:var(--orange-300);"
+              /* Corrección de contraste (Tanda F): var(--brand) (naranja-400)
+                 sobre crema da 2.55:1, no alcanza 4.5:1. orange-700 (ya en la
+                 paleta) da 6.66:1. */
+              : "font-style:normal;color:var(--orange-700);"
+          }
+        >.co</em>
       </span>
     </span>
   )

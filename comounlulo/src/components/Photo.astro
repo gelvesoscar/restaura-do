@@ -19,7 +19,11 @@ const bg =
   tone === "pulpa" ? "var(--gradient-pulpa)" : tone === "flat" ? "var(--cream-200)" : "var(--gradient-lulo)";
 ---
 
-<div class={`photo-slot ${className}`} style={`aspect-ratio:${ratio};background:${bg};border-radius:${radius};`}>
+<div
+  class={`photo-slot ${className}`}
+  data-tone={tone}
+  style={`aspect-ratio:${ratio};background:${bg};border-radius:${radius};`}
+>
   <span class="photo-label">TODO — {label}</span>
 </div>
 
@@ -40,5 +44,11 @@ const bg =
     text-align: center;
     max-width: 32ch;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+  /* Contraste (Tanda F): sobre tone="flat" (cream-200) el texto blanco da
+     1.33:1. text-muted (ink-500) sin sombra da 4.89:1. */
+  .photo-slot[data-tone="flat"] .photo-label {
+    color: var(--text-muted);
+    text-shadow: none;
   }
 </style>
