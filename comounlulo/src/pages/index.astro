@@ -3,28 +3,16 @@ import Base from "../layouts/Base.astro";
 import Inicio from "../sections/Inicio.astro";
 import PorQueLulo from "../sections/PorQueLulo.astro";
 import Manifiesto from "../sections/Manifiesto.astro";
+import Tips from "../sections/Tips.astro";
+import Recetas from "../sections/Recetas.astro";
 ---
 
 <Base>
   <Inicio />
   <PorQueLulo />
   <Manifiesto />
-
-  <section id="tips" class="stub">
-    <div class="stub-inner">
-      <p class="eyebrow">Contenido informativo</p>
-      <h2>Tips de salud</h2>
-      <p>Content collection en Markdown — Tanda D.</p>
-    </div>
-  </section>
-
-  <section id="recetas" class="stub stub-card">
-    <div class="stub-inner">
-      <p class="eyebrow">Contenido informativo</p>
-      <h2>Recetas</h2>
-      <p>Content collection en Markdown — Tanda D.</p>
-    </div>
-  </section>
+  <Tips />
+  <Recetas />
 
   <section id="tienda" class="stub">
     <div class="stub-inner">
@@ -50,10 +38,5 @@ import Manifiesto from "../sections/Manifiesto.astro";
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-  }
-  .stub-card {
-    background: var(--surface-card);
-    border-top: 1px solid var(--border-hairline);
-    border-bottom: 1px solid var(--border-hairline);
   }
 </style>

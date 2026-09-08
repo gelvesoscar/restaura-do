@@ -1,15 +1,21 @@
 ---
-interface Props {
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
   tone?: "plain" | "tint" | "pulpa" | "inverse";
   elevation?: "none" | "xs" | "sm" | "md" | "lg";
   padding?: string;
-  class?: string;
 }
 
-const { tone = "plain", elevation = "sm", padding, class: className = "" } = Astro.props;
+const { tone = "plain", elevation = "sm", padding, class: className = "", ...rest } = Astro.props;
 ---
 
-<div class={`card card-${tone} ${className}`} style={padding ? `padding:${padding};` : undefined} data-elevation={elevation}>
+<div
+  class={`card card-${tone} ${className}`}
+  style={padding ? `padding:${padding};` : undefined}
+  data-elevation={elevation}
+  {...rest}
+>
   <slot />
 </div>
 

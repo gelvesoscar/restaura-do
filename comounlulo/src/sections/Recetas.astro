@@ -1,0 +1,213 @@
+---
+import { getCollection, render } from "astro:content";
+import SectionHead from "../components/SectionHead.astro";
+import Card from "../components/Card.astro";
+import Badge from "../components/Badge.astro";
+import Icon from "../components/Icon.astro";
+
+const recetasRaw = await getCollection("recetas");
+const recetas = recetasRaw.sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(recetas.map((r) => render(r)));
+---
+
+<section id="recetas" class="recetas">
+  <div class="recetas-inner">
+    <SectionHead
+      eyebrow="Recetas con lulo"
+      title="Cómo se toma el lulo en las casas de aquí."
+      lead="Tres formas tradicionales, con medidas de cocina y sin promesas. Toca una tarjeta para ver los ingredientes."
+    />
+    <div class="recetas-grid">
+      {
+        recetas.map((receta, i) => {
+          const { Content } = rendered[i];
+          const abierta = i === 0;
+          return (
+            <Card
+              elevation={abierta ? "md" : "xs"}
+              padding="0"
+              class="receta-card"
+              data-open={abierta ? "true" : "false"}
+              tabindex="0"
+              role="button"
+            >
+              <div class="receta-photo" data-tone={abierta ? "pulpa" : "flat"}>
+                <span class="photo-label">TODO — {receta.data.foto}</span>
+              </div>
+              <div class="receta-body">
+                <div class="receta-badges">
+                  <Badge tone="neutral">{receta.data.minutes}</Badge>
+                  <Badge tone="neutral">{receta.data.porciones}</Badge>
+                </div>
+                <h4>{receta.data.title}</h4>
+                <div class="receta-detail">
+                  <ul class="receta-ingredientes">
+                    {receta.data.ingredientes.map((ing) => (
+                      <li>{ing}</li>
+                    ))}
+                  </ul>
+                  <div class="receta-paso">
+                    <Content />
+                  </div>
+                  <p class="receta-nota">
+                    <Icon name="leaf" size={13} color="var(--green-600)" />
+                    {receta.data.nota}
+                  </p>
+                </div>
+                <span class="receta-cta">Ver ingredientes</span>
+              </div>
+            </Card>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .recetas {
+    background: var(--surface-card);
+    border-top: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    scroll-margin-top: 72px;
+  }
+  .recetas-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .recetas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+  .receta-card {
+    overflow: hidden;
+    gap: 0;
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+  .receta-card:hover {
+    transform: translateY(-2px);
+  }
+  .receta-photo {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--border-hairline);
+    border-width: 0 0 1px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    transition: var(--transition-base);
+  }
+  .receta-photo[data-tone="pulpa"] {
+    background: var(--gradient-pulpa);
+  }
+  .receta-photo[data-tone="flat"] {
+    background: var(--cream-200);
+  }
+  .photo-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: rgba(255, 255, 255, 0.92);
+    text-align: center;
+    max-width: 32ch;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+  .receta-photo[data-tone="flat"] .photo-label {
+    color: var(--text-faint);
+    text-shadow: none;
+  }
+  .receta-body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .receta-badges {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .receta-body h4 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    margin: 0;
+  }
+  .receta-detail {
+    display: none;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .receta-card[data-open="true"] .receta-detail {
+    display: flex;
+  }
+  .receta-card[data-open="true"] .receta-cta {
+    display: none;
+  }
+  .receta-ingredientes {
+    margin: 0;
+    padding-left: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-body);
+  }
+  .receta-paso :global(p) {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .receta-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--green-600);
+    margin: 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .receta-cta {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-link);
+  }
+  @media (max-width: 900px) {
+    .recetas-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .recetas-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const cards = document.querySelectorAll<HTMLElement>("#recetas .receta-card");
+
+  function openCard(target: HTMLElement) {
+    cards.forEach((card) => {
+      const isTarget = card === target;
+      card.dataset.open = String(isTarget);
+      card.setAttribute("aria-expanded", String(isTarget));
+      card.dataset.elevation = isTarget ? "md" : "xs";
+      const photo = card.querySelector<HTMLElement>(".receta-photo");
+      if (photo) photo.dataset.tone = isTarget ? "pulpa" : "flat";
+    });
+  }
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => openCard(card));
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openCard(card);
+      }
+    });
+  });
+</script>

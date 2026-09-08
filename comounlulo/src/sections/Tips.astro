@@ -1,0 +1,166 @@
+---
+import { getCollection, render } from "astro:content";
+import SectionHead from "../components/SectionHead.astro";
+import Card from "../components/Card.astro";
+import Badge from "../components/Badge.astro";
+import Icon from "../components/Icon.astro";
+import Tag from "../components/Tag.astro";
+
+const tipsRaw = await getCollection("tips");
+const tips = tipsRaw.sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(tips.map((tip) => render(tip)));
+
+const categorias = [
+  "Todos",
+  "Hidratación",
+  "Movimiento",
+  "Descanso",
+  "Alimentación",
+  "Constancia",
+];
+---
+
+<section id="tips" class="tips">
+  <div class="tips-inner">
+    <SectionHead
+      eyebrow="Tips de salud"
+      title="Hábitos simples, del tamaño de un día."
+      lead="Sentido común aplicado, no consejo clínico. Cosas que se pueden empezar hoy y sostener el mes entero."
+    />
+    <div class="tips-filters" role="group" aria-label="Filtrar por categoría">
+      {
+        categorias.map((cat, i) => (
+          <Tag category={cat} selected={i === 0}>
+            {cat}
+          </Tag>
+        ))
+      }
+    </div>
+    <div class="tips-grid">
+      {
+        tips.map((tip, i) => {
+          const { Content } = rendered[i];
+          return (
+            <Card elevation="xs" class="tip-card" data-category={tip.data.category}>
+              <div class="tip-head">
+                <span class="tip-icon">
+                  <Icon name={tip.data.icon} size={20} color="var(--orange-700)" />
+                </span>
+                <Badge tone="neutral">{tip.data.minutes}</Badge>
+              </div>
+              <h4>{tip.data.title}</h4>
+              <div class="tip-body">
+                <Content />
+              </div>
+              <span class="tip-cta">
+                Leer la nota <Icon name="arrow-right" size={13} />
+              </span>
+            </Card>
+          );
+        })
+      }
+    </div>
+    <p class="tips-nota">
+      Estas notas describen hábitos cotidianos. No diagnostican, no tratan
+      ni curan condiciones, y no sustituyen la orientación de un
+      profesional de la salud.
+    </p>
+  </div>
+</section>
+
+<style>
+  .tips {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+    scroll-margin-top: 72px;
+  }
+  .tips-filters {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-6);
+  }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+  .tip-card {
+    gap: var(--space-3);
+    transition: var(--transition-base);
+  }
+  .tip-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .tip-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tip-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-pill);
+    background: var(--brand-tint);
+    display: grid;
+    place-items: center;
+  }
+  .tip-card h4 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    margin: 0;
+    line-height: var(--lh-heading);
+  }
+  .tip-body {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .tip-body :global(p) {
+    margin: 0;
+  }
+  .tip-cta {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-link);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+  }
+  .tips-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-faint);
+    margin-top: var(--space-8);
+    max-width: 70ch;
+  }
+  @media (max-width: 900px) {
+    .tips-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .tips-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const tags = document.querySelectorAll<HTMLButtonElement>("#tips [data-tag]");
+  const cards = document.querySelectorAll<HTMLElement>("#tips .tip-card");
+
+  tags.forEach((tag) => {
+    tag.addEventListener("click", () => {
+      const selected = tag.dataset.tag ?? "Todos";
+      tags.forEach((t) => t.setAttribute("aria-pressed", String(t === tag)));
+      cards.forEach((card) => {
+        const match = selected === "Todos" || card.dataset.category === selected;
+        card.hidden = !match;
+      });
+    });
+  });
+</script>

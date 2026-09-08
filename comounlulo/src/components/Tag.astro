@@ -1,0 +1,46 @@
+---
+interface Props {
+  selected?: boolean;
+  category?: string;
+  class?: string;
+}
+
+const { selected = false, category, class: className = "" } = Astro.props;
+---
+
+<button
+  type="button"
+  class={`tag ${className}`}
+  data-tag={category}
+  aria-pressed={selected ? "true" : "false"}
+>
+  <slot />
+</button>
+
+<style>
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    cursor: pointer;
+    transition: var(--transition-base);
+    background: var(--surface-card);
+    color: var(--text-body);
+    border: 1px solid var(--border-hairline);
+  }
+  .tag:hover {
+    background: var(--cream-200);
+  }
+  .tag[aria-pressed="true"] {
+    background: var(--ink-900);
+    color: var(--cream-100);
+    border-color: var(--ink-900);
+  }
+  .tag[aria-pressed="true"]:hover {
+    background: var(--ink-900);
+  }
+</style>
