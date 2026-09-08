@@ -68,11 +68,24 @@ import Checkbox from "./Checkbox.astro";
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-lg);
     padding: var(--space-8);
+    background: var(--surface-card);
+    color: var(--text-body);
+  }
+  /* El bug real detras de "la pantalla se queda fija sobre el fondo":
+     esta regla ponia `display:flex` sin condicion, en CUALQUIER estado
+     del <dialog>. Como una regla de autor (con cualquier especificidad)
+     siempre le gana a la hoja de estilos del navegador, esto pisaba la
+     regla nativa `dialog:not([open]){display:none}` y dejaba el dialogo
+     visible TODO el tiempo, incluso recien cargada la pagina, sin haber
+     llamado nunca a showModal(). Por eso nunca se ocultaba realmente y
+     por eso no tenia backdrop (solo aparece cuando el dialogo esta
+     genuinamente abierto en la "top layer"). La correccion: mover
+     `display:flex` a que solo aplique cuando el dialogo SI esta abierto
+     ([open]), dejando que el navegador siga ocultandolo por defecto. */
+  .bolsa-dialog[open] {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    background: var(--surface-card);
-    color: var(--text-body);
   }
   .bolsa-dialog::backdrop {
     background: rgba(31, 43, 26, 0.38);
