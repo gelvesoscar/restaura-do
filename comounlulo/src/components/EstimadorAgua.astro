@@ -1,0 +1,151 @@
+---
+import Card from "./Card.astro";
+import Icon from "./Icon.astro";
+import Input from "./Input.astro";
+import Button from "./Button.astro";
+---
+
+<Card elevation="sm" class="estimador">
+  <div class="estimador-head">
+    <span class="estimador-icon">
+      <Icon name="droplet" size={20} color="var(--green-700)" />
+    </span>
+    <div class="estimador-head-copy">
+      <h3>¿Cuánta agua tomar al día?</h3>
+      <p class="estimador-lead">
+        Un estimado general a partir de tu peso — no un consejo médico.
+      </p>
+    </div>
+  </div>
+
+  <div class="estimador-form">
+    <Input
+      id="estimador-peso"
+      label="Tu peso"
+      type="number"
+      inputmode="decimal"
+      min="30"
+      max="200"
+      step="1"
+      placeholder="Ej. 65"
+      hint="En kilogramos, entre 30 y 200."
+    />
+    <Button id="estimador-calcular" size="md">Calcular</Button>
+  </div>
+
+  <div id="estimador-resultado" class="estimador-resultado" aria-live="polite" hidden>
+    <span class="estimador-cifra"></span>
+    <span class="estimador-detalle">al día, como punto de partida</span>
+  </div>
+
+  <p class="estimador-nota">
+    Estimado general (peso × 35 ml por kilo). Varía según actividad física,
+    clima y condiciones de salud particulares — consulta a un profesional si
+    tienes dudas.
+  </p>
+</Card>
+
+<style>
+  .estimador {
+    margin-top: var(--space-6);
+    gap: var(--space-4) !important;
+  }
+  .estimador-head {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+  .estimador-icon {
+    width: 40px;
+    height: 40px;
+    flex: none;
+    border-radius: var(--radius-pill);
+    background: var(--accent-soft);
+    display: grid;
+    place-items: center;
+  }
+  .estimador-head-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .estimador-head-copy h3 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    margin: 0;
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+  }
+  .estimador-lead {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .estimador-form {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-3);
+  }
+  .estimador-form :global(.field) {
+    flex: 1;
+  }
+  .estimador-resultado {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-soft);
+    border-radius: var(--radius-md);
+  }
+  .estimador-cifra {
+    font-family: var(--font-display);
+    font-size: var(--fs-title);
+    color: var(--text-strong);
+  }
+  .estimador-detalle {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-muted);
+  }
+  .estimador-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    margin: 0;
+  }
+  @media (max-width: 480px) {
+    .estimador-form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
+
+<script>
+  const input = document.getElementById("estimador-peso") as HTMLInputElement | null;
+  const btn = document.getElementById("estimador-calcular");
+  const resultado = document.getElementById("estimador-resultado");
+  const cifra = resultado?.querySelector(".estimador-cifra");
+
+  function calcular() {
+    const peso = input ? parseFloat(input.value) : NaN;
+    if (!input || !Number.isFinite(peso) || peso < 30 || peso > 200) {
+      input?.reportValidity();
+      input?.focus();
+      return;
+    }
+    const litros = (peso * 35) / 1000;
+    if (cifra) cifra.textContent = `${litros.toFixed(1)} L`;
+    if (resultado) resultado.hidden = false;
+  }
+
+  btn?.addEventListener("click", calcular);
+  input?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      calcular();
+    }
+  });
+</script>

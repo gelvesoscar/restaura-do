@@ -5,6 +5,7 @@ import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import Tag from "../components/Tag.astro";
+import EstimadorAgua from "../components/EstimadorAgua.astro";
 
 const tipsRaw = await getCollection("tips");
 const tips = tipsRaw.sort((a, b) => a.data.order - b.data.order);
@@ -60,6 +61,7 @@ const categorias = [
         })
       }
     </div>
+    <EstimadorAgua />
     <p class="tips-nota">
       Estas notas describen hábitos cotidianos. No diagnostican, no tratan
       ni curan condiciones, y no sustituyen la orientación de un
