@@ -76,8 +76,15 @@ import Checkbox from "./Checkbox.astro";
   }
   .bolsa-dialog::backdrop {
     background: rgba(31, 43, 26, 0.38);
-    backdrop-filter: var(--blur-veil);
+    /* El minificador de Astro (Lightning CSS) estaba eliminando la
+       propiedad estandar cuando iba primero y dejaba solo la prefijada
+       -webkit-, y Chrome moderno con SOLO -webkit-backdrop-filter (sin la
+       version estandar) no pintaba el fondo del backdrop en absoluto —
+       quedaba completamente transparente. El prefijo va primero como
+       respaldo y la version estandar al final para que sobreviva a la
+       minificacion y gane la cascada. */
     -webkit-backdrop-filter: var(--blur-veil);
+    backdrop-filter: var(--blur-veil);
   }
   .bolsa-head {
     display: flex;
