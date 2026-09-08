@@ -1,0 +1,83 @@
+---
+interface Props {
+  href?: string;
+  variant?: "primary" | "secondary" | "outline" | "ghost";
+  size?: "sm" | "md" | "lg";
+  class?: string;
+}
+
+const { href, variant = "primary", size = "md", class: className = "" } = Astro.props;
+const Tag = href ? "a" : "button";
+---
+
+<Tag href={href} class={`btn btn-${variant} btn-${size} ${className}`}>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font: var(--type-button);
+    letter-spacing: var(--ls-button);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition-base);
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .btn:active {
+    transform: scale(var(--press-scale));
+  }
+  .btn-sm {
+    padding: 8px 14px;
+    font-size: var(--fs-caption);
+  }
+  .btn-md {
+    padding: 12px 22px;
+    font-size: var(--fs-body-sm);
+  }
+  .btn-lg {
+    padding: 16px 30px;
+    font-size: var(--fs-body);
+  }
+  .btn-primary {
+    background: var(--brand);
+    color: var(--text-on-brand);
+    border-color: var(--brand);
+    box-shadow: var(--shadow-brand);
+  }
+  .btn-primary:hover {
+    background: var(--brand-strong);
+    border-color: var(--brand-strong);
+  }
+  .btn-secondary {
+    background: var(--surface-accent);
+    color: #fff;
+    border-color: var(--surface-accent);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-secondary:hover {
+    background: var(--green-700);
+    border-color: var(--green-700);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--text-strong);
+    border-color: var(--border-default);
+  }
+  .btn-outline:hover {
+    background: var(--cream-200);
+    border-color: var(--border-strong);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-link);
+  }
+  .btn-ghost:hover {
+    background: var(--brand-tint);
+  }
+</style>

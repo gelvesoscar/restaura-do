@@ -1,0 +1,120 @@
+---
+import Wordmark from "./Wordmark.astro";
+import { SECCIONES } from "../data/sections";
+---
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <Wordmark size={24} inverse />
+      <p>
+        Vitalidad que se nota por fuera, porque se cuida por dentro. Desde
+        Colombia, con la fruta que nos enseñó la idea.
+      </p>
+    </div>
+    <div class="footer-col">
+      <span class="eyebrow footer-eyebrow">Secciones</span>
+      {
+        SECCIONES.map(([id, label]) => (
+          <a href={`#${id}`}>{label}</a>
+        ))
+      }
+    </div>
+    <div class="footer-col">
+      <span class="eyebrow footer-eyebrow">Escríbenos</span>
+      <span>hola@comounlulo.co</span>
+      <span>Bogotá, Colombia</span>
+      <span>@comounlulo</span>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Comounlulo.co</span>
+    <span class="footer-disclaimer">
+      Contenido informativo sobre hábitos y cultura alimentaria. No
+      diagnostica, trata ni cura ninguna condición, y no reemplaza el
+      criterio de un profesional de la salud.
+    </span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--surface-inverse);
+    color: var(--cream-300);
+    padding: var(--space-16) var(--gutter-page) var(--space-10);
+  }
+  .footer-grid {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: var(--space-10);
+  }
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 34ch;
+  }
+  .footer-brand p {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .footer-eyebrow {
+    color: var(--ink-300);
+  }
+  .footer-col a {
+    font-size: var(--fs-body-sm);
+    color: var(--cream-300);
+    border-bottom: none;
+  }
+  .footer-col a:hover {
+    color: var(--cream-100);
+  }
+  .footer-col span {
+    font-size: var(--fs-body-sm);
+  }
+  .footer-bottom {
+    max-width: var(--max-content);
+    margin: var(--space-12) auto 0;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--ink-700);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--ink-300);
+  }
+  .footer-disclaimer {
+    max-width: 56ch;
+    text-align: right;
+  }
+  @media (max-width: 860px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-brand {
+      grid-column: 1 / -1;
+      max-width: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .footer-disclaimer {
+      text-align: left;
+    }
+  }
+</style>

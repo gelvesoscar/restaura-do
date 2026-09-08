@@ -1,5 +1,7 @@
 ---
 import "../styles/styles.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title?: string;
@@ -25,9 +27,21 @@ const {
         scroll-behavior: smooth;
         scroll-padding-top: 72px;
       }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      main {
+        flex: 1;
+      }
     </style>
   </head>
   <body>
-    <slot />
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

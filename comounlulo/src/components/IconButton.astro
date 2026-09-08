@@ -1,0 +1,34 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  icon: string;
+  label: string;
+  size?: number;
+}
+
+const { icon, label, size = 40 } = Astro.props;
+const iconSize = size <= 32 ? 16 : 20;
+---
+
+<button aria-label={label} title={label} class="icon-btn" style={`width:${size}px;height:${size}px;`}>
+  <Icon name={icon} size={iconSize} />
+</button>
+
+<style>
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    background: var(--surface-card);
+    color: var(--text-strong);
+    border: 1px solid var(--border-hairline);
+    transition: var(--transition-base);
+    padding: 0;
+  }
+  .icon-btn:hover {
+    background: var(--cream-200);
+  }
+</style>

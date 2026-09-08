@@ -1,0 +1,115 @@
+---
+import Wordmark from "./Wordmark.astro";
+import IconButton from "./IconButton.astro";
+import Button from "./Button.astro";
+import { SECCIONES } from "../data/sections";
+
+const links = SECCIONES.slice(1);
+---
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#inicio" class="nav-brand" aria-label="Ir a inicio">
+      <Wordmark size={22} />
+    </a>
+    <nav class="nav-links" aria-label="Secciones">
+      {
+        links.map(([id, label]) => (
+          <a href={`#${id}`} data-nav-link={id} class="nav-link">
+            {label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="nav-actions">
+      <IconButton icon="shopping-bag" label="Tu bolsa" />
+      <Button href="#tienda" size="sm" class="nav-cta">Ver la tienda</Button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--veil);
+    -webkit-backdrop-filter: var(--blur-veil);
+    backdrop-filter: var(--blur-veil);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+  .nav-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: 12px var(--gutter-page);
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+  .nav-brand {
+    border-bottom: none;
+    display: flex;
+    flex: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: var(--space-5);
+    margin-left: auto;
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+  .nav-link {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    padding-bottom: 2px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: var(--transition-base);
+  }
+  .nav-link.is-active {
+    color: var(--text-strong);
+    border-bottom-color: var(--brand);
+  }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  @media (max-width: 780px) {
+    .nav-cta {
+      display: none;
+    }
+  }
+  @media (max-width: 620px) {
+    .nav-links {
+      gap: var(--space-3);
+    }
+    .nav-link {
+      font-size: var(--fs-caption);
+    }
+  }
+</style>
+
+<script>
+  const navLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"),
+  );
+  const ids = ["inicio", ...navLinks.map((a) => a.dataset.navLink!)];
+
+  function setActive() {
+    let current = ids[0];
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 140) current = id;
+    }
+    navLinks.forEach((a) => {
+      a.classList.toggle("is-active", a.dataset.navLink === current);
+    });
+  }
+
+  setActive();
+  window.addEventListener("scroll", setActive, { passive: true });
+  window.addEventListener("resize", setActive);
+</script>

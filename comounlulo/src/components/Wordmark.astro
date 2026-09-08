@@ -1,0 +1,40 @@
+---
+interface Props {
+  size?: number;
+  inverse?: boolean;
+  markOnly?: boolean;
+}
+
+const { size = 20, inverse = false, markOnly = false } = Astro.props;
+const src = inverse ? "/assets/logo-lulo-cream.svg" : "/assets/logo-lulo.svg";
+const dim = size * 1.6;
+const gap = size * 0.45;
+---
+
+{
+  markOnly ? (
+    <img
+      src={src}
+      alt="Comounlulo.co"
+      width={dim}
+      height={dim}
+      style={`display:block;width:${dim}px;height:${dim}px;`}
+    />
+  ) : (
+    <span style={`display:inline-flex;align-items:center;gap:${gap}px;white-space:nowrap;`}>
+      <img
+        src={src}
+        alt=""
+        width={dim}
+        height={dim}
+        style={`display:block;width:${dim}px;height:${dim}px;`}
+      />
+      <span
+        class="wordmark"
+        style={`font-size:${size}px;${inverse ? `color:var(--cream-50);` : ""}`}
+      >
+        comounlulo<em style={inverse ? "font-style:normal;color:var(--orange-300);" : undefined}>.co</em>
+      </span>
+    </span>
+  )
+}

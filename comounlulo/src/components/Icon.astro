@@ -1,0 +1,16 @@
+---
+interface Props {
+  name: string;
+  size?: number;
+  color?: string;
+}
+
+const { name, size = 20, color = "currentColor" } = Astro.props;
+const url = `https://unpkg.com/lucide-static@0.436.0/icons/${name}.svg`;
+const mask = `url('${url}') center / contain no-repeat`;
+---
+
+<span
+  aria-hidden="true"
+  style={`display:inline-block;flex:none;width:${size}px;height:${size}px;background:${color};-webkit-mask:${mask};mask:${mask};`}
+/>
