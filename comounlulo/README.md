@@ -29,14 +29,14 @@ producto — ver "Fotos" más abajo.
 
 **Estructura de URLs (soft-launch):** la raíz (`/`) muestra una página
 liviana de "muy pronto" — el sitio completo (las seis secciones) vive en
-`/temp`, marcado `noindex` para que no lo indexen buscadores mientras es un
+`/preview`, marcado `noindex` para que no lo indexen buscadores mientras es un
 link de vista previa privada. Cuando el sitio esté listo para el público en
 general (precio, pasarela, transportadora y fotos reales resueltos), el
-contenido de `src/pages/temp.astro` pasa a ser el de `src/pages/index.astro`
-(quitando `noindex={true}` del `<Base>`), y `temp.astro` se borra.
+contenido de `src/pages/preview.astro` pasa a ser el de `src/pages/index.astro`
+(quitando `noindex={true}` del `<Base>`), y `preview.astro` se borra.
 
 **En línea ahora mismo:** www.comounlulo.co (placeholder "muy pronto") y
-www.comounlulo.co/temp (sitio completo, `noindex`, para compartir como
+www.comounlulo.co/preview (sitio completo, `noindex`, para compartir como
 preview privada).
 
 ## Cómo publicar (Vercel)
@@ -49,7 +49,7 @@ la cuenta `gelvesoscar`, y quedó configurado así:
 - **Production Branch**: `comounlulo` (Settings → Environments → Production
   → Branch Tracking). Cada `git push` a esa rama dispara un deploy nuevo a
   producción automáticamente.
-- **URL de Vercel**: comounlulo.vercel.app (y comounlulo.vercel.app/temp
+- **URL de Vercel**: comounlulo.vercel.app (y comounlulo.vercel.app/preview
   para el sitio completo).
 - **Dominio propio**: `comounlulo.co` y `www.comounlulo.co` conectados y con
   SSL válido — ver la sección de abajo.
