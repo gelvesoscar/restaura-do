@@ -7,11 +7,13 @@ import Bolsa from "../components/Bolsa.astro";
 interface Props {
   title?: string;
   description?: string;
+  noindex?: boolean;
 }
 
 const {
   title = "Comounlulo.co",
   description = "Vitalidad que se nota por fuera, porque se cuida por dentro.",
+  noindex = false,
 } = Astro.props;
 ---
 
@@ -23,6 +25,7 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <style is:global>
       /*
         El design system copiado (styles.css/tokens/) no trae un reset de

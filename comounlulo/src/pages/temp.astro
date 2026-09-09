@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+import Inicio from "../sections/Inicio.astro";
+import PorQueLulo from "../sections/PorQueLulo.astro";
+import Manifiesto from "../sections/Manifiesto.astro";
+import Tips from "../sections/Tips.astro";
+import Recetas from "../sections/Recetas.astro";
+import Tienda from "../sections/Tienda.astro";
+---
+
+<!--
+  Vista previa temporal mientras el sitio no está listo para salir al
+  público en la raíz del dominio (falta precio, pasarela de pago,
+  transportadora y fotografía real — ver README). El sitio completo vive
+  aquí, en /temp, marcado noindex para que no aparezca en buscadores; la
+  raíz (/) muestra un "próximamente" liviano. Cuando esté listo para
+  lanzar de verdad, el contenido de este archivo pasa a ser el de
+  index.astro y este archivo (o el redirect en vercel.json) se retira.
+-->
+<Base noindex={true}>
+  <Inicio />
+  <PorQueLulo />
+  <Manifiesto />
+  <Tips />
+  <Recetas />
+  <Tienda />
+</Base>

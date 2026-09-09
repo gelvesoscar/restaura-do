@@ -1,18 +1,84 @@
 ---
-import Base from "../layouts/Base.astro";
-import Inicio from "../sections/Inicio.astro";
-import PorQueLulo from "../sections/PorQueLulo.astro";
-import Manifiesto from "../sections/Manifiesto.astro";
-import Tips from "../sections/Tips.astro";
-import Recetas from "../sections/Recetas.astro";
-import Tienda from "../sections/Tienda.astro";
+import "../styles/styles.css";
+import Wordmark from "../components/Wordmark.astro";
 ---
 
-<Base>
-  <Inicio />
-  <PorQueLulo />
-  <Manifiesto />
-  <Tips />
-  <Recetas />
-  <Tienda />
-</Base>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta
+      name="description"
+      content="Comounlulo.co — muy pronto. Vitalidad que se nota por fuera, porque se cuida por dentro."
+    />
+    <title>Comounlulo.co — Muy pronto</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient-lulo);
+        padding: var(--space-8);
+      }
+      .card {
+        background: var(--surface-card);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        padding: var(--space-16) var(--space-10);
+        max-width: 520px;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-6);
+      }
+      .eyebrow {
+        font-family: var(--font-body);
+        font-size: var(--fs-caption);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-size: var(--fs-display-m);
+        color: var(--text-strong);
+        margin: 0;
+        line-height: var(--lh-heading);
+      }
+      .frase-ancla {
+        font-family: var(--font-display);
+        font-style: italic;
+        color: var(--text-body);
+        font-size: var(--fs-body);
+        max-width: 32ch;
+        margin: 0;
+      }
+      .contacto {
+        font-family: var(--font-body);
+        font-size: var(--fs-body-sm);
+        color: var(--text-muted);
+      }
+      .contacto a {
+        color: var(--text-link);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <Wordmark size={22} />
+      <span class="eyebrow">Muy pronto</span>
+      <h1>Vitalidad que se nota por fuera, porque se cuida por dentro.</h1>
+      <p class="frase-ancla">"Nadie necesita reinventarse. Necesita recordar."</p>
+      <p class="contacto">¿Quieres saber cuándo abrimos? Escríbenos a <a href="mailto:hola@comounlulo.co">hola@comounlulo.co</a></p>
+    </main>
+  </body>
+</html>
