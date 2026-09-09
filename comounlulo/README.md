@@ -27,6 +27,14 @@ Fotos: hay tres fotos de prueba conectadas (inicio, "por qué el lulo" y la
 botella de referencia en tienda) mientras llega la fotografía real del
 producto — ver "Fotos" más abajo.
 
+**Estructura de URLs (soft-launch):** la raíz (`/`) muestra una página
+liviana de "muy pronto" — el sitio completo (las seis secciones) vive en
+`/temp`, marcado `noindex` para que no lo indexen buscadores mientras es un
+link de vista previa privada. Cuando el sitio esté listo para el público en
+general (precio, pasarela, transportadora y fotos reales resueltos), el
+contenido de `src/pages/temp.astro` pasa a ser el de `src/pages/index.astro`
+(quitando `noindex={true}` del `<Base>`), y `temp.astro` se borra.
+
 ## Cómo publicar (Vercel)
 
 El proyecto vive en una subcarpeta de un repo que también tiene el sitio de
@@ -59,14 +67,33 @@ nuevo automáticamente — no hay que repetir el import. Los pull requests
 contra esa rama también generan una Preview Deployment aparte, útil para
 revisar cambios antes de fusionarlos.
 
-### Dominio propio (comounlulo.co)
+### Dominio propio (comounlulo.co en GoDaddy)
 
-Cuando el dominio esté comprado y quieras apuntarlo aquí: en el proyecto de
-Vercel, pestaña **Domains** → agrega `comounlulo.co` → sigue las
-instrucciones de DNS que te muestra (típicamente un registro A o CNAME en tu
-proveedor de dominio). También conviene entonces actualizar
-`site: undefined` en `astro.config.mjs` con la URL final, para que las
-etiquetas SEO/OG generen URLs absolutas correctas.
+El dominio ya está comprado (GoDaddy, vence 25 may 2027) y hoy su registro A
+apunta a la página "parked" de GoDaddy. Para conectarlo sin mover la gestión
+de DNS fuera de GoDaddy (nameservers `ns03`/`ns04.domaincontrol.com` se
+quedan igual — no hay que delegar a Vercel):
+
+1. En el proyecto de Vercel, pestaña **Settings → Domains**, agrega
+   `comounlulo.co` y `www.comounlulo.co`.
+2. Vercel te muestra el valor exacto a usar — **usa siempre el que te
+   muestre a ti, no un valor genérico de esta guía**, porque Vercel asigna
+   IPs/CNAMEs por proyecto.
+3. En GoDaddy → tu dominio → pestaña **DNS** → **DNS Records**, edita (no
+   agregues nuevos, ya existen):
+   - El registro **A, name `@`** (hoy dice "Parked") → cámbialo por la IP
+     que te dio Vercel.
+   - El registro **CNAME, name `www`** (hoy apunta a `comounlulo.co.`) →
+     cámbialo por el valor que te dio Vercel para `www`.
+   - No toques los demás registros (`NS`, `CNAME _domainconnect`, `SOA`,
+     `TXT _dmarc`) — son de GoDaddy y de tu correo, no tienen que ver con el
+     sitio.
+4. La propagación puede tardar de minutos a un par de horas. Vercel emite el
+   certificado SSL solo, apenas detecta el DNS correcto.
+
+También conviene entonces actualizar `site: undefined` en `astro.config.mjs`
+con la URL final, para que las etiquetas SEO/OG generen URLs absolutas
+correctas.
 
 ## Fotos
 
