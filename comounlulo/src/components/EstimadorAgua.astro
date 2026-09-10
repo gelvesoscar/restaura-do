@@ -39,58 +39,67 @@ const EDAD = [
   </div>
 
   <div class="estimador-form">
-    <Input
-      id="estimador-peso"
-      label="Tu peso"
-      type="number"
-      inputmode="decimal"
-      min="30"
-      max="200"
-      step="1"
-      placeholder="Ej. 65"
-      hint="En kilogramos, entre 30 y 200."
-    />
+    <div class="estimador-fields-row">
+      <Input
+        id="estimador-peso"
+        label="Tu peso"
+        type="number"
+        inputmode="decimal"
+        min="30"
+        max="200"
+        step="1"
+        placeholder="Ej. 65"
+        hint="En kilogramos, entre 30 y 200."
+      />
 
-    <div class="estimador-group">
-      <span class="estimador-group-label">Tu edad</span>
-      <div class="estimador-pills" id="estimador-edad-group" role="group" aria-label="Edad">
-        {
-          EDAD.map((o, i) => (
-            <Tag selected={i === 0} data-value={o.mlPorKg}>
-              {o.label}
-            </Tag>
-          ))
-        }
+      <div class="estimador-group">
+        <span class="estimador-group-label">Tu edad</span>
+        <div class="estimador-pills" id="estimador-edad-group" role="group" aria-label="Edad">
+          {
+            EDAD.map((o, i) => (
+              <Tag selected={i === 0} data-value={o.mlPorKg}>
+                {o.label}
+              </Tag>
+            ))
+          }
+        </div>
+        <span class="estimador-group-hint">Ajusta cuánto necesitas por kilo.</span>
       </div>
     </div>
 
-    <div class="estimador-group">
-      <span class="estimador-group-label">Tu actividad física</span>
-      <div class="estimador-pills" id="estimador-actividad-group" role="group" aria-label="Actividad física">
-        {
-          ACTIVIDAD.map((o, i) => (
-            <Tag selected={i === 0} data-value={o.ml}>
-              {o.label}
-            </Tag>
-          ))
-        }
+    <div class="estimador-fields-row">
+      <div class="estimador-group">
+        <span class="estimador-group-label">Actividad física</span>
+        <div class="estimador-pills" id="estimador-actividad-group" role="group" aria-label="Actividad física">
+          {
+            ACTIVIDAD.map((o, i) => (
+              <Tag selected={i === 0} data-value={o.ml}>
+                {o.label}
+              </Tag>
+            ))
+          }
+        </div>
+        <span class="estimador-group-hint">Cuánto te mueves en una semana típica.</span>
+      </div>
+
+      <div class="estimador-group">
+        <span class="estimador-group-label">Clima</span>
+        <div class="estimador-pills" id="estimador-clima-group" role="group" aria-label="Clima">
+          {
+            CLIMA.map((o, i) => (
+              <Tag selected={i === 1} data-value={o.ml}>
+                {o.label}
+              </Tag>
+            ))
+          }
+        </div>
+        <span class="estimador-group-hint">Dónde vives o entrenas — el calor sube lo que necesitas.</span>
       </div>
     </div>
 
-    <div class="estimador-group">
-      <span class="estimador-group-label">Clima donde vives o entrenas</span>
-      <div class="estimador-pills" id="estimador-clima-group" role="group" aria-label="Clima">
-        {
-          CLIMA.map((o, i) => (
-            <Tag selected={i === 1} data-value={o.ml}>
-              {o.label}
-            </Tag>
-          ))
-        }
-      </div>
+    <div class="estimador-actions">
+      <Button id="estimador-calcular" size="md">Calcular</Button>
     </div>
-
-    <Button id="estimador-calcular" size="md">Calcular</Button>
   </div>
 
   <div id="estimador-resultado" class="estimador-resultado" aria-live="polite" hidden>
@@ -182,19 +191,26 @@ const EDAD = [
     margin: 0;
   }
   .estimador-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
-    align-items: end;
-    gap: var(--space-4) var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
   }
-  .estimador-form :global(.field) {
-    min-width: 0;
+  .estimador-fields-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: var(--space-5);
+  }
+  .estimador-fields-row :global(.field) {
+    flex: 1 1 200px;
+    min-width: 180px;
   }
   .estimador-group {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    min-width: 0;
+    flex: 2 1 260px;
+    min-width: 220px;
   }
   .estimador-group-label {
     font: var(--type-button);
@@ -204,6 +220,17 @@ const EDAD = [
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+  }
+  .estimador-group-hint {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+  }
+  .estimador-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-hairline);
   }
   .estimador-resultado {
     display: flex;
@@ -296,14 +323,20 @@ const EDAD = [
     color: var(--text-muted);
     margin: 0;
   }
-  @media (max-width: 900px) {
-    .estimador-form {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
   @media (max-width: 560px) {
-    .estimador-form {
-      grid-template-columns: 1fr;
+    .estimador-fields-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .estimador-fields-row :global(.field),
+    .estimador-fields-row .estimador-group {
+      flex: none;
+    }
+    .estimador-actions {
+      justify-content: stretch;
+    }
+    .estimador-actions :global(.btn) {
+      width: 100%;
     }
   }
 </style>
