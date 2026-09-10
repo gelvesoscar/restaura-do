@@ -39,7 +39,7 @@ const EDAD = [
   </div>
 
   <div class="estimador-form">
-    <div class="estimador-fields-row">
+    <div class="estimador-fields">
       <Input
         id="estimador-peso"
         label="Tu peso"
@@ -65,9 +65,7 @@ const EDAD = [
         </div>
         <span class="estimador-group-hint">Ajusta cuánto necesitas por kilo.</span>
       </div>
-    </div>
 
-    <div class="estimador-fields-row">
       <div class="estimador-group">
         <span class="estimador-group-label">Actividad física</span>
         <div class="estimador-pills" id="estimador-actividad-group" role="group" aria-label="Actividad física">
@@ -93,7 +91,7 @@ const EDAD = [
             ))
           }
         </div>
-        <span class="estimador-group-hint">Dónde vives o entrenas — el calor sube lo que necesitas.</span>
+        <span class="estimador-group-hint">El calor sube lo que necesitas.</span>
       </div>
     </div>
 
@@ -195,22 +193,20 @@ const EDAD = [
     flex-direction: column;
     gap: var(--space-5);
   }
-  .estimador-fields-row {
-    display: flex;
-    flex-wrap: wrap;
+  .estimador-fields {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     align-items: start;
-    gap: var(--space-5);
+    gap: var(--space-5) var(--space-4);
   }
-  .estimador-fields-row :global(.field) {
-    flex: 1 1 200px;
-    min-width: 180px;
+  .estimador-fields :global(.field) {
+    min-width: 0;
   }
   .estimador-group {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    flex: 2 1 260px;
-    min-width: 220px;
+    min-width: 0;
   }
   .estimador-group-label {
     font: var(--type-button);
@@ -323,14 +319,14 @@ const EDAD = [
     color: var(--text-muted);
     margin: 0;
   }
-  @media (max-width: 560px) {
-    .estimador-fields-row {
-      flex-direction: column;
-      align-items: stretch;
+  @media (max-width: 860px) {
+    .estimador-fields {
+      grid-template-columns: repeat(2, 1fr);
     }
-    .estimador-fields-row :global(.field),
-    .estimador-fields-row .estimador-group {
-      flex: none;
+  }
+  @media (max-width: 480px) {
+    .estimador-fields {
+      grid-template-columns: 1fr;
     }
     .estimador-actions {
       justify-content: stretch;
