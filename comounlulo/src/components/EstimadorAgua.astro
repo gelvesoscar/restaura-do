@@ -2,16 +2,26 @@
 import Card from "./Card.astro";
 import Icon from "./Icon.astro";
 import Input from "./Input.astro";
-import Select from "./Select.astro";
+import Tag from "./Tag.astro";
 import Button from "./Button.astro";
 
-const ACTIVIDAD_OPCIONES = [
-  "Sedentario",
-  "Moderado (3-4 veces/semana)",
-  "Activo (entrenamiento diario)",
+const ACTIVIDAD = [
+  { label: "Sedentario", ml: 0 },
+  { label: "Moderado", ml: 350 },
+  { label: "Activo", ml: 700 },
 ];
 
-const CLIMA_OPCIONES = ["Templado", "Caluroso"];
+const CLIMA = [
+  { label: "Frío", ml: -200 },
+  { label: "Templado", ml: 0 },
+  { label: "Caluroso", ml: 500 },
+];
+
+const EDAD = [
+  { label: "18–55", mlPorKg: 35 },
+  { label: "56–65", mlPorKg: 30 },
+  { label: "66+", mlPorKg: 25 },
+];
 ---
 
 <Card elevation="sm" class="estimador">
@@ -22,7 +32,7 @@ const CLIMA_OPCIONES = ["Templado", "Caluroso"];
     <div class="estimador-head-copy">
       <h3>¿Cuánta agua tomar al día?</h3>
       <p class="estimador-lead">
-        Un estimado a partir de tu peso, tu actividad y el clima — no un
+        Un estimado a partir de tu peso, edad, actividad y clima — no un
         consejo médico.
       </p>
     </div>
@@ -40,18 +50,46 @@ const CLIMA_OPCIONES = ["Templado", "Caluroso"];
       placeholder="Ej. 65"
       hint="En kilogramos, entre 30 y 200."
     />
-    <Select
-      id="estimador-actividad"
-      label="Tu actividad física"
-      options={ACTIVIDAD_OPCIONES}
-      hint="Cuánto te mueves en una semana típica."
-    />
-    <Select
-      id="estimador-clima"
-      label="Dónde vives o entrenas"
-      options={CLIMA_OPCIONES}
-      hint="Calor y sudoración suben lo que necesitas."
-    />
+
+    <div class="estimador-group">
+      <span class="estimador-group-label">Tu edad</span>
+      <div class="estimador-pills" id="estimador-edad-group" role="group" aria-label="Edad">
+        {
+          EDAD.map((o, i) => (
+            <Tag selected={i === 0} data-value={o.mlPorKg}>
+              {o.label}
+            </Tag>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="estimador-group">
+      <span class="estimador-group-label">Tu actividad física</span>
+      <div class="estimador-pills" id="estimador-actividad-group" role="group" aria-label="Actividad física">
+        {
+          ACTIVIDAD.map((o, i) => (
+            <Tag selected={i === 0} data-value={o.ml}>
+              {o.label}
+            </Tag>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="estimador-group">
+      <span class="estimador-group-label">Clima donde vives o entrenas</span>
+      <div class="estimador-pills" id="estimador-clima-group" role="group" aria-label="Clima">
+        {
+          CLIMA.map((o, i) => (
+            <Tag selected={i === 1} data-value={o.ml}>
+              {o.label}
+            </Tag>
+          ))
+        }
+      </div>
+    </div>
+
     <Button id="estimador-calcular" size="md">Calcular</Button>
   </div>
 
@@ -62,7 +100,7 @@ const CLIMA_OPCIONES = ["Templado", "Caluroso"];
     </div>
 
     <ul class="estimador-desglose">
-      <li data-row="base">Base por tu peso: <span data-val></span></li>
+      <li data-row="base">Base por tu peso y edad: <span data-val></span></li>
       <li data-row="actividad" hidden>Por actividad física: <span data-val></span></li>
       <li data-row="clima" hidden>Por clima: <span data-val></span></li>
     </ul>
@@ -99,9 +137,10 @@ const CLIMA_OPCIONES = ["Templado", "Caluroso"];
   </div>
 
   <p class="estimador-nota">
-    Estimado general a partir de tu peso (35 ml por kilo), tu nivel de
-    actividad y el clima donde vives o entrenas. Varía según condiciones de
-    salud particulares — consulta a un profesional si tienes dudas.
+    Estimado general que combina tu peso, edad, actividad física y clima,
+    inspirado en rangos de referencia como los de EFSA y Mayo Clinic (entre 2
+    y 3,7 litros diarios según el caso). Varía según condiciones de salud
+    particulares — consulta a un profesional si tienes dudas.
   </p>
 </Card>
 
@@ -144,12 +183,27 @@ const CLIMA_OPCIONES = ["Templado", "Caluroso"];
   }
   .estimador-form {
     display: grid;
-    grid-template-columns: 1fr 1.4fr 1.2fr auto;
-    align-items: flex-end;
-    gap: var(--space-3);
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    align-items: end;
+    gap: var(--space-4) var(--space-3);
   }
   .estimador-form :global(.field) {
     min-width: 0;
+  }
+  .estimador-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+  .estimador-group-label {
+    font: var(--type-button);
+    color: var(--text-strong);
+  }
+  .estimador-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
   .estimador-resultado {
     display: flex;
@@ -242,37 +296,61 @@ const CLIMA_OPCIONES = ["Templado", "Caluroso"];
     color: var(--text-muted);
     margin: 0;
   }
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
+    .estimador-form {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
     .estimador-form {
       grid-template-columns: 1fr;
-      align-items: stretch;
     }
   }
 </style>
 
 <script>
   const input = document.getElementById("estimador-peso") as HTMLInputElement | null;
-  const actividadSel = document.getElementById("estimador-actividad") as HTMLSelectElement | null;
-  const climaSel = document.getElementById("estimador-clima") as HTMLSelectElement | null;
+  const edadGroup = document.getElementById("estimador-edad-group");
+  const actividadGroup = document.getElementById("estimador-actividad-group");
+  const climaGroup = document.getElementById("estimador-clima-group");
   const btn = document.getElementById("estimador-calcular");
   const resultado = document.getElementById("estimador-resultado");
   const cifra = resultado?.querySelector(".estimador-cifra");
 
-  // ml extra por índice de opción seleccionada, en el mismo orden que las
-  // listas de opciones definidas arriba en el frontmatter.
-  const ACTIVIDAD_ML = [0, 350, 700];
-  const CLIMA_ML = [0, 500];
+  function setupGrupo(grupo: HTMLElement | null) {
+    const botones = Array.from(grupo?.querySelectorAll<HTMLButtonElement>("[data-value]") ?? []);
+    botones.forEach((boton) => {
+      boton.addEventListener("click", () => {
+        botones.forEach((b) => b.setAttribute("aria-pressed", String(b === boton)));
+      });
+    });
+  }
+  setupGrupo(edadGroup);
+  setupGrupo(actividadGroup);
+  setupGrupo(climaGroup);
+
+  function valorSeleccionado(grupo: HTMLElement | null, porDefecto: number) {
+    const activo = grupo?.querySelector<HTMLElement>('[aria-pressed="true"]');
+    const valor = activo?.dataset.value;
+    return valor !== undefined ? parseFloat(valor) : porDefecto;
+  }
 
   function filaDesglose(row: string, ml: number, esBase = false) {
     const li = resultado?.querySelector<HTMLElement>(`[data-row="${row}"]`);
     if (!li) return;
-    if (!esBase && ml <= 0) {
+    if (!esBase && ml === 0) {
       li.hidden = true;
       return;
     }
     li.hidden = false;
     const val = li.querySelector("[data-val]");
-    if (val) val.textContent = esBase ? `${ml} ml` : `+ ${ml} ml`;
+    if (!val) return;
+    if (esBase) {
+      val.textContent = `${Math.round(ml)} ml`;
+    } else {
+      const signo = ml > 0 ? "+" : "−";
+      val.textContent = `${signo} ${Math.abs(Math.round(ml))} ml`;
+    }
   }
 
   function formatoIntervalo(minutos: number) {
@@ -290,10 +368,15 @@ const CLIMA_OPCIONES = ["Templado", "Caluroso"];
       return;
     }
 
-    const base = peso * 35;
-    const actividadMl = ACTIVIDAD_ML[actividadSel?.selectedIndex ?? 0] ?? 0;
-    const climaMl = CLIMA_ML[climaSel?.selectedIndex ?? 0] ?? 0;
-    const totalMl = base + actividadMl + climaMl;
+    const mlPorKg = valorSeleccionado(edadGroup, 35);
+    const actividadMl = valorSeleccionado(actividadGroup, 0);
+    const climaMl = valorSeleccionado(climaGroup, 0);
+
+    const base = peso * mlPorKg;
+    let totalMl = base + actividadMl + climaMl;
+    // Límites de sentido común para que el estimado no se salga de los
+    // rangos generales de referencia (EFSA / Mayo Clinic: ~2 a 3.7 L/día).
+    totalMl = Math.min(4200, Math.max(1200, totalMl));
     const litros = totalMl / 1000;
 
     if (cifra) cifra.textContent = `${litros.toFixed(1)} L`;
