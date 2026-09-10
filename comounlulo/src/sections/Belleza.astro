@@ -1,0 +1,62 @@
+---
+import SectionHead from "../components/SectionHead.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<section id="belleza" class="belleza">
+  <div class="belleza-inner">
+    <SectionHead
+      eyebrow="Belleza"
+      title="Esta sección está en construcción."
+      lead="Antes de publicar nada aquí, estamos documentando los usos reales del lulo en el cuidado de la piel y el cabello — sin inventar beneficios ni rutinas. Vuelve pronto."
+    />
+    <div class="belleza-placeholder">
+      <span class="belleza-placeholder-icon">
+        <Icon name="sparkles" size={22} color="var(--orange-700)" />
+      </span>
+      <p>
+        Si tienes una mascarilla, ritual o uso de belleza con lulo que
+        quieras compartir, escríbenos a{" "}
+        <a href="mailto:hola@comounlulo.co">hola@comounlulo.co</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .belleza {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+    scroll-margin-top: 72px;
+  }
+  .belleza-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    background: var(--cream-200);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    max-width: 60ch;
+  }
+  .belleza-placeholder-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background: var(--brand-tint);
+    display: grid;
+    place-items: center;
+    flex: none;
+  }
+  .belleza-placeholder p {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .belleza-placeholder a {
+    color: var(--text-link);
+  }
+</style>

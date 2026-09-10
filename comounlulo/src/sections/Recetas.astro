@@ -30,7 +30,7 @@ const METODO = [
 ];
 ---
 
-<section id="recetas" class="recetas">
+<section id="cocina" class="recetas">
   <div class="recetas-inner">
     <SectionHead
       eyebrow="Cocina Como un Lulo"
@@ -311,8 +311,8 @@ const METODO = [
 </style>
 
 <script>
-  const tags = document.querySelectorAll<HTMLButtonElement>("#recetas [data-tag]");
-  const cards = document.querySelectorAll<HTMLElement>("#recetas .receta-card");
+  const tags = document.querySelectorAll<HTMLButtonElement>("#cocina [data-tag]");
+  const cards = document.querySelectorAll<HTMLElement>("#cocina .receta-card");
 
   tags.forEach((tag) => {
     tag.addEventListener("click", () => {

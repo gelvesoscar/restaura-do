@@ -20,10 +20,10 @@ const categorias = [
 ];
 ---
 
-<section id="tips" class="tips">
+<section id="bienestar" class="tips">
   <div class="tips-inner">
     <SectionHead
-      eyebrow="Tips de salud"
+      eyebrow="Bienestar"
       title="Hábitos simples, del tamaño de un día."
       lead="Sentido común aplicado, no consejo clínico. Cosas que se pueden empezar hoy y sostener el mes entero."
     />
@@ -150,8 +150,8 @@ const categorias = [
 </style>
 
 <script>
-  const tags = document.querySelectorAll<HTMLButtonElement>("#tips [data-tag]");
-  const cards = document.querySelectorAll<HTMLElement>("#tips .tip-card");
+  const tags = document.querySelectorAll<HTMLButtonElement>("#bienestar [data-tag]");
+  const cards = document.querySelectorAll<HTMLElement>("#bienestar .tip-card");
 
   tags.forEach((tag) => {
     tag.addEventListener("click", () => {

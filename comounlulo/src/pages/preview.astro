@@ -3,8 +3,9 @@ import Base from "../layouts/Base.astro";
 import Inicio from "../sections/Inicio.astro";
 import PorQueLulo from "../sections/PorQueLulo.astro";
 import Manifiesto from "../sections/Manifiesto.astro";
-import Tips from "../sections/Tips.astro";
 import Recetas from "../sections/Recetas.astro";
+import Belleza from "../sections/Belleza.astro";
+import Tips from "../sections/Tips.astro";
 import Tienda from "../sections/Tienda.astro";
 ---
 
@@ -16,12 +17,16 @@ import Tienda from "../sections/Tienda.astro";
   raíz (/) muestra un "próximamente" liviano. Cuando esté listo para
   lanzar de verdad, el contenido de este archivo pasa a ser el de
   index.astro y este archivo se retira.
+
+  Estructura por pilares: Cocina (Recetas) → Belleza (en construcción) →
+  Bienestar (Tips), en ese orden, siguiendo la navegación.
 -->
 <Base noindex={true}>
   <Inicio />
   <PorQueLulo />
   <Manifiesto />
-  <Tips />
   <Recetas />
+  <Belleza />
+  <Tips />
   <Tienda />
 </Base>

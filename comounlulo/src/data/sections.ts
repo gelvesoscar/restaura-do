@@ -2,7 +2,8 @@ export const SECCIONES = [
   ["inicio", "Inicio"],
   ["lulo", "Por qué el lulo"],
   ["manifiesto", "Verse como un lulo"],
-  ["tips", "Tips de salud"],
-  ["recetas", "Recetas"],
+  ["cocina", "Cocina"],
+  ["belleza", "Belleza"],
+  ["bienestar", "Bienestar"],
   ["tienda", "Tienda"],
 ] as const;
