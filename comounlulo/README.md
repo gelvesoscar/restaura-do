@@ -126,14 +126,16 @@ visible como `TODO` en el sitio, porque no se ha inventado:
 - **Pasarela de pago**: hoy el botón "Confirmar pedido" llama a
   `src/lib/checkout.ts`, que solo simula el pedido (no está conectado a
   ningún proveedor real).
-- **Fotografía real**: "En la mano" usa `botella-01-app-en-mano.jpg` y el
-  hero de la sección usa `botella-colores-reales.jpg` (foto real de fábrica
-  con los cuatro colores — negro, blanco, rosa y azul — reemplazando una
-  foto de stock de otra marca, "AURA Hydro", que estaba puesta como
-  referencia). Siguen sin foto real: **"Detalle de la tapa"** (necesita una
-  toma del LED UV encendido en morado dentro de la tapa, con la pantalla
-  marcando temperatura) y **"Con jugo de lulo"** (temporalmente puede usarse
-  cualquier foto de fábrica que dé escala y contexto de uso, mientras llega
-  la muestra física para la foto propia). A 30 días el objetivo es
-  reemplazar todas las fotos de fábrica por fotos propias con la botella
+- **Fotografía real**: los cuatro espacios de foto ya tienen imagen real
+  (ninguno queda en placeholder gris). "En la mano" usa
+  `botella-01-app-en-mano.jpg`. El hero, "Detalle de la tapa" y "Con jugo de
+  lulo" usan tres recortes distintos de la misma foto de fábrica con los
+  cuatro colores reales (`botella-colores-reales.jpg`,
+  `botella-tapa-detalle.jpg`, `botella-contexto-mesa.jpg`) — es la foto que
+  reemplazó el stock de otra marca ("AURA Hydro") que estaba puesta como
+  referencia. Son fotos reales del producto, pero no son las tomas
+  específicas que describe el brief (LED UV encendido en morado dentro de
+  la tapa; una foto con jugo de lulo de verdad) — son un recorte temporal
+  del mismo material mientras llegan esas tomas o la muestra física. A 30
+  días el objetivo es reemplazar todo por fotos propias con la botella
   física.
