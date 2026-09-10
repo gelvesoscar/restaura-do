@@ -1,0 +1,139 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import Badge from "../../components/Badge.astro";
+
+export async function getStaticPaths() {
+  const tips = await getCollection("tips");
+  return tips.map((tip) => ({
+    params: { slug: tip.id },
+    props: { tip },
+  }));
+}
+
+const { tip } = Astro.props;
+const { Content } = await render(tip);
+---
+
+<Base
+  title={`${tip.data.title} — Comounlulo.co`}
+  description={tip.data.resumen}
+  noindex={true}
+>
+  <article class="tip-article">
+    <div class="tip-article-inner">
+      <a href="/preview/#tips" class="tip-back">
+        <Icon name="arrow-left" size={14} /> Todos los hábitos
+      </a>
+      <div class="tip-article-head">
+        <span class="tip-article-icon">
+          <Icon name={tip.data.icon} size={22} color="var(--orange-700)" />
+        </span>
+        <div class="tip-article-tags">
+          <Badge tone="neutral">{tip.data.category}</Badge>
+          <Badge tone="neutral">{tip.data.minutes}</Badge>
+        </div>
+      </div>
+      <h1>{tip.data.title}</h1>
+      <div class="tip-article-body">
+        <Content />
+      </div>
+      <p class="tip-article-nota">
+        Estas notas describen hábitos cotidianos. No diagnostican, no tratan
+        ni curan condiciones, y no sustituyen la orientación de un
+        profesional de la salud.
+      </p>
+      <a href="/preview/#tienda" class="tip-article-cta">
+        Ver la tienda <Icon name="arrow-right" size={14} />
+      </a>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .tip-article {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .tip-article-inner {
+    max-width: 68ch;
+    margin: 0 auto;
+  }
+  .tip-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-link);
+    text-decoration: none;
+    margin-bottom: var(--space-6);
+  }
+  .tip-article-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .tip-article-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background: var(--brand-tint);
+    display: grid;
+    place-items: center;
+    flex: none;
+  }
+  .tip-article-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .tip-article h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-display-m);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0 0 var(--space-8);
+  }
+  .tip-article-body {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .tip-article-body :global(p) {
+    margin: 0 0 var(--space-5);
+  }
+  .tip-article-body :global(h2) {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: var(--space-8) 0 var(--space-4);
+  }
+  .tip-article-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-hairline);
+  }
+  .tip-article-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-link);
+    text-decoration: none;
+    margin-top: var(--space-6);
+  }
+  @media (max-width: 600px) {
+    .tip-article h1 {
+      font-size: var(--fs-title);
+    }
+  }
+</style>

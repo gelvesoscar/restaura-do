@@ -9,13 +9,13 @@ const links = SECCIONES.slice(1);
 
 <header class="nav">
   <div class="nav-inner">
-    <a href="#inicio" class="nav-brand">
+    <a href="/preview/#inicio" class="nav-brand">
       <Wordmark size={22} />
     </a>
     <nav class="nav-links" aria-label="Secciones">
       {
         links.map(([id, label]) => (
-          <a href={`#${id}`} data-nav-link={id} class="nav-link">
+          <a href={`/preview/#${id}`} data-nav-link={id} class="nav-link">
             {label}
           </a>
         ))
@@ -26,7 +26,7 @@ const links = SECCIONES.slice(1);
         <IconButton id="bag-button" icon="shopping-bag" label="Tu bolsa" />
         <span id="bag-count" class="bag-count" hidden>0</span>
       </span>
-      <Button href="#tienda" size="sm" class="nav-cta">Ver la tienda</Button>
+      <Button href="/preview/#tienda" size="sm" class="nav-cta">Ver la tienda</Button>
       <IconButton
         id="menu-button"
         icon="menu"
@@ -40,7 +40,7 @@ const links = SECCIONES.slice(1);
   <nav id="menu-panel" class="menu-panel" aria-label="Secciones" hidden>
     {
       links.map(([id, label]) => (
-        <a href={`#${id}`} data-menu-link={id} class="menu-panel-link">
+        <a href={`/preview/#${id}`} data-menu-link={id} class="menu-panel-link">
           {label}
         </a>
       ))

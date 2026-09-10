@@ -5,19 +5,31 @@ interface Props extends HTMLAttributes<"div"> {
   tone?: "plain" | "tint" | "pulpa" | "inverse";
   elevation?: "none" | "xs" | "sm" | "md" | "lg";
   padding?: string;
+  as?: "div" | "a";
+  href?: string;
 }
 
-const { tone = "plain", elevation = "sm", padding, class: className = "", ...rest } = Astro.props;
+const {
+  tone = "plain",
+  elevation = "sm",
+  padding,
+  class: className = "",
+  as = "div",
+  href,
+  ...rest
+} = Astro.props;
+const Tag = as;
 ---
 
-<div
+<Tag
+  href={as === "a" ? href : undefined}
   class={`card card-${tone} ${className}`}
   style={padding ? `padding:${padding};` : undefined}
   data-elevation={elevation}
   {...rest}
 >
   <slot />
-</div>
+</Tag>
 
 <style>
   .card {
@@ -27,6 +39,7 @@ const { tone = "plain", elevation = "sm", padding, class: className = "", ...res
     flex-direction: column;
     gap: var(--space-3);
     transition: var(--transition-base);
+    text-decoration: none;
   }
   .card-plain {
     background: var(--surface-card);

@@ -15,6 +15,7 @@ const tips = defineCollection({
     ]),
     minutes: z.string(),
     icon: z.string(),
+    resumen: z.string(),
     order: z.number().default(0),
   }),
 });
