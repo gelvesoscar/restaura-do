@@ -8,17 +8,28 @@ import IconButton from "../components/IconButton.astro";
 import Button from "../components/Button.astro";
 import Icon from "../components/Icon.astro";
 
+const PRECIO = 179000;
+
 const SKU = {
   nombre: "Botella inteligente Comounlulo",
-  variante: "600 ml · material: TODO",
-  colores: ["Cáscara (naranja)", "Pulpa (verde)", "Tinta (verde oscuro)"],
+  variante: "750 ml · acero inoxidable 316 · doble pared al vacío",
+  dimensiones: "7 cm de diámetro × 24,5 cm de alto — cabe en el bolsillo lateral de la mayoría de morrales.",
+  colores: ["Noche (negro)", "Pulpa clara (blanco)", "Flor (rosa)", "Agua (azul)"],
   bullets: [
-    "Tapa con recordatorio de toma: se ilumina cuando llevas mucho tiempo sin tomar agua.",
-    "Registra cuánto tomas en el día y lo muestra en el aro de la tapa.",
-    "Doble pared: mantiene fría el agua o el jugo de lulo — TODO (tiempo por confirmar).",
-    "Se carga por USB-C — autonomía de batería: TODO (por confirmar).",
+    "Recordatorio de toma: vibra y se ilumina cuando llevas mucho tiempo sin tomar agua. El intervalo lo defines tú desde la app, no es un tiempo fijo de fábrica.",
+    "Pantalla de temperatura: un toque y el aro de la tapa muestra la temperatura exacta del agua, en grados centígrados o Fahrenheit.",
+    "Esterilización UV-C: un LED en la tapa mantiene limpio el interior de la botella, sin químicos ni pastillas. El ciclo se programa por horario y se ajusta en duración desde la app, a diferencia de otras botellas UV con ciclo fijo de 180 segundos.",
+    "Doble pared al vacío: la misma construcción de un termo. Mantiene fría el agua o el jugo de lulo, y caliente lo que va caliente.",
+    "App por Bluetooth: consumo del día, recordatorios y desinfección programada, desde el celular.",
+    "Acero 316 y carga USB-C: acero de grado alimenticio, manija de silicona, pintura resistente a rayones.",
   ],
 };
+
+const precioFormato = new Intl.NumberFormat("es-CO", {
+  style: "currency",
+  currency: "COP",
+  maximumFractionDigits: 0,
+}).format(PRECIO);
 ---
 
 <section id="tienda" class="tienda">
@@ -33,7 +44,7 @@ const SKU = {
         <Photo label="Botella inteligente de pie, tapa con aro de luz, fondo crema" ratio="1 / 1" tone="flat" src="/images/botella-referencia.jpg" />
         <div class="tienda-photos-row">
           <Photo label="Detalle de la tapa" ratio="1 / 1" tone="flat" radius="var(--radius-md)" />
-          <Photo label="En la mano" ratio="1 / 1" radius="var(--radius-md)" />
+          <Photo label="En la mano" ratio="1 / 1" radius="var(--radius-md)" src="/images/botella-01-app-en-mano.jpg" />
           <Photo label="Con jugo de lulo" ratio="1 / 1" tone="pulpa" radius="var(--radius-md)" />
         </div>
       </div>
@@ -41,10 +52,11 @@ const SKU = {
       <div class="tienda-info">
         <div class="tienda-badges">
           <Badge tone="pulpa">Único SKU disponible</Badge>
-          <Badge tone="neutral">Envío: TODO</Badge>
+          <Badge tone="neutral">Entrega: 3 a 4 semanas</Badge>
         </div>
         <h3 class="tienda-nombre">{SKU.nombre}</h3>
         <span class="tienda-variante">{SKU.variante}</span>
+        <p class="tienda-dimensiones">{SKU.dimensiones}</p>
         <p class="tienda-desc">
           La botella es el objeto más honesto que podíamos hacer primero: no promete nada por dentro de ti, solo
           te recuerda tomar agua. Restaurar no es un evento; es acordarse todos los días. Esto es un recordatorio
@@ -53,11 +65,16 @@ const SKU = {
         <ul class="tienda-bullets">
           {SKU.bullets.map((b) => <li>{b}</li>)}
         </ul>
+        <p class="tienda-uv-nota">
+          El UV-C mantiene limpia la botella por dentro y reduce bacterias que causan olor — según el fabricante,
+          hasta 99,99% en pruebas de laboratorio. No purifica agua no potable ni reemplaza una fuente de agua
+          segura.
+        </p>
 
         <Card elevation="sm" class="tienda-card">
           <div class="tienda-precio-row">
-            <span class="tienda-precio">Precio: TODO</span>
-            <span class="tienda-precio-nota">IVA y envío: TODO — pendientes de pasarela de pago y transportadora</span>
+            <span class="tienda-precio">{precioFormato}</span>
+            <span class="tienda-precio-nota">Precio final al consumidor · envío aparte, ver abajo</span>
           </div>
           <Select label="Color" id="tienda-color" options={SKU.colores} />
           <div class="tienda-compra">
@@ -68,10 +85,24 @@ const SKU = {
             </div>
             <Button size="lg" class="tienda-agregar-btn">Agregar a la bolsa</Button>
           </div>
+          <div class="tienda-entrega">
+            <Icon name="truck" size={16} color="var(--text-muted)" />
+            Trabajamos por encargo, con importación directa de fábrica. No manejamos inventario en bodega. La
+            entrega toma de 3 a 4 semanas desde la confirmación del pedido.
+          </div>
           <div class="tienda-envio">
             <Icon name="truck" size={16} color="var(--text-muted)" />
             Tiempo y cobertura de envío: TODO — pendiente de transportadora
           </div>
+        </Card>
+
+        <Card tone="tint" elevation="none" class="tienda-respaldo">
+          <span class="eyebrow">Respaldo</span>
+          <h4>No es un genérico sin origen</h4>
+          <p>
+            Se fabrica en una planta certificada ISO 9001, con certificaciones FDA, CE, FCC, ROHS, SGS y BRC.
+            Libre de BPA. Sabemos qué fábrica la hace y bajo qué normas responde.
+          </p>
         </Card>
 
         <Card tone="pulpa" class="tienda-proximo">
@@ -133,6 +164,12 @@ const SKU = {
     font-size: var(--fs-body-sm);
     color: var(--text-muted);
   }
+  .tienda-dimensiones {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    margin: 0;
+  }
   .tienda-desc {
     font-size: var(--fs-body);
     line-height: var(--lh-body);
@@ -151,6 +188,13 @@ const SKU = {
     color: var(--text-body);
     line-height: var(--lh-body);
   }
+  .tienda-uv-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
   .tienda-card {
     gap: var(--space-4) !important;
   }
@@ -162,8 +206,6 @@ const SKU = {
   .tienda-precio {
     font-family: var(--font-display);
     font-size: var(--fs-title);
-    /* --signal-warn (#C98A1E) da 2.87:1 sobre cream-50, no alcanza el
-       3:1 de texto grande. --text-link-hover (naranja-700) da 7:1. */
     color: var(--text-link-hover);
   }
   .tienda-precio-nota {
@@ -192,20 +234,28 @@ const SKU = {
     flex: 1;
     width: 100%;
   }
+  .tienda-entrega,
   .tienda-envio {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-2);
     color: var(--text-muted);
     font-family: var(--font-body);
     font-size: var(--fs-caption);
+    line-height: var(--lh-body);
   }
+  .tienda-entrega :global(span[aria-hidden]),
+  .tienda-envio :global(span[aria-hidden]) {
+    margin-top: 2px;
+  }
+  .tienda-respaldo h4,
   .tienda-proximo h4 {
     font-family: var(--font-display);
     font-size: var(--fs-body);
     margin: 0;
     color: var(--text-strong);
   }
+  .tienda-respaldo p,
   .tienda-proximo p {
     font-size: var(--fs-body-sm);
     line-height: var(--lh-body);
@@ -256,6 +306,7 @@ const SKU = {
       nombre: "Botella inteligente Comounlulo",
       color: colorSelect?.value ?? "",
       cantidad,
+      precio: 179000,
     });
   });
 </script>

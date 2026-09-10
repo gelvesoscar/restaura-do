@@ -111,14 +111,25 @@ una a medida que lleguen.
 
 ## Pendientes antes de salir a producción
 
-Estos quedan visibles como `TODO` en el sitio hasta que el cliente los
-entregue — no se han inventado:
+Precio, material, capacidad, dimensiones, colores, certificaciones y el
+mensaje de entrega ya están confirmados con proveedor (brief del 10 de
+septiembre de 2026) y reflejados en `Tienda.astro`. Lo que sigue quedando
+visible como `TODO` en el sitio, porque no se ha inventado:
 
-- **Ficha real del SKU**: precio, material exacto, tiempo de autonomía de
-  batería, tiempo que mantiene fría el agua.
-- **Envío**: transportadora y tiempos/cobertura.
+- **Horas de retención de frío/calor** de la doble pared al vacío — la
+  fábrica confirma la construcción pero no publica horas todavía.
+- **Autonomía de batería** y **peso de la botella** — sin dato de fábrica.
+- **Envío nacional**: transportadora y tiempos/cobertura (la entrega de
+  "3 a 4 semanas" es el plazo de fabricación/importación, no de envío local).
+- **Manejo de IVA**: por ahora $179.000 se presenta como precio final al
+  consumidor.
 - **Pasarela de pago**: hoy el botón "Confirmar pedido" llama a
   `src/lib/checkout.ts`, que solo simula el pedido (no está conectado a
   ningún proveedor real).
-- **Fotografía real** del producto y de marca (hoy hay 3 fotos de prueba y el
-  resto son placeholders con el texto de la toma esperada).
+- **Fotografía real**: faltan `botella-05-tapa-uv-despiece.jpg` ("Detalle de
+  la tapa") y `botella-08-exterior.jpg` ("Con jugo de lulo") del set de 8
+  fotos de fábrica mencionado en el brief — no están en ninguna carpeta
+  conectada todavía, así que esos dos espacios siguen en placeholder. "En la
+  mano" ya usa `botella-01-app-en-mano.jpg`. A 30 días el objetivo es
+  reemplazar todas las fotos de fábrica por fotos propias con la botella
+  física.

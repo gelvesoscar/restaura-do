@@ -43,8 +43,9 @@ import Checkbox from "./Checkbox.astro";
     />
     <div class="bolsa-total">
       <span>Total</span>
-      <span class="bolsa-total-todo">TODO — precio pendiente</span>
+      <span id="bolsa-total-valor" class="bolsa-total-valor"></span>
     </div>
+    <p class="bolsa-total-nota">No incluye envío — costo por confirmar con la transportadora.</p>
   </form>
 
   <div class="bolsa-footer">
@@ -146,29 +147,34 @@ import Checkbox from "./Checkbox.astro";
     flex-direction: column;
     gap: var(--space-4);
   }
-  .bolsa-item {
+  /* :global aqui porque estas filas se crean con document.createElement en
+     el <script> de abajo, no en el marcado que Astro procesa en build — un
+     elemento creado en runtime nunca recibe el atributo de scope de Astro,
+     asi que el selector normal (con scope) no lo alcanza y quedaba sin
+     estilo (bloque, sin gap, nombre y color pegados en una sola linea). */
+  :global(.bolsa-item) {
     display: flex;
     gap: var(--space-4);
     align-items: center;
   }
-  .bolsa-item-copy {
+  :global(.bolsa-item-copy) {
     display: flex;
     flex-direction: column;
     gap: 2px;
     flex: 1;
   }
-  .bolsa-item-name {
+  :global(.bolsa-item-name) {
     font-family: var(--font-body);
     font-size: var(--fs-body-sm);
     font-weight: var(--fw-medium);
     color: var(--text-strong);
   }
-  .bolsa-item-meta {
+  :global(.bolsa-item-meta) {
     font-family: var(--font-body);
     font-size: var(--fs-caption);
     color: var(--text-muted);
   }
-  .bolsa-item-price {
+  :global(.bolsa-item-price) {
     font-family: var(--font-body);
     font-size: var(--fs-body-sm);
     color: var(--text-muted);
@@ -193,10 +199,16 @@ import Checkbox from "./Checkbox.astro";
     font-weight: var(--fw-medium);
     color: var(--text-strong);
   }
-  .bolsa-total-todo {
+  .bolsa-total-valor {
     /* --signal-warn da 2.87:1 sobre cream-50, no alcanza 4.5:1.
        --text-link-hover (naranja-700) da 7:1. */
     color: var(--text-link-hover);
+  }
+  .bolsa-total-nota {
+    margin: calc(var(--space-2) * -1) 0 0;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
   }
   .bolsa-footer {
     display: flex;
@@ -253,6 +265,13 @@ import Checkbox from "./Checkbox.astro";
   const entendidoBtn = document.getElementById("bolsa-entendido") as HTMLButtonElement;
   const closeBtn = document.getElementById("bolsa-close") as HTMLButtonElement;
   const bagCount = document.getElementById("bag-count");
+  const totalEl = document.getElementById("bolsa-total-valor");
+
+  const formatoCOP = new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  });
 
   function render() {
     const items = getItems();
@@ -277,10 +296,15 @@ import Checkbox from "./Checkbox.astro";
       copy.append(name, meta);
       const price = document.createElement("span");
       price.className = "bolsa-item-price";
-      price.textContent = "TODO";
+      price.textContent = formatoCOP.format(item.precio * item.cantidad);
       row.append(copy, price);
       itemsEl.appendChild(row);
     });
+
+    if (totalEl) {
+      const total = items.reduce((sum, i) => sum + i.precio * i.cantidad, 0);
+      totalEl.textContent = formatoCOP.format(total);
+    }
 
     formEl.hidden = !hasItems;
     seguirBtn.hidden = !hasItems;

@@ -2,6 +2,7 @@ export interface CartItem {
   nombre: string;
   color: string;
   cantidad: number;
+  precio: number;
 }
 
 let items: CartItem[] = [];
