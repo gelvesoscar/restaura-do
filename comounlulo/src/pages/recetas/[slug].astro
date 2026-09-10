@@ -1,0 +1,334 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import Badge from "../../components/Badge.astro";
+
+export async function getStaticPaths() {
+  const recetas = await getCollection("recetas");
+  return recetas.map((receta) => ({
+    params: { slug: receta.id },
+    props: { receta },
+  }));
+}
+
+const { receta } = Astro.props;
+const r = receta.data;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  name: r.title,
+  description: r.seoDescripcion,
+  image: `https://comounlulo.co${r.imagen}`,
+  recipeCategory: r.categoria,
+  recipeYield: r.porciones,
+  recipeIngredient: r.ingredientes,
+  recipeInstructions: r.pasos.map((paso) => ({
+    "@type": "HowToStep",
+    text: paso,
+  })),
+  keywords: r.etiquetas.join(", "),
+};
+---
+
+<Base
+  title={`${r.seoTitle} — Comounlulo.co`}
+  description={r.seoDescripcion}
+  noindex={true}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  <article class="receta-articulo">
+    <div class="receta-articulo-inner">
+      <a href="/preview/#recetas" class="receta-back">
+        <Icon name="arrow-left" size={14} /> Todas las recetas
+      </a>
+
+      <div class="receta-foto">
+        <img src={r.imagen} alt={r.alt} loading="eager" />
+        {r.destacado && (
+          <span class="receta-imperdible">
+            <Icon name="star" size={13} color="var(--text-on-brand)" /> Imperdible
+          </span>
+        )}
+      </div>
+
+      <div class="receta-tags">
+        <Badge tone="neutral">{r.categoria}</Badge>
+        <Badge tone="neutral">{r.tiempo}</Badge>
+        <Badge tone="neutral">{r.porciones}</Badge>
+        <Badge tone="neutral">{r.dificultad}</Badge>
+      </div>
+
+      <h1>{r.title}</h1>
+      <p class="receta-historia">{r.historia}</p>
+
+      <div class="receta-cols">
+        <div class="receta-col-ingredientes">
+          <h2>Ingredientes</h2>
+          <ul>
+            {r.ingredientes.map((ing) => <li>{ing}</li>)}
+          </ul>
+        </div>
+        <div class="receta-col-preparacion">
+          <h2>Preparación</h2>
+          <ol>
+            {r.pasos.map((paso) => <li>{paso}</li>)}
+          </ol>
+
+          <h2>Presentación</h2>
+          <p>{r.presentacion}</p>
+        </div>
+      </div>
+
+      <div class="receta-secreto">
+        <span class="receta-secreto-label">
+          <Icon name="sparkles" size={16} color="var(--orange-700)" /> Secreto del lulo
+        </span>
+        <p>{r.secreto}</p>
+      </div>
+
+      {r.notaSeguridad && (
+        <p class="receta-seguridad">
+          <Icon name="shield-alert" size={14} color="var(--text-muted)" /> {r.notaSeguridad}
+        </p>
+      )}
+
+      <div class="receta-meta">
+        <p class="receta-clasificacion">
+          <strong>Clasificación editorial:</strong> {r.clasificacion}
+        </p>
+        <div class="receta-etiquetas">
+          {r.etiquetas.map((et) => <span class="receta-etiqueta">{et}</span>)}
+        </div>
+        {r.fuentes.length > 0 && (
+          <div class="receta-fuentes">
+            <span class="receta-fuentes-label">Fuentes:</span>
+            <ul>
+              {r.fuentes.map((f) => (
+                <li>
+                  <a href={f.url} target="_blank" rel="noopener noreferrer">
+                    {f.titulo}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      <p class="receta-nota-general">
+        El Método Como un Lulo prioriza macerar o triturar suavemente la fruta
+        antes que licuarla a fondo. La distinción editorial de cada receta
+        (tradicional, adaptación o creación propia) se mantiene visible arriba
+        para no atribuir a la tradición lo que es una adaptación de Como un
+        Lulo.
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .receta-articulo {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .receta-articulo-inner {
+    max-width: 68ch;
+    margin: 0 auto;
+  }
+  .receta-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-link);
+    text-decoration: none;
+    margin-bottom: var(--space-6);
+  }
+  .receta-foto {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--border-hairline);
+    aspect-ratio: 4 / 3;
+    margin-bottom: var(--space-5);
+  }
+  .receta-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .receta-imperdible {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--brand);
+    color: var(--text-on-brand);
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+  }
+  .receta-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+  .receta-articulo h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-display-m);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0 0 var(--space-4);
+  }
+  .receta-historia {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0 0 var(--space-8);
+  }
+  .receta-cols {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+  .receta-articulo h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0 0 var(--space-3);
+  }
+  .receta-col-preparacion h2:not(:first-child) {
+    margin-top: var(--space-6);
+  }
+  .receta-col-ingredientes ul {
+    margin: 0;
+    padding-left: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .receta-col-preparacion ol {
+    margin: 0;
+    padding-left: 1.2em;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .receta-col-preparacion p {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .receta-secreto {
+    background: var(--brand-tint);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+  .receta-secreto-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    color: var(--orange-700);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-eyebrow);
+    margin-bottom: var(--space-2);
+  }
+  .receta-secreto p {
+    margin: 0;
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .receta-seguridad {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    background: var(--cream-200);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    margin: 0 0 var(--space-6);
+  }
+  .receta-meta {
+    border-top: 1px solid var(--border-hairline);
+    padding-top: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  .receta-clasificacion {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    margin: 0 0 var(--space-4);
+  }
+  .receta-etiquetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+  .receta-etiqueta {
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    color: var(--text-muted);
+    background: var(--cream-200);
+    border-radius: var(--radius-pill);
+    padding: 4px 10px;
+  }
+  .receta-fuentes-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    color: var(--text-muted);
+  }
+  .receta-fuentes ul {
+    margin: var(--space-2) 0 0;
+    padding-left: 1.1em;
+    font-size: var(--fs-caption);
+  }
+  .receta-fuentes a {
+    color: var(--text-link);
+  }
+  .receta-nota-general {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+  @media (max-width: 700px) {
+    .receta-articulo h1 {
+      font-size: var(--fs-title);
+    }
+    .receta-cols {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+</style>

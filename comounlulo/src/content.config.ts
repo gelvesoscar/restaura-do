@@ -24,11 +24,39 @@ const recetas = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/recetas" }),
   schema: z.object({
     title: z.string(),
-    minutes: z.string(),
+    categoria: z.enum([
+      "Tradición",
+      "Bebidas",
+      "Postres",
+      "Cocina salada",
+      "Conservas y salsas",
+      "Cócteles",
+    ]),
+    tipo: z.string(),
+    destacado: z.boolean().default(false),
+    tiempo: z.string(),
     porciones: z.string(),
-    foto: z.string(),
+    dificultad: z.string(),
+    historia: z.string(),
     ingredientes: z.array(z.string()),
-    nota: z.string(),
+    pasos: z.array(z.string()),
+    presentacion: z.string(),
+    secreto: z.string(),
+    clasificacion: z.string(),
+    notaSeguridad: z.string().optional(),
+    etiquetas: z.array(z.string()),
+    seoTitle: z.string(),
+    seoDescripcion: z.string(),
+    imagen: z.string(),
+    alt: z.string(),
+    fuentes: z
+      .array(
+        z.object({
+          titulo: z.string(),
+          url: z.string(),
+        }),
+      )
+      .default([]),
     order: z.number().default(0),
   }),
 });
