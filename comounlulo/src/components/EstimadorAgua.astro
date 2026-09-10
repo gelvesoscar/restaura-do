@@ -2,7 +2,16 @@
 import Card from "./Card.astro";
 import Icon from "./Icon.astro";
 import Input from "./Input.astro";
+import Select from "./Select.astro";
 import Button from "./Button.astro";
+
+const ACTIVIDAD_OPCIONES = [
+  "Sedentario",
+  "Moderado (3-4 veces/semana)",
+  "Activo (entrenamiento diario)",
+];
+
+const CLIMA_OPCIONES = ["Templado", "Caluroso"];
 ---
 
 <Card elevation="sm" class="estimador">
@@ -13,7 +22,8 @@ import Button from "./Button.astro";
     <div class="estimador-head-copy">
       <h3>¿Cuánta agua tomar al día?</h3>
       <p class="estimador-lead">
-        Un estimado general a partir de tu peso — no un consejo médico.
+        Un estimado a partir de tu peso, tu actividad y el clima — no un
+        consejo médico.
       </p>
     </div>
   </div>
@@ -30,18 +40,68 @@ import Button from "./Button.astro";
       placeholder="Ej. 65"
       hint="En kilogramos, entre 30 y 200."
     />
+    <Select
+      id="estimador-actividad"
+      label="Tu actividad física"
+      options={ACTIVIDAD_OPCIONES}
+      hint="Cuánto te mueves en una semana típica."
+    />
+    <Select
+      id="estimador-clima"
+      label="Dónde vives o entrenas"
+      options={CLIMA_OPCIONES}
+      hint="Calor y sudoración suben lo que necesitas."
+    />
     <Button id="estimador-calcular" size="md">Calcular</Button>
   </div>
 
   <div id="estimador-resultado" class="estimador-resultado" aria-live="polite" hidden>
-    <span class="estimador-cifra"></span>
-    <span class="estimador-detalle">al día, como punto de partida</span>
+    <div class="estimador-total">
+      <span class="estimador-cifra"></span>
+      <span class="estimador-detalle">al día, como punto de partida</span>
+    </div>
+
+    <ul class="estimador-desglose">
+      <li data-row="base">Base por tu peso: <span data-val></span></li>
+      <li data-row="actividad" hidden>Por actividad física: <span data-val></span></li>
+      <li data-row="clima" hidden>Por clima: <span data-val></span></li>
+    </ul>
+
+    <div class="estimador-tips">
+      <h4>Cómo sostenerlo, no solo cuánto tomar</h4>
+      <ul>
+        <li>
+          <span class="estimador-tip-icon"><Icon name="droplet" size={16} color="var(--green-700)" /></span>
+          <span>
+            Ten a la mano una botella de unos <strong data-bottle></strong> ml
+            y complétala unas <strong data-refills></strong> veces al día — es
+            más fácil de sostener que perseguir un número de litros.
+            <a href="/tips/botella-a-la-vista">Leer más →</a>
+          </span>
+        </li>
+        <li>
+          <span class="estimador-tip-icon"><Icon name="bell" size={16} color="var(--green-700)" /></span>
+          <span>
+            Pon un recordatorio cada <strong data-interval></strong> mientras
+            estás despierto. La sed avisa tarde; un recordatorio no.
+          </span>
+        </li>
+        <li>
+          <span class="estimador-tip-icon"><Icon name="sunrise" size={16} color="var(--green-700)" /></span>
+          <span>
+            Empieza el día con un vaso antes del café — adelanta parte de la
+            meta antes de que el día se complique.
+            <a href="/tips/agua-al-despertar">Leer más →</a>
+          </span>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <p class="estimador-nota">
-    Estimado general (peso × 35 ml por kilo). Varía según actividad física,
-    clima y condiciones de salud particulares — consulta a un profesional si
-    tienes dudas.
+    Estimado general a partir de tu peso (35 ml por kilo), tu nivel de
+    actividad y el clima donde vives o entrenas. Varía según condiciones de
+    salud particulares — consulta a un profesional si tienes dudas.
   </p>
 </Card>
 
@@ -83,21 +143,30 @@ import Button from "./Button.astro";
     margin: 0;
   }
   .estimador-form {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1.2fr auto;
     align-items: flex-end;
     gap: var(--space-3);
   }
   .estimador-form :global(.field) {
-    flex: 1;
+    min-width: 0;
   }
   .estimador-resultado {
     display: flex;
-    align-items: baseline;
-    gap: var(--space-2);
+    flex-direction: column;
+    gap: var(--space-4);
     padding: var(--space-4);
     background: var(--accent-tint);
     border: 1px solid var(--accent-soft);
     border-radius: var(--radius-md);
+  }
+  .estimador-resultado[hidden] {
+    display: none;
+  }
+  .estimador-total {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
   }
   .estimador-cifra {
     font-family: var(--font-display);
@@ -109,15 +178,73 @@ import Button from "./Button.astro";
     font-size: var(--fs-body-sm);
     color: var(--text-muted);
   }
+  .estimador-desglose {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-3) 0 0;
+    border-top: 1px solid var(--accent-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+  }
+  .estimador-desglose span[data-val] {
+    color: var(--text-body);
+    font-weight: var(--fw-medium);
+  }
+  .estimador-tips {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--accent-soft);
+  }
+  .estimador-tips h4 {
+    font-family: var(--font-display);
+    font-size: var(--fs-body);
+    color: var(--text-strong);
+    margin: 0 0 var(--space-3);
+    font-weight: var(--fw-regular);
+  }
+  .estimador-tips ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .estimador-tips li {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .estimador-tip-icon {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    border-radius: var(--radius-pill);
+    background: var(--surface-card);
+    display: grid;
+    place-items: center;
+    margin-top: 1px;
+  }
+  .estimador-tips a {
+    color: var(--text-link);
+    white-space: nowrap;
+  }
   .estimador-nota {
     font-family: var(--font-body);
     font-size: var(--fs-caption);
     color: var(--text-muted);
     margin: 0;
   }
-  @media (max-width: 480px) {
+  @media (max-width: 760px) {
     .estimador-form {
-      flex-direction: column;
+      grid-template-columns: 1fr;
       align-items: stretch;
     }
   }
@@ -125,9 +252,35 @@ import Button from "./Button.astro";
 
 <script>
   const input = document.getElementById("estimador-peso") as HTMLInputElement | null;
+  const actividadSel = document.getElementById("estimador-actividad") as HTMLSelectElement | null;
+  const climaSel = document.getElementById("estimador-clima") as HTMLSelectElement | null;
   const btn = document.getElementById("estimador-calcular");
   const resultado = document.getElementById("estimador-resultado");
   const cifra = resultado?.querySelector(".estimador-cifra");
+
+  // ml extra por índice de opción seleccionada, en el mismo orden que las
+  // listas de opciones definidas arriba en el frontmatter.
+  const ACTIVIDAD_ML = [0, 350, 700];
+  const CLIMA_ML = [0, 500];
+
+  function filaDesglose(row: string, ml: number, esBase = false) {
+    const li = resultado?.querySelector<HTMLElement>(`[data-row="${row}"]`);
+    if (!li) return;
+    if (!esBase && ml <= 0) {
+      li.hidden = true;
+      return;
+    }
+    li.hidden = false;
+    const val = li.querySelector("[data-val]");
+    if (val) val.textContent = esBase ? `${ml} ml` : `+ ${ml} ml`;
+  }
+
+  function formatoIntervalo(minutos: number) {
+    if (minutos < 60) return `${minutos} minutos`;
+    const horas = minutos / 60;
+    const texto = Number.isInteger(horas) ? `${horas}` : horas.toFixed(1).replace(".", ",");
+    return `${texto} ${horas === 1 ? "hora" : "horas"}`;
+  }
 
   function calcular() {
     const peso = input ? parseFloat(input.value) : NaN;
@@ -136,8 +289,38 @@ import Button from "./Button.astro";
       input?.focus();
       return;
     }
-    const litros = (peso * 35) / 1000;
+
+    const base = peso * 35;
+    const actividadMl = ACTIVIDAD_ML[actividadSel?.selectedIndex ?? 0] ?? 0;
+    const climaMl = CLIMA_ML[climaSel?.selectedIndex ?? 0] ?? 0;
+    const totalMl = base + actividadMl + climaMl;
+    const litros = totalMl / 1000;
+
     if (cifra) cifra.textContent = `${litros.toFixed(1)} L`;
+    filaDesglose("base", base, true);
+    filaDesglose("actividad", actividadMl);
+    filaDesglose("clima", climaMl);
+
+    // Botella sugerida: apunta a unos 3 rellenos a lo largo del día,
+    // redondeado a un tamaño de botella común (entre 400 y 1000 ml).
+    let botella = Math.round(totalMl / 3 / 50) * 50;
+    botella = Math.min(1000, Math.max(400, botella));
+    const rellenos = Math.max(1, Math.round(totalMl / botella));
+
+    // Recordatorio: reparte el total en vasos de 250 ml a lo largo de
+    // unas 15 horas despiertas, redondeado a bloques de 30 minutos.
+    const horasDespierto = 15 * 60;
+    const vasos = totalMl / 250;
+    let intervalo = Math.round(horasDespierto / vasos / 30) * 30;
+    intervalo = Math.min(180, Math.max(60, intervalo));
+
+    const bottleEl = resultado?.querySelector("[data-bottle]");
+    const refillsEl = resultado?.querySelector("[data-refills]");
+    const intervalEl = resultado?.querySelector("[data-interval]");
+    if (bottleEl) bottleEl.textContent = String(botella);
+    if (refillsEl) refillsEl.textContent = String(rellenos);
+    if (intervalEl) intervalEl.textContent = formatoIntervalo(intervalo);
+
     if (resultado) resultado.hidden = false;
   }
 

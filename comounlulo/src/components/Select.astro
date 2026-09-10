@@ -51,9 +51,13 @@ const uid = id ?? `sel-${Math.random().toString(36).slice(2, 7)}`;
   .field-select {
     all: unset;
     flex: 1;
+    min-width: 0;
     cursor: pointer;
     font: var(--type-body);
     color: var(--text-strong);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .field-hint {
     font-family: var(--font-body);
