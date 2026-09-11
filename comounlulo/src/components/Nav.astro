@@ -22,10 +22,6 @@ const links = SECCIONES.slice(1);
       }
     </nav>
     <div class="nav-actions">
-      <span class="bag-wrap">
-        <IconButton id="bag-button" icon="shopping-bag" label="Tu bolsa" />
-        <span id="bag-count" class="bag-count" hidden>0</span>
-      </span>
       <Button href="/preview/#tienda" size="sm" class="nav-cta">Ver la tienda</Button>
       <IconButton
         id="menu-button"
@@ -96,25 +92,6 @@ const links = SECCIONES.slice(1);
     display: flex;
     align-items: center;
     gap: var(--space-3);
-  }
-  .bag-wrap {
-    position: relative;
-    display: inline-flex;
-  }
-  .bag-count {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    min-width: 18px;
-    height: 18px;
-    border-radius: var(--radius-pill);
-    background: var(--brand);
-    color: #fff;
-    font-family: var(--font-body);
-    font-size: 10px;
-    display: grid;
-    place-items: center;
-    padding: 0 5px;
   }
   .menu-toggle {
     display: none;
@@ -191,12 +168,6 @@ const links = SECCIONES.slice(1);
   setActive();
   window.addEventListener("scroll", setActive, { passive: true });
   window.addEventListener("resize", setActive);
-
-  const bagButton = document.getElementById("bag-button");
-  bagButton?.addEventListener("click", () => {
-    const dialog = document.getElementById("bolsa-dialog") as HTMLDialogElement | null;
-    dialog?.showModal();
-  });
 
   // Menú hamburguesa (móvil)
   const menuButton = document.getElementById("menu-button") as HTMLButtonElement | null;

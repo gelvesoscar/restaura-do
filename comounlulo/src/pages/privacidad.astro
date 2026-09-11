@@ -1,0 +1,115 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<Base
+  title="Política de privacidad — Comounlulo.co"
+  description="Qué datos recoge Comounlulo.co, para qué los usa y cómo puedes pedir que los eliminemos."
+  noindex={true}
+>
+  <article class="legal">
+    <div class="legal-inner">
+      <a href="/preview/#tienda" class="legal-back">
+        <Icon name="arrow-left" size={14} /> Volver a la tienda
+      </a>
+
+      <h1>Política de privacidad</h1>
+      <p class="legal-fecha">Última actualización: septiembre de 2026.</p>
+
+      <p>
+        Este sitio todavía está en una etapa de prueba de mercado — no vendemos el producto todavía, solo
+        confirmamos si hay interés real antes de fabricar. Aun así, cualquier dato que nos dejes merece las
+        mismas reglas claras.
+      </p>
+
+      <h2>Quién trata tus datos</h2>
+      <p>
+        Comounlulo.co, con sede en Bogotá, Colombia. Puedes escribirnos en cualquier momento a{" "}
+        <a href="mailto:hola@comounlulo.co">hola@comounlulo.co</a> para cualquier pregunta sobre esta política.
+      </p>
+
+      <h2>Qué datos recogemos y para qué</h2>
+      <p>
+        Cuando te anotas en la lista de espera de la tienda, guardamos tu correo y el color de tu interés. Los
+        usamos únicamente para avisarte sobre el estado de la prueba de mercado y, si marcaste la casilla de
+        aceptación, para escribirte sobre el lanzamiento. No los usamos para nada más, y no los vendemos ni
+        compartimos con terceros para fines comerciales ajenos a Comounlulo.co.
+      </p>
+
+      <h2>Cuánto tiempo los guardamos</h2>
+      <p>
+        Mientras dure esta prueba de mercado, o hasta que nos pidas eliminarlos — lo que pase primero.
+      </p>
+
+      <h2>Herramientas de terceros</h2>
+      <p>
+        Hoy la lista de espera se registra directamente por nosotros. Si en el futuro conectamos una
+        herramienta externa de correo (por ejemplo, para enviar el boletín semanal), tus datos también
+        quedarán en esa plataforma, bajo su propia política de privacidad — actualizaremos este texto cuando
+        eso ocurra. Por ahora, el sitio tampoco usa cookies de seguimiento ni analítica de terceros.
+      </p>
+
+      <h2>Tus derechos</h2>
+      <p>
+        De acuerdo con la Ley 1581 de 2012 (protección de datos personales), puedes pedirnos en cualquier
+        momento acceder a tus datos, corregirlos o eliminarlos por completo. Basta un correo a{" "}
+        <a href="mailto:hola@comounlulo.co">hola@comounlulo.co</a> — lo resolvemos directamente, sin
+        formularios ni trámites adicionales.
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal {
+    scroll-margin-top: 72px;
+  }
+  .legal-inner {
+    max-width: 68ch;
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .legal-back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-link);
+    border-bottom: none;
+    align-self: flex-start;
+  }
+  .legal h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-display-m);
+    color: var(--text-strong);
+    margin: 0;
+    line-height: var(--lh-heading);
+  }
+  .legal-fecha {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    margin: calc(var(--space-4) * -1) 0 0;
+  }
+  .legal h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-title);
+    color: var(--text-strong);
+    margin: var(--space-2) 0 0;
+  }
+  .legal p {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .legal a {
+    color: var(--text-link);
+  }
+</style>

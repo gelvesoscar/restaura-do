@@ -4,7 +4,8 @@ import Photo from "../components/Photo.astro";
 import Badge from "../components/Badge.astro";
 import Card from "../components/Card.astro";
 import Select from "../components/Select.astro";
-import IconButton from "../components/IconButton.astro";
+import Input from "../components/Input.astro";
+import Checkbox from "../components/Checkbox.astro";
 import Button from "../components/Button.astro";
 import Icon from "../components/Icon.astro";
 
@@ -36,8 +37,8 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
   <div class="tienda-inner">
     <SectionHead
       eyebrow="Tienda"
-      title="Empezamos con una sola botella, la que ya podemos entregar."
-      lead="Preferimos vender lo que tenemos confirmado con proveedor antes que mostrar un catálogo que no podemos cumplir. Las demás gamas entran cuando estén listas."
+      title="Estamos validando si esta botella vale la pena fabricar."
+      lead="Antes de producir, queremos confirmar que de verdad hay interés. Anótate sin costo — si seguimos adelante, tú te enteras primero. Las demás gamas entran cuando estén listas."
     />
     <div class="tienda-grid">
       <div class="tienda-photos">
@@ -51,8 +52,8 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
 
       <div class="tienda-info">
         <div class="tienda-badges">
-          <Badge tone="pulpa">Único SKU disponible</Badge>
-          <Badge tone="neutral">Entrega: 3 a 4 semanas</Badge>
+          <Badge tone="pulpa">Único SKU en evaluación</Badge>
+          <Badge tone="neutral">Aún sin producir · reserva sin costo</Badge>
         </div>
         <h3 class="tienda-nombre">{SKU.nombre}</h3>
         <span class="tienda-variante">{SKU.variante}</span>
@@ -74,25 +75,42 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
         <Card elevation="sm" class="tienda-card">
           <div class="tienda-precio-row">
             <span class="tienda-precio">{precioFormato}</span>
-            <span class="tienda-precio-nota">Precio final al consumidor · envío aparte, ver abajo</span>
+            <span class="tienda-precio-nota">Precio estimado con el que estamos validando interés · impuestos y envío aún sin confirmar</span>
           </div>
-          <Select label="Color" id="tienda-color" options={SKU.colores} />
-          <div class="tienda-compra">
-            <div class="tienda-stepper">
-              <IconButton icon="minus" label="Quitar uno" size={32} id="tienda-menos" />
-              <span id="tienda-cant" class="tienda-cant">1</span>
-              <IconButton icon="plus" label="Agregar uno" size={32} id="tienda-mas" />
-            </div>
-            <Button size="lg" class="tienda-agregar-btn">Agregar a la bolsa</Button>
+
+          <form id="reserva-form" class="reserva-form">
+            <Select label="Color de tu interés" id="reserva-color" name="color" options={SKU.colores} />
+            <Input
+              label="Correo"
+              type="email"
+              name="correo"
+              id="reserva-correo"
+              placeholder="tu@correo.co"
+              hint="Ahí te avisamos apenas confirmemos producción con el proveedor."
+              required
+            />
+            <Checkbox
+              label="Acepto que me escriban sobre el lanzamiento y el estado de mi reserva"
+              name="consentimiento"
+            />
+            <p id="reserva-error" class="reserva-error" hidden>
+              Marca la casilla de arriba para poder anotarte.
+            </p>
+            <p class="reserva-legal">
+              Anotarte no tiene costo ni es un compromiso de compra. Ver <a href="/privacidad">política de privacidad</a>.
+            </p>
+            <Button size="lg" class="reserva-btn">Anotarme en la lista de espera</Button>
+          </form>
+
+          <div id="reserva-exito" class="reserva-exito" hidden>
+            <Icon name="check" size={18} color="var(--text-link-hover)" />
+            <p>Listo — quedaste anotado. Te escribimos apenas confirmemos con el proveedor.</p>
           </div>
+
           <div class="tienda-entrega">
             <Icon name="truck" size={16} color="var(--text-muted)" />
-            Trabajamos por encargo, con importación directa de fábrica. No manejamos inventario en bodega. La
-            entrega toma de 3 a 4 semanas desde la confirmación del pedido.
-          </div>
-          <div class="tienda-envio">
-            <Icon name="truck" size={16} color="var(--text-muted)" />
-            Tiempo y cobertura de envío: TODO — pendiente de transportadora
+            Es una prueba de mercado, no una preventa: no hay pago ni fecha de entrega todavía. Quien se anota
+            primero tiene prioridad si decidimos confirmar producción.
           </div>
         </Card>
 
@@ -151,6 +169,7 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
   .tienda-badges {
     display: flex;
     gap: var(--space-2);
+    flex-wrap: wrap;
   }
   .tienda-nombre {
     font-family: var(--font-display);
@@ -213,29 +232,54 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
     font-size: var(--fs-caption);
     color: var(--text-muted);
   }
-  .tienda-compra {
+  /* Sin :not([hidden]) aqui, esta regla le gana en especificidad a la
+     regla nativa `[hidden]{display:none}` del navegador y el formulario
+     nunca se oculta de verdad tras `form.hidden = true` (mismo bug ya
+     documentado en .bolsa-dialog[open] mas abajo en el historial del
+     proyecto). */
+  .reserva-form:not([hidden]) {
     display: flex;
-    align-items: center;
-    gap: var(--space-4);
-  }
-  .tienda-stepper {
-    display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: var(--space-3);
-    flex: none;
   }
-  .tienda-cant {
+  .reserva-error {
+    margin: 0;
     font-family: var(--font-body);
-    font-size: var(--fs-body);
-    min-width: 16px;
-    text-align: center;
+    font-size: var(--fs-caption);
+    color: var(--text-link-hover);
   }
-  .tienda-agregar-btn {
-    flex: 1;
+  .reserva-legal {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+  }
+  .reserva-legal a {
+    color: var(--text-link);
+  }
+  .reserva-btn {
     width: 100%;
   }
-  .tienda-entrega,
-  .tienda-envio {
+  /* Mismo motivo que .reserva-form: sin :not([hidden]) el bloque de
+     exito quedaria visible siempre, incluso antes de enviar el
+     formulario. */
+  .reserva-exito:not([hidden]) {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    background: var(--brand-tint);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+  }
+  .reserva-exito p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-strong);
+    line-height: var(--lh-body);
+  }
+  .tienda-entrega {
     display: flex;
     align-items: flex-start;
     gap: var(--space-2);
@@ -244,8 +288,7 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
     font-size: var(--fs-caption);
     line-height: var(--lh-body);
   }
-  .tienda-entrega :global(span[aria-hidden]),
-  .tienda-envio :global(span[aria-hidden]) {
+  .tienda-entrega :global(span[aria-hidden]) {
     margin-top: 2px;
   }
   .tienda-respaldo h4,
@@ -268,45 +311,38 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
       gap: var(--space-10);
     }
   }
-  @media (max-width: 600px) {
-    .tienda-compra {
-      flex-direction: column;
-      align-items: stretch;
-    }
-  }
 </style>
 
 <script>
-  import { addItem } from "../lib/cart";
+  import { anotarseEnListaDeEspera } from "../lib/waitlist";
 
-  const menosBtn = document.getElementById("tienda-menos");
-  const masBtn = document.getElementById("tienda-mas");
-  const cantEl = document.getElementById("tienda-cant");
-  const agregarBtn = document.querySelector(".tienda-agregar-btn");
-  const colorSelect = document.getElementById("tienda-color") as HTMLSelectElement | null;
+  const form = document.getElementById("reserva-form") as HTMLFormElement | null;
+  const exito = document.getElementById("reserva-exito");
+  const error = document.getElementById("reserva-error");
 
-  let cantidad = 1;
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  function render() {
-    if (cantEl) cantEl.textContent = String(cantidad);
-  }
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
 
-  menosBtn?.addEventListener("click", () => {
-    cantidad = Math.max(1, cantidad - 1);
-    render();
-  });
+    const data = new FormData(form);
+    const correo = String(data.get("correo") ?? "");
+    const color = String(data.get("color") ?? "");
+    const consentimiento = data.get("consentimiento");
 
-  masBtn?.addEventListener("click", () => {
-    cantidad += 1;
-    render();
-  });
+    if (!consentimiento) {
+      if (error) error.hidden = false;
+      const checkbox = form.querySelector<HTMLInputElement>('input[name="consentimiento"]');
+      checkbox?.focus();
+      return;
+    }
 
-  agregarBtn?.addEventListener("click", () => {
-    addItem({
-      nombre: "Botella inteligente Comounlulo",
-      color: colorSelect?.value ?? "",
-      cantidad,
-      precio: 179000,
-    });
+    if (error) error.hidden = true;
+    await anotarseEnListaDeEspera({ correo, color });
+    form.hidden = true;
+    if (exito) exito.hidden = false;
   });
 </script>
