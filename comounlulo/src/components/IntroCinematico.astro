@@ -67,6 +67,18 @@
     opacity: 0;
     transition: opacity 0.55s ease;
   }
+  /*
+    Bug real (encontrado en producción): [hidden] por sí solo no alcanza a
+    ocultar este overlay. La regla de arriba (.intro-overlay) tiene la misma
+    especificidad que el [hidden] que pone el navegador por defecto, y una
+    regla de autor le gana a la del navegador aunque el atributo esté
+    presente. Sin esto, el overlay se queda display:flex para siempre
+    (invisible por opacity:0, pero tapando toda la pantalla) y bloquea
+    cualquier clic del sitio, incluida la navegación.
+  */
+  .intro-overlay[hidden] {
+    display: none;
+  }
   .intro-overlay.intro-playing {
     opacity: 1;
   }
