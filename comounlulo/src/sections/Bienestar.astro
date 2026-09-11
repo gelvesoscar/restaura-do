@@ -1,0 +1,209 @@
+---
+import { getCollection } from "astro:content";
+import SectionHead from "../components/SectionHead.astro";
+import Card from "../components/Card.astro";
+import Badge from "../components/Badge.astro";
+import Icon from "../components/Icon.astro";
+import Tag from "../components/Tag.astro";
+
+const temasRaw = await getCollection("bienestar");
+const temas = temasRaw.sort((a, b) => a.data.order - b.data.order);
+
+function badgeTipo(tipo: string) {
+  if (tipo.startsWith("Ciencia") || tipo === "Biblioteca viva") return "Ciencia";
+  if (tipo.startsWith("Nutrición")) return "Nutrición";
+  if (tipo.startsWith("Hábitos")) return "Hábitos";
+  if (tipo.startsWith("Mitos")) return "Mitos";
+  if (tipo.startsWith("Origen") || tipo.startsWith("Circularidad")) return "Origen";
+  return tipo;
+}
+
+const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Origen"];
+---
+
+<section id="bienestar" class="bienestar">
+  <div class="bienestar-inner">
+    <SectionHead
+      eyebrow="Bienestar"
+      title="El lulo también se entiende."
+      lead="Bienestar traduce ciencia nutricional a lenguaje cotidiano sin convertir el alimento en medicamento. Cada contenido diferencia composición, plausibilidad biológica, evidencia in vitro y evidencia clínica."
+    />
+
+    <div class="bienestar-filtros" role="group" aria-label="Filtrar por tipo de contenido">
+      {
+        CATEGORIAS.map((cat, i) => (
+          <Tag category={cat} selected={i === 0}>
+            {cat}
+          </Tag>
+        ))
+      }
+    </div>
+
+    <div class="bienestar-grid">
+      {
+        temas.map((t) => {
+          const d = t.data;
+          const cat = badgeTipo(d.tipo);
+          return (
+            <Card
+              elevation="xs"
+              padding="0"
+              class="bienestar-card"
+              data-category={cat}
+              as="a"
+              href={`/bienestar/${t.id}`}
+            >
+              <div class="bienestar-card-photo">
+                <img src={d.imagen} alt={d.alt} loading="lazy" />
+                <span class="bienestar-card-codigo">{d.codigo}</span>
+              </div>
+              <div class="bienestar-card-body">
+                <Badge tone="pulpa">{cat}</Badge>
+                <h3>{d.title}</h3>
+                <p class="bienestar-card-desc">{d.foco}</p>
+                <span class="bienestar-card-cta">
+                  Leer <Icon name="arrow-right" size={13} />
+                </span>
+              </div>
+            </Card>
+          );
+        })
+      }
+    </div>
+
+    <p class="bienestar-nota">
+      Estas notas describen ciencia nutricional y hábitos cotidianos. No
+      diagnostican, no tratan ni curan condiciones, y no sustituyen la
+      orientación de un profesional de la salud.
+    </p>
+  </div>
+</section>
+
+<style>
+  .bienestar {
+    background: var(--surface-card);
+    border-top: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    scroll-margin-top: 72px;
+  }
+  .bienestar-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+
+  .bienestar-filtros {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-6);
+  }
+
+  .bienestar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+  }
+  .bienestar-card {
+    overflow: hidden;
+    gap: 0;
+    transition: var(--transition-base);
+  }
+  .bienestar-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .bienestar-card[hidden] {
+    display: none;
+  }
+  .bienestar-card-photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--border-hairline);
+    border-width: 0 0 1px 0;
+    overflow: hidden;
+  }
+  .bienestar-card-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .bienestar-card-codigo {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    background: rgba(31, 43, 26, 0.55);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    padding: 4px 9px;
+    border-radius: var(--radius-pill);
+  }
+  .bienestar-card-body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .bienestar-card-body h3 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    line-height: var(--lh-heading);
+    margin: 0;
+  }
+  .bienestar-card-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .bienestar-card-cta {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-link);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+  }
+
+  .bienestar-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    max-width: 70ch;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .bienestar-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .bienestar-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const tags = document.querySelectorAll<HTMLButtonElement>("#bienestar [data-tag]");
+  const cards = document.querySelectorAll<HTMLElement>("#bienestar .bienestar-card");
+
+  tags.forEach((tag) => {
+    tag.addEventListener("click", () => {
+      const selected = tag.dataset.tag ?? "Todos";
+      tags.forEach((t) => t.setAttribute("aria-pressed", String(t === tag)));
+      cards.forEach((card) => {
+        const match = selected === "Todos" || card.dataset.category === selected;
+        card.hidden = !match;
+      });
+    });
+  });
+</script>

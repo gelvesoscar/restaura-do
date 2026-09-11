@@ -1,0 +1,263 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import Badge from "../../components/Badge.astro";
+
+export async function getStaticPaths() {
+  const items = await getCollection("bienestar");
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const s = item.data;
+
+const seoDescripcion = `${s.foco} ${s.conceptoEditorial}`.slice(0, 155);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: s.title,
+  description: seoDescripcion,
+  image: `https://comounlulo.co${s.imagen}`,
+  articleSection: "Bienestar",
+  keywords: s.tipo,
+};
+---
+
+<Base
+  title={`${s.title} — Comounlulo.co`}
+  description={seoDescripcion}
+  noindex={true}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  <article class="bienestar-articulo">
+    <div class="bienestar-articulo-inner">
+      <a href="/preview/#bienestar" class="bienestar-back">
+        <Icon name="arrow-left" size={14} /> Todos los temas de Bienestar
+      </a>
+
+      <div class="bienestar-foto">
+        <img src={s.imagen} alt={s.alt} loading="eager" />
+        <span class="bienestar-codigo">{s.codigo}</span>
+      </div>
+
+      <div class="bienestar-tags">
+        <Badge tone="pulpa">{s.tipo}</Badge>
+      </div>
+
+      <h1>{s.title}</h1>
+      <p class="bienestar-foco">{s.foco}</p>
+
+      <div class="bienestar-concepto">
+        <h2>Lo que exploramos</h2>
+        <p>{s.conceptoEditorial}</p>
+      </div>
+
+      <div class="bienestar-limite">
+        <span class="bienestar-limite-label">
+          <Icon name="shield-alert" size={16} color="var(--green-700)" /> Límite y rigor
+        </span>
+        <p>{s.limiteRigor}</p>
+      </div>
+
+      <div class="bienestar-sabemos">
+        <div class="bienestar-sabemos-col">
+          <h3>Lo que sabemos</h3>
+          <p>
+            El lulo aporta vitamina C, fibra, ácidos orgánicos y compuestos
+            fenólicos, con actividad antioxidante documentada en estudios de
+            laboratorio.
+          </p>
+        </div>
+        <div class="bienestar-sabemos-col">
+          <h3>Lo que todavía estamos investigando</h3>
+          <p>
+            Cómo se traduce esa composición en efectos medibles sobre la
+            salud humana. La mayoría de estos resultados provienen de
+            estudios in vitro, no de ensayos clínicos en personas.
+          </p>
+        </div>
+      </div>
+
+      <p class="bienestar-fuente">
+        Fuente científica de referencia: Añibarro-Ortega M. et al. (2025).
+        <em>
+          Nutrients, Phytochemicals, and In Vitro Antioxidant and
+          Antimicrobial Activities of Lulo (Solanum quitoense Lam.) Fruit
+          Pulp, Peel, and Seeds.
+        </em>{" "}
+        Foods 14(12):2083. <a href="https://doi.org/10.3390/foods14122083" target="_blank" rel="noopener noreferrer">DOI 10.3390/foods14122083</a>.
+      </p>
+
+      <p class="bienestar-nota-general">
+        Bienestar traduce ciencia nutricional a lenguaje cotidiano sin
+        convertir el alimento en medicamento. Estas notas no diagnostican,
+        no tratan ni curan condiciones, y no sustituyen la orientación de un
+        profesional de la salud.
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .bienestar-articulo {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .bienestar-articulo-inner {
+    max-width: 68ch;
+    margin: 0 auto;
+  }
+  .bienestar-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-link);
+    text-decoration: none;
+    margin-bottom: var(--space-6);
+  }
+  .bienestar-foto {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--border-hairline);
+    aspect-ratio: 4 / 3;
+    margin-bottom: var(--space-5);
+  }
+  .bienestar-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .bienestar-codigo {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    background: rgba(31, 43, 26, 0.55);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+  }
+  .bienestar-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+  .bienestar-articulo h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-display-m);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0 0 var(--space-3);
+  }
+  .bienestar-foco {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text-muted);
+    margin: 0 0 var(--space-8);
+  }
+  .bienestar-articulo h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0 0 var(--space-3);
+  }
+  .bienestar-concepto {
+    margin-bottom: var(--space-6);
+  }
+  .bienestar-concepto p {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .bienestar-limite {
+    background: var(--accent-soft);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+  .bienestar-limite-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    color: var(--green-700);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-eyebrow);
+    margin-bottom: var(--space-2);
+  }
+  .bienestar-limite p {
+    margin: 0;
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .bienestar-sabemos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    background: var(--cream-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  .bienestar-sabemos h3 {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-eyebrow);
+    color: var(--text-muted);
+    margin: 0 0 var(--space-2);
+  }
+  .bienestar-sabemos p {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .bienestar-fuente {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0 0 var(--space-6);
+  }
+  .bienestar-fuente a {
+    color: var(--text-link);
+  }
+  .bienestar-nota-general {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-hairline);
+  }
+  @media (max-width: 700px) {
+    .bienestar-articulo h1 {
+      font-size: var(--fs-title);
+    }
+    .bienestar-sabemos {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

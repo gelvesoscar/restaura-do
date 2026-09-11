@@ -5,7 +5,7 @@ import PorQueLulo from "../sections/PorQueLulo.astro";
 import Manifiesto from "../sections/Manifiesto.astro";
 import Recetas from "../sections/Recetas.astro";
 import Belleza from "../sections/Belleza.astro";
-import Tips from "../sections/Tips.astro";
+import Bienestar from "../sections/Bienestar.astro";
 import Tienda from "../sections/Tienda.astro";
 ---
 
@@ -18,8 +18,11 @@ import Tienda from "../sections/Tienda.astro";
   lanzar de verdad, el contenido de este archivo pasa a ser el de
   index.astro y este archivo se retira.
 
-  Estructura por pilares: Cocina (Recetas) → Belleza (en construcción) →
-  Bienestar (Tips), en ese orden, siguiendo la navegación.
+  Estructura por pilares: Cocina (Recetas) → Belleza (B01-B12) →
+  Bienestar (S01-S12), en ese orden, siguiendo la navegación. Los tips
+  genéricos de hábitos (Tips.astro, src/content/tips/) quedan en el
+  repo sin ruta pública — no se perdieron, solo se desvincularon al
+  reenfocar Bienestar en la ciencia del lulo.
 -->
 <Base noindex={true}>
   <Inicio />
@@ -27,6 +30,6 @@ import Tienda from "../sections/Tienda.astro";
   <Manifiesto />
   <Recetas />
   <Belleza />
-  <Tips />
+  <Bienestar />
   <Tienda />
 </Base>

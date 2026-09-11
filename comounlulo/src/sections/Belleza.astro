@@ -1,25 +1,98 @@
 ---
+import { getCollection } from "astro:content";
 import SectionHead from "../components/SectionHead.astro";
+import Card from "../components/Card.astro";
+import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
+import Tag from "../components/Tag.astro";
+
+const conceptosRaw = await getCollection("belleza");
+const conceptos = conceptosRaw.sort((a, b) => a.data.order - b.data.order);
+
+function badgeTipo(tipo: string) {
+  if (tipo.startsWith("Ritual")) return "Ritual";
+  if (tipo.startsWith("Inspiración")) return "Inspiración cosmética";
+  if (tipo.startsWith("Producto potencial")) return "Producto potencial";
+  if (tipo.startsWith("I+D")) return "I+D";
+  return tipo;
+}
+
+const CATEGORIAS = [
+  "Todos",
+  "Ritual",
+  "Inspiración cosmética",
+  "Producto potencial",
+  "I+D",
+];
 ---
 
 <section id="belleza" class="belleza">
   <div class="belleza-inner">
     <SectionHead
       eyebrow="Belleza"
-      title="Esta sección está en construcción."
-      lead="Antes de publicar nada aquí, estamos documentando los usos reales del lulo en el cuidado de la piel y el cabello — sin inventar beneficios ni rutinas. Vuelve pronto."
+      title="El lulo se lleva en la piel."
+      lead="No es una colección de remedios caseros. Es una exploración responsable de cómo la pulpa, la cáscara y la semilla del lulo pueden inspirar cosmética contemporánea. Cada concepto se clasifica como ritual, inspiración cosmética, producto potencial o I+D."
     />
-    <div class="belleza-placeholder">
-      <span class="belleza-placeholder-icon">
-        <Icon name="sparkles" size={22} color="var(--orange-700)" />
-      </span>
-      <p>
-        Si tienes una mascarilla, ritual o uso de belleza con lulo que
-        quieras compartir, escríbenos a{" "}
-        <a href="mailto:hola@comounlulo.co">hola@comounlulo.co</a>.
+
+    <div class="regla-de-oro">
+      <span class="eyebrow">Regla de oro</span>
+      <p class="regla-quote">
+        “Potencial bioactivo ≠ beneficio clínico demostrado.”
+      </p>
+      <p class="regla-nota">
+        No convertimos resultados de laboratorio (in vitro) en promesas
+        cosméticas o terapéuticas. Cuando un concepto todavía no tiene
+        pruebas propias, lo decimos.
       </p>
     </div>
+
+    <div class="belleza-filtros" role="group" aria-label="Filtrar por tipo de concepto">
+      {
+        CATEGORIAS.map((cat, i) => (
+          <Tag category={cat} selected={i === 0}>
+            {cat}
+          </Tag>
+        ))
+      }
+    </div>
+
+    <div class="belleza-grid">
+      {
+        conceptos.map((c) => {
+          const d = c.data;
+          const cat = badgeTipo(d.tipo);
+          return (
+            <Card
+              elevation="xs"
+              padding="0"
+              class="belleza-card"
+              data-category={cat}
+              as="a"
+              href={`/belleza/${c.id}`}
+            >
+              <div class="belleza-card-photo">
+                <img src={d.imagen} alt={d.alt} loading="lazy" />
+                <span class="belleza-card-codigo">{d.codigo}</span>
+              </div>
+              <div class="belleza-card-body">
+                <Badge tone="brand">{cat}</Badge>
+                <h3>{d.title}</h3>
+                <p class="belleza-card-desc">{d.foco}</p>
+                <span class="belleza-card-cta">
+                  Ver concepto <Icon name="arrow-right" size={13} />
+                </span>
+              </div>
+            </Card>
+          );
+        })
+      }
+    </div>
+
+    <p class="belleza-nota">
+      Estos son conceptos de dirección de marca y de producto, no un
+      catálogo a la venta. Antes de aplicar cualquier ingrediente nuevo
+      sobre la piel, haz una prueba de sensibilidad.
+    </p>
   </div>
 </section>
 
@@ -30,33 +103,152 @@ import Icon from "../components/Icon.astro";
     padding: var(--section-y) var(--gutter-page);
     scroll-margin-top: 72px;
   }
-  .belleza-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-4);
+
+  .regla-de-oro {
     background: var(--cream-200);
     border-radius: var(--radius-xl);
     padding: var(--space-8);
+    margin-bottom: var(--space-8);
     max-width: 60ch;
   }
-  .belleza-placeholder-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-pill);
-    background: var(--brand-tint);
-    display: grid;
-    place-items: center;
-    flex: none;
+  .regla-de-oro .eyebrow {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--orange-700);
+    margin-bottom: var(--space-3);
   }
-  .belleza-placeholder p {
+  .regla-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--fs-title);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0 0 var(--space-3);
+  }
+  .regla-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0;
+  }
+
+  .belleza-filtros {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-6);
+  }
+
+  .belleza-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+  }
+  .belleza-card {
+    overflow: hidden;
+    gap: 0;
+    transition: var(--transition-base);
+  }
+  .belleza-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .belleza-card[hidden] {
+    display: none;
+  }
+  .belleza-card-photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--border-hairline);
+    border-width: 0 0 1px 0;
+    overflow: hidden;
+  }
+  .belleza-card-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .belleza-card-codigo {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    background: rgba(31, 43, 26, 0.55);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    padding: 4px 9px;
+    border-radius: var(--radius-pill);
+  }
+  .belleza-card-body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .belleza-card-body h3 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    line-height: var(--lh-heading);
+    margin: 0;
+  }
+  .belleza-card-desc {
     font-family: var(--font-body);
     font-size: var(--fs-body-sm);
     line-height: var(--lh-body);
     color: var(--text-body);
     margin: 0;
   }
-  .belleza-placeholder a {
+  .belleza-card-cta {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
     color: var(--text-link);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+  }
+
+  .belleza-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    max-width: 70ch;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .belleza-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .belleza-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
+
+<script>
+  const tags = document.querySelectorAll<HTMLButtonElement>("#belleza [data-tag]");
+  const cards = document.querySelectorAll<HTMLElement>("#belleza .belleza-card");
+
+  tags.forEach((tag) => {
+    tag.addEventListener("click", () => {
+      const selected = tag.dataset.tag ?? "Todos";
+      tags.forEach((t) => t.setAttribute("aria-pressed", String(t === tag)));
+      cards.forEach((card) => {
+        const match = selected === "Todos" || card.dataset.category === selected;
+        card.hidden = !match;
+      });
+    });
+  });
+</script>

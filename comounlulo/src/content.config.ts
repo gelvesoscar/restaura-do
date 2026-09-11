@@ -61,4 +61,34 @@ const recetas = defineCollection({
   }),
 });
 
-export const collections = { tips, recetas };
+const belleza = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/belleza" }),
+  schema: z.object({
+    codigo: z.string(),
+    title: z.string(),
+    tipo: z.string(),
+    foco: z.string(),
+    conceptoEditorial: z.string(),
+    limiteRigor: z.string(),
+    imagen: z.string(),
+    alt: z.string(),
+    order: z.number().default(0),
+  }),
+});
+
+const bienestar = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/bienestar" }),
+  schema: z.object({
+    codigo: z.string(),
+    title: z.string(),
+    tipo: z.string(),
+    foco: z.string(),
+    conceptoEditorial: z.string(),
+    limiteRigor: z.string(),
+    imagen: z.string(),
+    alt: z.string(),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { tips, recetas, belleza, bienestar };
