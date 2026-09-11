@@ -16,7 +16,7 @@ Esto no quiere decir que el jugo esté prohibido ni que haya que eliminarlo de l
 
 ## Un cambio de costumbre, no de dieta
 
-Este hábito no pide dejar de tomar jugo ni seguir una dieta estricta. Pide, simplemente, que la fruta entera tenga un lugar fijo en el día: una mañana, una tarde, un antojo de media tarde. No hace falta que sea una porción grande ni una fruta exótica. Una manzana, una mandarina, o —si se tiene a mano— una fruta como el lulo, con su acidez particular, cumplen la misma función.
+Este hábito no pide dejar de tomar jugo ni seguir una dieta estricta. Pide, simplemente, que la fruta entera tenga un lugar fijo en el día: una mañana, una tarde, un antojo de media tarde. No hace falta que sea una porción grande ni una fruta exótica. Una manzana, una mandarina, o, si se tiene a mano, una fruta como el lulo, con su acidez particular, cumplen la misma función.
 
 Comer la fruta entera también trae de vuelta algo que se pierde fácil en la rutina: el gesto de pelar, partir, masticar. Son segundos que el cuerpo agradece, aunque no se noten al momento.
 

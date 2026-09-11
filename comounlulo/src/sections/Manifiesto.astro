@@ -1,4 +1,5 @@
 ---
+import Photo from "../components/Photo.astro";
 ---
 
 <section id="manifiesto" class="manifiesto">
@@ -13,8 +14,8 @@
       </p>
       <p>
         Un lulo no cambia de forma para verse mejor. Por fuera es la misma
-        fruta naranja de siempre. Lo que tiene adentro —la pulpa verde, el
-        ácido, el agua— es lo que hace que se note por fuera.
+        fruta naranja de siempre. Lo que tiene adentro, la pulpa verde, el
+        ácido, el agua, es lo que hace que se note por fuera.
       </p>
       <p>
         Esta marca nace de ahí. Nadie necesita reinventarse: necesita{" "}
@@ -26,9 +27,61 @@
         La transformación pasa por dentro antes de notarse por fuera.
       </p>
     </div>
-    <div class="manifiesto-signature">
+    <div class="manifiesto-fundadores">
       <span class="signature-line"></span>
-      <span class="signature-label">Quien fundó Comounlulo</span>
+      <span class="signature-label">Quién fundó comounlulo</span>
+
+      <div class="fundadores-grid">
+        {/* TODO: falta la foto real de Pilar y Oscar. La imagen enviada
+           hasta ahora no se usa aquí porque parece generada/compuesta
+           digitalmente (el logo ya aparece impreso en la camisa), y esta
+           sección pide explícitamente una foto real, no una ilustración.
+           Cuando llegue la foto real, pasarla como prop `src` de este
+           componente. */}
+        <Photo
+          label="Foto real de Pilar y Oscar (pendiente de confirmar)"
+          ratio="1 / 1"
+          tone="flat"
+          radius="var(--radius-pill)"
+          class="fundadores-foto"
+        />
+
+        <div class="fundadores-texto">
+          <p>
+            Somos Pilar y Oscar: una pareja de esposos enamorados,
+            agradecidos por cada bendición del camino. Nuestra historia se
+            tejió entre Colombia y República Dominicana, y ahí aprendimos
+            lo que de verdad importa: vivir bien, no solamente verse bien.
+          </p>
+          <p>
+            Hoy vemos crecer a nuestros hijos, Miguel Ángel, el financiero
+            de la casa, y María Paula, la creativa, apasionada por cuidar
+            cada experiencia de quien nos rodea. Por ellos entendimos que
+            un sueño vale la pena cuando se construye con calma y con
+            propósito.
+          </p>
+          <p>
+            Siempre nos ha apasionado cuidar la alimentación, la salud y
+            una vida con propósito. Ahí descubrimos que detrás de cada
+            fruta colombiana hay un tesoro por conocer, y que el lulo es,
+            quizás, la más fascinante de todas: hay tanto en ella que casi
+            se puede llenar una mesa entera teniéndola como protagonista.
+          </p>
+          <p>
+            Hoy comounlulo.co cumple un sueño de pareja y de familia, y
+            nos acerca un poco más al propósito que Dios tiene para
+            nosotros. No hay que reinventarse, solo hay que recordar: el
+            diseño de Dios ya es perfecto, y cuando decidimos restaurarnos
+            y ponernos en manos del Maestro, no hay nada que no sea
+            posible. Por eso creemos, tanto como en la fruta misma, que
+            cuando sanas por dentro, eso termina notándose por fuera.
+          </p>
+          <p class="fundadores-firma">
+            Con todo nuestro amor y compromiso,<br />
+            Pilar Amézquita y Oscar Gelves
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -76,11 +129,11 @@
     font-size: var(--fs-display-m);
     line-height: var(--lh-display);
   }
-  .manifiesto-signature {
+  .manifiesto-fundadores {
     display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin-top: var(--space-2);
+    flex-direction: column;
+    gap: var(--space-5);
+    margin-top: var(--space-4);
   }
   .signature-line {
     width: 40px;
@@ -92,5 +145,35 @@
     font-size: var(--fs-caption);
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
+  }
+  .fundadores-grid {
+    display: grid;
+    grid-template-columns: 0.65fr 1.35fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  .fundadores-foto {
+    max-width: 220px;
+  }
+  .fundadores-texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+  .fundadores-firma {
+    font-family: var(--font-display);
+    font-style: italic;
+    opacity: 0.92;
+    margin-top: var(--space-2);
+  }
+  @media (max-width: 700px) {
+    .fundadores-grid {
+      grid-template-columns: 1fr;
+    }
+    .fundadores-foto {
+      max-width: 160px;
+    }
   }
 </style>

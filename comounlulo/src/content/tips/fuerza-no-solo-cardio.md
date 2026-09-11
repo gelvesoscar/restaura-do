@@ -16,7 +16,7 @@ La fuerza no es un asunto solo de quienes entrenan en un gimnasio. Es, con el pa
 
 ## Poco, pero con carga
 
-No hace falta una rutina larga ni un plan complicado. Dos sesiones cortas por semana, con ejercicios básicos —sentadillas, algo de peso en los brazos, ejercicios con el propio peso corporal— son suficientes para empezar a construir esa base. Lo que importa no es la cantidad de series, sino la constancia de volver a hacerlo semana tras semana.
+No hace falta una rutina larga ni un plan complicado. Dos sesiones cortas por semana, con ejercicios básicos, sentadillas, algo de peso en los brazos, ejercicios con el propio peso corporal, son suficientes para empezar a construir esa base. Lo que importa no es la cantidad de series, sino la constancia de volver a hacerlo semana tras semana.
 
 Tampoco es necesario que se sienta como un entrenamiento intenso. La idea es empezar donde el cuerpo esté hoy, no donde se cree que debería estar.
 

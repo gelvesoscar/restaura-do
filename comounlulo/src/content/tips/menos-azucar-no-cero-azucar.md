@@ -10,7 +10,7 @@ No hace falta eliminar el azúcar de la vida. Hace falta que deje de ser la base
 
 ## Un objetivo más realista
 
-Proponerse cero azúcar suena contundente, pero rara vez se sostiene. El azúcar está en lugares donde no se espera —salsas, panes, bebidas que se anuncian como saludables— y perseguir su eliminación total termina siendo una fuente de frustración más que de cambio real. Un objetivo más simple, y mucho más sostenible, es reducir su presencia como base diaria, sin convertirla en una prohibición absoluta.
+Proponerse cero azúcar suena contundente, pero rara vez se sostiene. El azúcar está en lugares donde no se espera, salsas, panes, bebidas que se anuncian como saludables, y perseguir su eliminación total termina siendo una fuente de frustración más que de cambio real. Un objetivo más simple, y mucho más sostenible, es reducir su presencia como base diaria, sin convertirla en una prohibición absoluta.
 
 Esto significa, en la práctica, que un postre ocasional o una bebida dulce de vez en cuando no rompen nada. Lo que sí pesa es el azúcar que entra sin que se note, todos los días, en cantidades que se acumulan sin que haya una sola decisión consciente de por medio.
 

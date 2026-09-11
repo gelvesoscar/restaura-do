@@ -35,7 +35,7 @@ etiquetas:
 seoTitle: Ceviche de pescado al lulo
 seoDescripcion: Ceviche de pescado marinado en jugo de lulo con cebolla morada, cilantro y ají.
 fuentes:
-- titulo: Manual de preparaciones culinarias altoandinas — ceviche de pescado con jugo de lulo
+- titulo: 'Manual de preparaciones culinarias altoandinas: ceviche de pescado con jugo de lulo'
   url: https://jbb.gov.co/documentos/cientifica/publicaciones/Corzo-Barragan_et_al-2019-Manual_aplicacion_preparaciones_culinarias_altoandinas%20.pdf
 imagen: /images/recetas/16-ceviche-pescado-lulo.webp
 alt: Ceviche de pescado blanco con lulo y cebolla morada.

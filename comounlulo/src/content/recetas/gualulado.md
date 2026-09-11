@@ -1,6 +1,6 @@
 ---
 order: 20
-title: Gualulado — lulo y aguardiente
+title: 'Gualulado: lulo y aguardiente'
 categoria: Cócteles
 tipo: Cóctel
 destacado: true

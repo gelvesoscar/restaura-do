@@ -26,4 +26,4 @@ Pensar en propósito en vez de meta cambia la forma de medir el progreso. Ya no 
 
 ## Por qué esto sostiene todo lo demás
 
-Cada hábito de esta lista —el agua al despertar, la caminata después de comer, la fuerza dos veces por semana— funciona mejor cuando no depende de una meta con fecha de cierre, sino de un propósito que no necesita terminar. Es, en el fondo, la diferencia entre un cambio que dura un mes y uno que dura una vida.
+Cada hábito de esta lista, el agua al despertar, la caminata después de comer, la fuerza dos veces por semana, funciona mejor cuando no depende de una meta con fecha de cierre, sino de un propósito que no necesita terminar. Es, en el fondo, la diferencia entre un cambio que dura un mes y uno que dura una vida.

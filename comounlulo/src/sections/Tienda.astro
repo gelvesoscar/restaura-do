@@ -12,9 +12,8 @@ import Icon from "../components/Icon.astro";
 const PRECIO = 179000;
 
 const SKU = {
-  nombre: "Botella inteligente Comounlulo",
-  variante: "750 ml · acero inoxidable 316 · doble pared al vacío",
-  dimensiones: "7 cm de diámetro × 24,5 cm de alto — cabe en el bolsillo lateral de la mayoría de morrales.",
+  nombre: "Botella inteligente comounlulo",
+  variante: "500 o 750 ml, capacidad por confirmar · interior en acero inoxidable 316, exterior en 304 · doble pared al vacío",
   colores: ["Noche (negro)", "Pulpa clara (blanco)", "Flor (rosa)", "Agua (azul)"],
   bullets: [
     "Recordatorio de toma: vibra y se ilumina cuando llevas mucho tiempo sin tomar agua. El intervalo lo defines tú desde la app, no es un tiempo fijo de fábrica.",
@@ -22,7 +21,7 @@ const SKU = {
     "Esterilización UV-C: un LED en la tapa mantiene limpio el interior de la botella, sin químicos ni pastillas. El ciclo se programa por horario y se ajusta en duración desde la app, a diferencia de otras botellas UV con ciclo fijo de 180 segundos.",
     "Doble pared al vacío: la misma construcción de un termo. Mantiene fría el agua o el jugo de lulo, y caliente lo que va caliente.",
     "App por Bluetooth: consumo del día, recordatorios y desinfección programada, desde el celular.",
-    "Acero 316 y carga USB-C: acero de grado alimenticio, manija de silicona, pintura resistente a rayones.",
+    "Interior en acero inoxidable 316, exterior en 304, y carga USB-C: acero de grado alimenticio, manija de silicona, pintura resistente a rayones.",
   ],
 };
 
@@ -30,7 +29,11 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
   style: "currency",
   currency: "COP",
   maximumFractionDigits: 0,
-}).format(PRECIO);
+})
+  .format(PRECIO)
+  // Intl inserta un espacio (NBSP) entre el símbolo y la cifra; la
+  // convención colombiana lo escribe pegado: "$179.000".
+  .replace(/\u00A0/g, "");
 ---
 
 <section id="tienda" class="tienda">
@@ -38,7 +41,7 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
     <SectionHead
       eyebrow="Tienda"
       title="Estamos validando si esta botella vale la pena fabricar."
-      lead="Antes de producir, queremos confirmar que de verdad hay interés. Anótate sin costo — si seguimos adelante, tú te enteras primero. Las demás gamas entran cuando estén listas."
+      lead="Antes de producir, queremos confirmar que de verdad hay interés. Anótate sin costo. Si seguimos adelante, tú te enteras primero. Las demás gamas entran cuando estén listas."
     />
     <div class="tienda-grid">
       <div class="tienda-photos">
@@ -52,12 +55,11 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
 
       <div class="tienda-info">
         <div class="tienda-badges">
-          <Badge tone="pulpa">Único SKU en evaluación</Badge>
+          <Badge tone="pulpa">Único modelo en evaluación</Badge>
           <Badge tone="neutral">Aún sin producir · reserva sin costo</Badge>
         </div>
         <h3 class="tienda-nombre">{SKU.nombre}</h3>
         <span class="tienda-variante">{SKU.variante}</span>
-        <p class="tienda-dimensiones">{SKU.dimensiones}</p>
         <p class="tienda-desc">
           La botella es el objeto más honesto que podíamos hacer primero: no promete nada por dentro de ti, solo
           te recuerda tomar agua. Restaurar no es un evento; es acordarse todos los días. Esto es un recordatorio
@@ -67,7 +69,7 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
           {SKU.bullets.map((b) => <li>{b}</li>)}
         </ul>
         <p class="tienda-uv-nota">
-          El UV-C mantiene limpia la botella por dentro y reduce bacterias que causan olor — según el fabricante,
+          El UV-C mantiene limpia la botella por dentro y reduce bacterias que causan olor, según el fabricante,
           hasta 99,99% en pruebas de laboratorio. No purifica agua no potable ni reemplaza una fuente de agua
           segura.
         </p>
@@ -104,7 +106,7 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
 
           <div id="reserva-exito" class="reserva-exito" hidden>
             <Icon name="check" size={18} color="var(--text-link-hover)" />
-            <p>Revisa tu correo: te enviamos un mensaje para confirmar tu anotación. Una vez confirmes, quedas en la lista — y te escribimos de nuevo apenas cerremos con el proveedor.</p>
+            <p>Revisa tu correo: te enviamos un mensaje para confirmar tu anotación. Una vez confirmes, quedas en la lista, y te escribimos de nuevo apenas cerremos con el proveedor.</p>
           </div>
 
           <div class="tienda-entrega">
@@ -128,7 +130,7 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
           <h4>Las demás gamas, cuando estén confirmadas</h4>
           <p>
             Estamos cerrando proveedor para dos referencias más. Cuando la producción esté asegurada, aparecen
-            aquí — no antes.
+            aquí, no antes.
           </p>
         </Card>
       </div>

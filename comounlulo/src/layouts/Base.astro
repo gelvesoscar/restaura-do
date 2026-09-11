@@ -11,7 +11,7 @@ interface Props {
 }
 
 const {
-  title = "Comounlulo.co",
+  title = "comounlulo.co",
   description = "Vitalidad que se nota por fuera, porque se cuida por dentro.",
   noindex = false,
   image,
@@ -27,7 +27,7 @@ const canonicalUrl = new URL(Astro.url.pathname, `${siteUrl}/`).toString();
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Comounlulo.co",
+  name: "comounlulo.co",
   url: siteUrl,
   logo: `${siteUrl}/favicon.svg`,
   sameAs: ["https://www.instagram.com/comounlulo.co"],
@@ -46,7 +46,7 @@ const organizationJsonLd = {
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Comounlulo.co" />
+    <meta property="og:site_name" content="comounlulo.co" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
