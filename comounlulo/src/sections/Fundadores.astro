@@ -1,0 +1,177 @@
+---
+import SectionHead from "../components/SectionHead.astro";
+import Photo from "../components/Photo.astro";
+import Card from "../components/Card.astro";
+
+const FAMILIA = [
+  {
+    nombre: "Pilar Amézquita",
+    rol: "Cofundadora",
+    texto:
+      "La compañera de este sueño desde el primer día: quien lo piensa, lo sostiene y lo vive con el mismo cuidado con que lleva su casa.",
+  },
+  {
+    nombre: "Miguel Ángel",
+    rol: "El financiero de la casa",
+    texto:
+      "Con los pies en la tierra desde niño: el que saca las cuentas antes de que alguien se lo pida.",
+  },
+  {
+    nombre: "María Paula",
+    rol: "La creativa",
+    texto:
+      "Apasionada por cuidar cada detalle de la experiencia de quien nos rodea, siempre pensando en cómo hacerla mejor.",
+  },
+];
+---
+
+<section id="fundadores" class="fundadores">
+  <div class="fundadores-inner">
+    <SectionHead
+      eyebrow="Quién fundó comounlulo"
+      title="Una historia de pareja, familia y lulo."
+      lead="Antes de ser una marca, comounlulo fue una conversación de sobremesa entre dos personas que decidieron construir algo juntas."
+      maxWidth="30ch"
+    />
+
+    <div class="fundadores-grid">
+      <div class="fundadores-foto-wrap">
+        <Photo
+          label="Pilar y Oscar"
+          src="/images/pilar-y-oscar.jpg"
+          ratio="1 / 1"
+          tone="flat"
+          radius="var(--radius-pill)"
+        />
+      </div>
+
+      <div class="fundadores-texto">
+        <p>
+          Somos Pilar y Oscar: una pareja de esposos enamorados, agradecidos
+          por cada bendición del camino. Nuestra historia se tejió entre
+          Colombia y República Dominicana, y ahí aprendimos lo que de verdad
+          importa: vivir bien, no solamente verse bien.
+        </p>
+        <p>
+          Hoy vemos crecer a nuestros hijos, Miguel Ángel, el financiero de
+          la casa, y María Paula, la creativa, apasionada por cuidar cada
+          experiencia de quien nos rodea. Por ellos entendimos que un sueño
+          vale la pena cuando se construye con calma y con propósito.
+        </p>
+        <p>
+          Siempre nos ha apasionado cuidar la alimentación, la salud y una
+          vida con propósito. Ahí descubrimos que detrás de cada fruta
+          colombiana hay un tesoro por conocer, y que el lulo es, quizás, la
+          más fascinante de todas: hay tanto en ella que casi se puede
+          llenar una mesa entera teniéndola como protagonista.
+        </p>
+        <p>
+          Hoy comounlulo.co cumple un sueño de pareja y de familia, y nos
+          acerca un poco más al propósito que Dios tiene para nosotros. No
+          hay que reinventarse, solo hay que recordar: el diseño de Dios ya
+          es perfecto, y cuando decidimos restaurarnos y ponernos en manos
+          del Maestro, no hay nada que no sea posible. Por eso creemos,
+          tanto como en la fruta misma, que cuando sanas por dentro, eso
+          termina notándose por fuera.
+        </p>
+        <p class="fundadores-firma">
+          Con todo nuestro amor y compromiso,<br />
+          Pilar Amézquita y Oscar Gelves
+        </p>
+      </div>
+    </div>
+
+    <div class="familia-grid">
+      {
+        FAMILIA.map((f) => (
+          <Card tone="tint" elevation="none" class="familia-card">
+            <span class="familia-rol">{f.rol}</span>
+            <h3>{f.nombre}</h3>
+            <p>{f.texto}</p>
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .fundadores {
+    background: var(--surface-card);
+    border-top: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    scroll-margin-top: 72px;
+  }
+  .fundadores-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .fundadores-grid {
+    display: grid;
+    grid-template-columns: 0.6fr 1.4fr;
+    gap: var(--space-10);
+    align-items: center;
+    margin-bottom: var(--space-12);
+  }
+  .fundadores-foto-wrap {
+    width: 100%;
+    max-width: 280px;
+  }
+  .fundadores-texto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .fundadores-firma {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--text-strong);
+    margin-top: var(--space-2);
+  }
+  .familia-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+  .familia-rol {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--orange-700);
+  }
+  .familia-card h3 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0;
+  }
+  .familia-card p {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  @media (max-width: 860px) {
+    .fundadores-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+    .fundadores-foto-wrap {
+      max-width: 200px;
+      margin: 0 auto;
+    }
+  }
+  @media (max-width: 700px) {
+    .familia-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
