@@ -2,9 +2,9 @@
 import Wordmark from "./Wordmark.astro";
 import IconButton from "./IconButton.astro";
 import Button from "./Button.astro";
-import { SECCIONES } from "../data/sections";
+import { NAV_SECCIONES } from "../data/sections";
 
-const links = SECCIONES.slice(1);
+const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
 ---
 
 <header class="nav">

@@ -2,6 +2,7 @@
 import SectionHead from "../components/SectionHead.astro";
 import Photo from "../components/Photo.astro";
 import Card from "../components/Card.astro";
+import Icon from "../components/Icon.astro";
 
 const FAMILIA = [
   {
@@ -25,8 +26,13 @@ const FAMILIA = [
 ];
 ---
 
-<section id="fundadores" class="fundadores">
+<section id="fundadores" class="fundadores" hidden>
   <div class="fundadores-inner">
+    <button type="button" id="fundadores-close" class="fundadores-close">
+      <Icon name="x" size={14} />
+      Ocultar esta sección
+    </button>
+
     <SectionHead
       eyebrow="Quién fundó comounlulo"
       title="Una historia de pareja, familia y lulo."
@@ -107,6 +113,25 @@ const FAMILIA = [
     margin: 0 auto;
     padding: var(--section-y) var(--gutter-page);
   }
+  .fundadores-close {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0;
+    margin-bottom: var(--space-8);
+    transition: var(--transition-base);
+  }
+  .fundadores-close:hover {
+    color: var(--text-strong);
+  }
   .fundadores-grid {
     display: grid;
     grid-template-columns: 0.6fr 1.4fr;
@@ -175,3 +200,42 @@ const FAMILIA = [
     }
   }
 </style>
+
+<script is:inline>
+  (function () {
+    var section = document.getElementById("fundadores");
+    if (!section) return;
+
+    function open() {
+      section.hidden = false;
+      history.replaceState(null, "", "#fundadores");
+      requestAnimationFrame(function () {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    function close() {
+      section.hidden = true;
+      var manifiesto = document.getElementById("manifiesto");
+      history.replaceState(null, "", "#manifiesto");
+      if (manifiesto) {
+        manifiesto.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    document.querySelectorAll("[data-fundadores-open]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        open();
+      });
+    });
+
+    var closeBtn = document.getElementById("fundadores-close");
+    if (closeBtn) closeBtn.addEventListener("click", close);
+
+    if (location.hash === "#fundadores") open();
+    window.addEventListener("hashchange", function () {
+      if (location.hash === "#fundadores") open();
+    });
+  })();
+</script>
