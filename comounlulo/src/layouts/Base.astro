@@ -7,13 +7,33 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  image?: string;
 }
 
 const {
   title = "Comounlulo.co",
   description = "Vitalidad que se nota por fuera, porque se cuida por dentro.",
   noindex = false,
+  image,
 } = Astro.props;
+
+const siteUrl = (Astro.site?.toString() ?? "https://www.comounlulo.co/").replace(/\/$/, "");
+const ogImage = image ?? `${siteUrl}/images/lulo-mercado.jpg`;
+const canonicalUrl = new URL(Astro.url.pathname, `${siteUrl}/`).toString();
+
+// Se incluye siempre, incluso en páginas noindex: no hace daño mientras el
+// sitio está en preview, y así queda listo sin tener que acordarse de
+// agregarlo cuando se quite el noindex al salir a producción.
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Comounlulo.co",
+  url: siteUrl,
+  logo: `${siteUrl}/favicon.svg`,
+  // TODO: confirmar que @comounlulo es la cuenta de Instagram real y activa
+  // antes de depender de este dato para algo más que este bloque.
+  sameAs: ["https://www.instagram.com/comounlulo"],
+};
 ---
 
 <!doctype html>
@@ -22,14 +42,31 @@ const {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
     <meta name="description" content={description} />
     <title>{title}</title>
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Comounlulo.co" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="es_CO" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} is:inline />
+
     <style is:global>
       /*
         El design system copiado (styles.css/tokens/) no trae un reset de
-        box-sizing. Sin esto, elementos con width:100% + padding (p.ej. el
-        dialogo de la bolsa) se desbordan del viewport en pantallas angostas.
+        box-sizing. Sin esto, elementos con width:100% + padding se
+        desbordan del viewport en pantallas angostas.
       */
       *,
       *::before,

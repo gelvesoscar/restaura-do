@@ -32,6 +32,7 @@ const jsonLd = {
   title={`${s.title} — Comounlulo.co`}
   description={seoDescripcion}
   noindex={true}
+  image={jsonLd.image}
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   <article class="bienestar-articulo">
