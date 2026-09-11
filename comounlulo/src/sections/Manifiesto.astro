@@ -1,5 +1,6 @@
 ---
 import Photo from "../components/Photo.astro";
+import { MOSTRAR_FUNDADORES } from "../data/sections";
 ---
 
 <section id="manifiesto" class="manifiesto">
@@ -27,25 +28,31 @@ import Photo from "../components/Photo.astro";
         La transformación pasa por dentro antes de notarse por fuera.
       </p>
     </div>
-    <div class="manifiesto-teaser">
-      <div class="teaser-foto-wrap">
-        <Photo
-          label="Pilar y Oscar"
-          src="/images/pilar-y-oscar.jpg"
-          ratio="1 / 1"
-          tone="flat"
-          radius="var(--radius-pill)"
-        />
-      </div>
-      <div class="teaser-texto">
-        <span class="teaser-label">Quién fundó comounlulo</span>
-        <p>
-          Somos Pilar y Oscar: una pareja que decidió construir esta marca
-          juntos, con nuestros hijos como la razón más grande.
-        </p>
-        <a href="#fundadores" class="teaser-cta">Conócenos, nuestra historia completa →</a>
-      </div>
-    </div>
+    {
+      MOSTRAR_FUNDADORES && (
+        <div class="manifiesto-teaser">
+          <div class="teaser-foto-wrap">
+            <Photo
+              label="Pilar y Oscar"
+              src="/images/pilar-y-oscar.jpg"
+              ratio="1 / 1"
+              tone="flat"
+              radius="var(--radius-pill)"
+            />
+          </div>
+          <div class="teaser-texto">
+            <span class="teaser-label">Quién fundó comounlulo</span>
+            <p>
+              Somos Pilar y Oscar: una pareja que decidió construir esta
+              marca juntos, con nuestros hijos como la razón más grande.
+            </p>
+            <a href="#fundadores" class="teaser-cta">
+              Conócenos, nuestra historia completa →
+            </a>
+          </div>
+        </div>
+      )
+    }
   </div>
 </section>
 

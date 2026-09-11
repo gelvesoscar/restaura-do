@@ -5,11 +5,11 @@ import Inicio from "../sections/Inicio.astro";
 import PorQueLulo from "../sections/PorQueLulo.astro";
 import Manifiesto from "../sections/Manifiesto.astro";
 import Fundadores from "../sections/Fundadores.astro";
-import TresCaminos from "../sections/TresCaminos.astro";
 import Recetas from "../sections/Recetas.astro";
 import Belleza from "../sections/Belleza.astro";
 import Bienestar from "../sections/Bienestar.astro";
 import Tienda from "../sections/Tienda.astro";
+import { MOSTRAR_FUNDADORES } from "../data/sections";
 ---
 
 <!--
@@ -21,23 +21,27 @@ import Tienda from "../sections/Tienda.astro";
   lanzar de verdad, el contenido de este archivo pasa a ser el de
   index.astro y este archivo se retira.
 
-  Estructura por pilares: TresCaminos (intro) → Cocina (B01-B12) →
-  Belleza (B01-B12) → Bienestar (S01-S12), en ese orden, siguiendo la
-  navegación. Cada pilar arranca colapsado (solo título + frase) para no
-  alargar la página; el visitante elige cuál abrir desde la intro, el nav
-  o el botón propio de cada sección — solo un pilar queda abierto a la
-  vez (acordeón). Los tips genéricos de hábitos (Tips.astro,
-  src/content/tips/) quedan en el repo sin ruta pública — no se
-  perdieron, solo se desvincularon al reenfocar Bienestar en la ciencia
-  del lulo.
+  Estructura por pilares: Cocina (B01-B12) → Belleza (B01-B12) →
+  Bienestar (S01-S12), en ese orden, siguiendo la navegación (el nav
+  horizontal ya cubre esa navegación, así que no repetimos una intro
+  vertical de "tres caminos" debajo). Cada pilar arranca colapsado (solo
+  título + frase) para no alargar la página; el visitante elige cuál
+  abrir desde el nav o el botón propio de cada sección — solo un pilar
+  queda abierto a la vez (acordeón). Los tips genéricos de hábitos
+  (Tips.astro, src/content/tips/) quedan en el repo sin ruta pública — no
+  se perdieron, solo se desvincularon al reenfocar Bienestar en la
+  ciencia del lulo.
+
+  Fundadores se puede ocultar del todo (sección + ítem de nav) cambiando
+  MOSTRAR_FUNDADORES a false en src/data/sections.ts, sin borrar el
+  contenido.
 -->
 <Base noindex={true}>
   <IntroCinematico />
   <Inicio />
   <PorQueLulo />
   <Manifiesto />
-  <Fundadores />
-  <TresCaminos />
+  {MOSTRAR_FUNDADORES && <Fundadores />}
   <Recetas />
   <Belleza />
   <Bienestar />

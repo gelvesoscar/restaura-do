@@ -35,11 +35,11 @@ const METODO = [
   <div class="recetas-inner">
     <SectionHead
       eyebrow="Cocina Como un Lulo"
-      title="20 maneras de descubrir una fruta extraordinaria."
-      lead="No reunimos todas las recetas con lulo que existen: elegimos veinte que muestran su amplitud, de la tradición vallecaucana a la coctelería, siempre con la misma regla: el lulo debe seguir sabiendo a lulo."
+      title="Muchas maneras de descubrir una fruta extraordinaria."
+      lead={`No reunimos todas las recetas con lulo que existen: elegimos estas ${recetas.length} que muestran su amplitud, de la tradición vallecaucana a la coctelería, siempre con la misma regla: el lulo debe seguir sabiendo a lulo.`}
     />
 
-    <PilarToggle pilar="cocina" labelOpen="Ver las 20 recetas" />
+    <PilarToggle pilar="cocina" labelOpen={`Ver las ${recetas.length} recetas`} />
 
     <div id="cocina-panel" class="recetas-panel" hidden>
       <div class="metodo">

@@ -30,7 +30,7 @@ const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Orig
       lead="Bienestar traduce ciencia nutricional a lenguaje cotidiano sin convertir el alimento en medicamento. Cada contenido diferencia composición, plausibilidad biológica, evidencia in vitro y evidencia clínica."
     />
 
-    <PilarToggle pilar="bienestar" labelOpen="Ver los 12 temas" />
+    <PilarToggle pilar="bienestar" labelOpen={`Ver los ${temas.length} temas`} />
 
     <div id="bienestar-panel" class="bienestar-panel" hidden>
       <div class="bienestar-filtros" role="group" aria-label="Filtrar por tipo de contenido">

@@ -35,7 +35,7 @@ const CATEGORIAS = [
       lead="No es una colección de remedios caseros. Es una exploración responsable de cómo la pulpa, la cáscara y la semilla del lulo pueden inspirar cosmética contemporánea. Cada concepto se clasifica como ritual, inspiración cosmética, producto potencial o I+D."
     />
 
-    <PilarToggle pilar="belleza" labelOpen="Ver los 12 conceptos" />
+    <PilarToggle pilar="belleza" labelOpen={`Ver los ${conceptos.length} conceptos`} />
 
     <div id="belleza-panel" class="belleza-panel" hidden>
       <div class="regla-de-oro">
