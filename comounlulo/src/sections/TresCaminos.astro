@@ -1,0 +1,132 @@
+---
+import Icon from "../components/Icon.astro";
+
+const CAMINOS = [
+  {
+    id: "cocina",
+    icon: "utensils",
+    eyebrow: "Cocina",
+    titulo: "Saborearla.",
+    texto: "20 recetas reales con lulo, de la tradición vallecaucana a la coctelería.",
+    cta: "Explorar Cocina",
+  },
+  {
+    id: "belleza",
+    icon: "sparkles",
+    eyebrow: "Belleza",
+    titulo: "Cuidarte.",
+    texto: "12 conceptos cosméticos responsables, del ritual al I+D — sin inventar beneficios.",
+    cta: "Explorar Belleza",
+  },
+  {
+    id: "bienestar",
+    icon: "leaf",
+    eyebrow: "Bienestar",
+    titulo: "Conocerla.",
+    texto: "12 notas sobre la ciencia real del lulo, con fuente citada y sin promesas de más.",
+    cta: "Explorar Bienestar",
+  },
+];
+---
+
+<section id="caminos" class="caminos">
+  <div class="caminos-inner">
+    <span class="caminos-eyebrow">Una fruta. Tres formas de descubrirla.</span>
+    <div class="caminos-grid">
+      {
+        CAMINOS.map((c) => (
+          <div class="camino-card">
+            <span class="camino-icon">
+              <Icon name={c.icon} size={22} color="var(--orange-700)" />
+            </span>
+            <span class="camino-eyebrow">{c.eyebrow}</span>
+            <h3>{c.titulo}</h3>
+            <p>{c.texto}</p>
+            <a href={`#${c.id}`} class="camino-cta">
+              {c.cta} <Icon name="arrow-right" size={13} />
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .caminos {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .caminos-eyebrow {
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--fs-title);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+  .caminos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+  .camino-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    background: var(--cream-200);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+  }
+  .camino-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background: var(--brand-tint);
+    display: grid;
+    place-items: center;
+    margin-bottom: var(--space-2);
+  }
+  .camino-eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--orange-700);
+  }
+  .camino-card h3 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0;
+  }
+  .camino-card p {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0 0 var(--space-2);
+  }
+  .camino-cta {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    color: var(--text-link);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    margin-top: auto;
+  }
+  @media (max-width: 900px) {
+    .caminos-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

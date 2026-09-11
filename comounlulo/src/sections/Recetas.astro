@@ -5,6 +5,7 @@ import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import Tag from "../components/Tag.astro";
+import PilarToggle from "../components/PilarToggle.astro";
 
 const recetasRaw = await getCollection("recetas");
 const recetas = recetasRaw.sort((a, b) => a.data.order - b.data.order);
@@ -38,85 +39,89 @@ const METODO = [
       lead="No reunimos todas las recetas con lulo que existen: elegimos veinte que muestran su amplitud, de la tradición vallecaucana a la coctelería, siempre con la misma regla — el lulo debe seguir sabiendo a lulo."
     />
 
-    <div class="metodo">
-      <div class="metodo-frase">
-        <span class="eyebrow">El Método Como un Lulo</span>
-        <p class="metodo-quote">“Antes de la licuadora estaba la mano.”</p>
-        <p class="metodo-nota">
-          Frase editorial, no un dato arqueológico: describe una preferencia
-          técnica documentada — macerar o triturar rústicamente antes que
-          licuar a fondo — no una afirmación histórica sobre cómo se
-          preparaba el lulo en el pasado.
+    <PilarToggle pilar="cocina" labelOpen="Ver las 20 recetas" />
+
+    <div id="cocina-panel" class="recetas-panel" hidden>
+      <div class="metodo">
+        <div class="metodo-frase">
+          <span class="eyebrow">El Método Como un Lulo</span>
+          <p class="metodo-quote">“Antes de la licuadora estaba la mano.”</p>
+          <p class="metodo-nota">
+            Frase editorial, no un dato arqueológico: describe una preferencia
+            técnica documentada — macerar o triturar rústicamente antes que
+            licuar a fondo — no una afirmación histórica sobre cómo se
+            preparaba el lulo en el pasado.
+          </p>
+        </div>
+        <ol class="metodo-pasos">
+          {METODO.map((paso) => <li>{paso}</li>)}
+        </ol>
+      </div>
+
+      <div class="recetas-filtros" role="group" aria-label="Filtrar por tipo de preparación">
+        {
+          CATEGORIAS.map((cat, i) => (
+            <Tag category={cat} selected={i === 0}>
+              {cat}
+            </Tag>
+          ))
+        }
+      </div>
+
+      <div class="recetas-grid">
+        {
+          recetas.map((receta) => {
+            const r = receta.data;
+            return (
+              <Card
+                elevation="xs"
+                padding="0"
+                class="receta-card"
+                data-category={r.categoria}
+                as="a"
+                href={`/recetas/${receta.id}`}
+              >
+                <div class="receta-card-photo">
+                  <img src={r.imagen} alt={r.alt} loading="lazy" />
+                  {r.destacado && (
+                    <span class="receta-card-imperdible">
+                      <Icon name="star" size={12} color="var(--text-on-brand)" /> Imperdible
+                    </span>
+                  )}
+                </div>
+                <div class="receta-card-body">
+                  <div class="receta-card-badges">
+                    <Badge tone="neutral">{r.tiempo}</Badge>
+                    <Badge tone="neutral">{r.dificultad}</Badge>
+                  </div>
+                  <h3>{r.title}</h3>
+                  <p class="receta-card-desc">{r.seoDescripcion}</p>
+                  <span class="receta-card-cta">
+                    Ver receta <Icon name="arrow-right" size={13} />
+                  </span>
+                </div>
+              </Card>
+            );
+          })
+        }
+      </div>
+
+      <div class="recetas-comunidad">
+        <h3>¿Qué harías tú con un lulo?</h3>
+        <p>
+          Si tienes una receta propia con lulo, cuéntanosla escribiendo a{" "}
+          <a href="mailto:hola@comounlulo.co">hola@comounlulo.co</a>. Las
+          mejores pueden sumarse a esta colección.
         </p>
       </div>
-      <ol class="metodo-pasos">
-        {METODO.map((paso) => <li>{paso}</li>)}
-      </ol>
-    </div>
 
-    <div class="recetas-filtros" role="group" aria-label="Filtrar por tipo de preparación">
-      {
-        CATEGORIAS.map((cat, i) => (
-          <Tag category={cat} selected={i === 0}>
-            {cat}
-          </Tag>
-        ))
-      }
-    </div>
-
-    <div class="recetas-grid">
-      {
-        recetas.map((receta) => {
-          const r = receta.data;
-          return (
-            <Card
-              elevation="xs"
-              padding="0"
-              class="receta-card"
-              data-category={r.categoria}
-              as="a"
-              href={`/recetas/${receta.id}`}
-            >
-              <div class="receta-card-photo">
-                <img src={r.imagen} alt={r.alt} loading="lazy" />
-                {r.destacado && (
-                  <span class="receta-card-imperdible">
-                    <Icon name="star" size={12} color="var(--text-on-brand)" /> Imperdible
-                  </span>
-                )}
-              </div>
-              <div class="receta-card-body">
-                <div class="receta-card-badges">
-                  <Badge tone="neutral">{r.tiempo}</Badge>
-                  <Badge tone="neutral">{r.dificultad}</Badge>
-                </div>
-                <h3>{r.title}</h3>
-                <p class="receta-card-desc">{r.seoDescripcion}</p>
-                <span class="receta-card-cta">
-                  Ver receta <Icon name="arrow-right" size={13} />
-                </span>
-              </div>
-            </Card>
-          );
-        })
-      }
-    </div>
-
-    <div class="recetas-comunidad">
-      <h3>¿Qué harías tú con un lulo?</h3>
-      <p>
-        Si tienes una receta propia con lulo, cuéntanosla escribiendo a{" "}
-        <a href="mailto:hola@comounlulo.co">hola@comounlulo.co</a>. Las
-        mejores pueden sumarse a esta colección.
+      <p class="recetas-nota">
+        Cuando una receta se inspira en una fuente externa, se identifica como
+        adaptación dentro de su ficha. Antes de preparar cualquier receta con
+        pescado, mariscos o alcohol, revisa las notas de seguridad e inocuidad
+        indicadas.
       </p>
     </div>
-
-    <p class="recetas-nota">
-      Cuando una receta se inspira en una fuente externa, se identifica como
-      adaptación dentro de su ficha. Antes de preparar cualquier receta con
-      pescado, mariscos o alcohol, revisa las notas de seguridad e inocuidad
-      indicadas.
-    </p>
   </div>
 </section>
 

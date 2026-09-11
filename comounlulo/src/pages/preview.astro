@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import Inicio from "../sections/Inicio.astro";
 import PorQueLulo from "../sections/PorQueLulo.astro";
 import Manifiesto from "../sections/Manifiesto.astro";
+import TresCaminos from "../sections/TresCaminos.astro";
 import Recetas from "../sections/Recetas.astro";
 import Belleza from "../sections/Belleza.astro";
 import Bienestar from "../sections/Bienestar.astro";
@@ -18,18 +19,67 @@ import Tienda from "../sections/Tienda.astro";
   lanzar de verdad, el contenido de este archivo pasa a ser el de
   index.astro y este archivo se retira.
 
-  Estructura por pilares: Cocina (Recetas) → Belleza (B01-B12) →
-  Bienestar (S01-S12), en ese orden, siguiendo la navegación. Los tips
-  genéricos de hábitos (Tips.astro, src/content/tips/) quedan en el
-  repo sin ruta pública — no se perdieron, solo se desvincularon al
-  reenfocar Bienestar en la ciencia del lulo.
+  Estructura por pilares: TresCaminos (intro) → Cocina (B01-B12) →
+  Belleza (B01-B12) → Bienestar (S01-S12), en ese orden, siguiendo la
+  navegación. Cada pilar arranca colapsado (solo título + frase) para no
+  alargar la página; el visitante elige cuál abrir desde la intro, el nav
+  o el botón propio de cada sección — solo un pilar queda abierto a la
+  vez (acordeón). Los tips genéricos de hábitos (Tips.astro,
+  src/content/tips/) quedan en el repo sin ruta pública — no se
+  perdieron, solo se desvincularon al reenfocar Bienestar en la ciencia
+  del lulo.
 -->
 <Base noindex={true}>
   <Inicio />
   <PorQueLulo />
   <Manifiesto />
+  <TresCaminos />
   <Recetas />
   <Belleza />
   <Bienestar />
   <Tienda />
 </Base>
+
+<script>
+  const PILARES = ["cocina", "belleza", "bienestar"];
+
+  function setPilarOpen(id: string, open: boolean) {
+    const toggle = document.querySelector<HTMLButtonElement>(`[data-pilar-toggle="${id}"]`);
+    const panel = document.getElementById(`${id}-panel`);
+    if (!toggle || !panel) return;
+    toggle.setAttribute("aria-expanded", String(open));
+    panel.hidden = !open;
+    const label = toggle.querySelector<HTMLElement>(".pilar-toggle-label");
+    if (label) {
+      label.textContent = open
+        ? (toggle.dataset.labelClose ?? "Ocultar")
+        : (toggle.dataset.labelOpen ?? "Ver más");
+    }
+  }
+
+  function openOnly(id: string) {
+    PILARES.forEach((p) => setPilarOpen(p, p === id));
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-pilar-toggle]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.pilarToggle!;
+      const isOpen = btn.getAttribute("aria-expanded") === "true";
+      if (isOpen) {
+        setPilarOpen(id, false);
+      } else {
+        openOnly(id);
+      }
+    });
+  });
+
+  function openFromHash() {
+    const id = location.hash.replace("#", "");
+    if (PILARES.includes(id)) {
+      openOnly(id);
+    }
+  }
+
+  window.addEventListener("hashchange", openFromHash);
+  openFromHash();
+</script>

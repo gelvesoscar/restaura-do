@@ -1,0 +1,53 @@
+---
+interface Props {
+  pilar: string;
+  labelOpen: string;
+  labelClose?: string;
+}
+
+const { pilar, labelOpen, labelClose = "Ocultar" } = Astro.props;
+---
+
+<button
+  type="button"
+  class="pilar-toggle"
+  data-pilar-toggle={pilar}
+  aria-expanded="false"
+  aria-controls={`${pilar}-panel`}
+  data-label-open={labelOpen}
+  data-label-close={labelClose}
+>
+  <span class="pilar-toggle-label">{labelOpen}</span>
+  <span class="pilar-toggle-chevron" aria-hidden="true">⌄</span>
+</button>
+
+<style>
+  .pilar-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--brand);
+    color: var(--text-on-brand);
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    font-weight: var(--fw-medium);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: var(--transition-base);
+    margin-bottom: var(--space-8);
+  }
+  .pilar-toggle:hover {
+    background: var(--brand-strong);
+  }
+  .pilar-toggle-chevron {
+    display: inline-block;
+    font-size: 1.1em;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .pilar-toggle[aria-expanded="true"] .pilar-toggle-chevron {
+    transform: rotate(180deg);
+  }
+</style>

@@ -5,6 +5,7 @@ import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import Tag from "../components/Tag.astro";
+import PilarToggle from "../components/PilarToggle.astro";
 
 const temasRaw = await getCollection("bienestar");
 const temas = temasRaw.sort((a, b) => a.data.order - b.data.order);
@@ -29,53 +30,57 @@ const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Orig
       lead="Bienestar traduce ciencia nutricional a lenguaje cotidiano sin convertir el alimento en medicamento. Cada contenido diferencia composición, plausibilidad biológica, evidencia in vitro y evidencia clínica."
     />
 
-    <div class="bienestar-filtros" role="group" aria-label="Filtrar por tipo de contenido">
-      {
-        CATEGORIAS.map((cat, i) => (
-          <Tag category={cat} selected={i === 0}>
-            {cat}
-          </Tag>
-        ))
-      }
-    </div>
+    <PilarToggle pilar="bienestar" labelOpen="Ver los 12 temas" />
 
-    <div class="bienestar-grid">
-      {
-        temas.map((t) => {
-          const d = t.data;
-          const cat = badgeTipo(d.tipo);
-          return (
-            <Card
-              elevation="xs"
-              padding="0"
-              class="bienestar-card"
-              data-category={cat}
-              as="a"
-              href={`/bienestar/${t.id}`}
-            >
-              <div class="bienestar-card-photo">
-                <img src={d.imagen} alt={d.alt} loading="lazy" />
-                <span class="bienestar-card-codigo">{d.codigo}</span>
-              </div>
-              <div class="bienestar-card-body">
-                <Badge tone="pulpa">{cat}</Badge>
-                <h3>{d.title}</h3>
-                <p class="bienestar-card-desc">{d.foco}</p>
-                <span class="bienestar-card-cta">
-                  Leer <Icon name="arrow-right" size={13} />
-                </span>
-              </div>
-            </Card>
-          );
-        })
-      }
-    </div>
+    <div id="bienestar-panel" class="bienestar-panel" hidden>
+      <div class="bienestar-filtros" role="group" aria-label="Filtrar por tipo de contenido">
+        {
+          CATEGORIAS.map((cat, i) => (
+            <Tag category={cat} selected={i === 0}>
+              {cat}
+            </Tag>
+          ))
+        }
+      </div>
 
-    <p class="bienestar-nota">
-      Estas notas describen ciencia nutricional y hábitos cotidianos. No
-      diagnostican, no tratan ni curan condiciones, y no sustituyen la
-      orientación de un profesional de la salud.
-    </p>
+      <div class="bienestar-grid">
+        {
+          temas.map((t) => {
+            const d = t.data;
+            const cat = badgeTipo(d.tipo);
+            return (
+              <Card
+                elevation="xs"
+                padding="0"
+                class="bienestar-card"
+                data-category={cat}
+                as="a"
+                href={`/bienestar/${t.id}`}
+              >
+                <div class="bienestar-card-photo">
+                  <img src={d.imagen} alt={d.alt} loading="lazy" />
+                  <span class="bienestar-card-codigo">{d.codigo}</span>
+                </div>
+                <div class="bienestar-card-body">
+                  <Badge tone="pulpa">{cat}</Badge>
+                  <h3>{d.title}</h3>
+                  <p class="bienestar-card-desc">{d.foco}</p>
+                  <span class="bienestar-card-cta">
+                    Leer <Icon name="arrow-right" size={13} />
+                  </span>
+                </div>
+              </Card>
+            );
+          })
+        }
+      </div>
+
+      <p class="bienestar-nota">
+        Estas notas describen ciencia nutricional y hábitos cotidianos. No
+        diagnostican, no tratan ni curan condiciones, y no sustituyen la
+        orientación de un profesional de la salud.
+      </p>
+    </div>
   </div>
 </section>
 

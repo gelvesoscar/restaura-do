@@ -5,6 +5,7 @@ import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import Tag from "../components/Tag.astro";
+import PilarToggle from "../components/PilarToggle.astro";
 
 const conceptosRaw = await getCollection("belleza");
 const conceptos = conceptosRaw.sort((a, b) => a.data.order - b.data.order);
@@ -34,65 +35,69 @@ const CATEGORIAS = [
       lead="No es una colección de remedios caseros. Es una exploración responsable de cómo la pulpa, la cáscara y la semilla del lulo pueden inspirar cosmética contemporánea. Cada concepto se clasifica como ritual, inspiración cosmética, producto potencial o I+D."
     />
 
-    <div class="regla-de-oro">
-      <span class="eyebrow">Regla de oro</span>
-      <p class="regla-quote">
-        “Potencial bioactivo ≠ beneficio clínico demostrado.”
+    <PilarToggle pilar="belleza" labelOpen="Ver los 12 conceptos" />
+
+    <div id="belleza-panel" class="belleza-panel" hidden>
+      <div class="regla-de-oro">
+        <span class="eyebrow">Regla de oro</span>
+        <p class="regla-quote">
+          “Potencial bioactivo ≠ beneficio clínico demostrado.”
+        </p>
+        <p class="regla-nota">
+          No convertimos resultados de laboratorio (in vitro) en promesas
+          cosméticas o terapéuticas. Cuando un concepto todavía no tiene
+          pruebas propias, lo decimos.
+        </p>
+      </div>
+
+      <div class="belleza-filtros" role="group" aria-label="Filtrar por tipo de concepto">
+        {
+          CATEGORIAS.map((cat, i) => (
+            <Tag category={cat} selected={i === 0}>
+              {cat}
+            </Tag>
+          ))
+        }
+      </div>
+
+      <div class="belleza-grid">
+        {
+          conceptos.map((c) => {
+            const d = c.data;
+            const cat = badgeTipo(d.tipo);
+            return (
+              <Card
+                elevation="xs"
+                padding="0"
+                class="belleza-card"
+                data-category={cat}
+                as="a"
+                href={`/belleza/${c.id}`}
+              >
+                <div class="belleza-card-photo">
+                  <img src={d.imagen} alt={d.alt} loading="lazy" />
+                  <span class="belleza-card-codigo">{d.codigo}</span>
+                </div>
+                <div class="belleza-card-body">
+                  <Badge tone="brand">{cat}</Badge>
+                  <h3>{d.title}</h3>
+                  <p class="belleza-card-desc">{d.foco}</p>
+                  <span class="belleza-card-cta">
+                    Ver concepto <Icon name="arrow-right" size={13} />
+                  </span>
+                </div>
+              </Card>
+            );
+          })
+        }
+      </div>
+
+      <p class="belleza-nota">
+        Estos son conceptos de dirección de marca y de producto, no un
+        catálogo a la venta. Antes de aplicar cualquier ingrediente nuevo
+        sobre la piel, haz una prueba de sensibilidad.
       </p>
-      <p class="regla-nota">
-        No convertimos resultados de laboratorio (in vitro) en promesas
-        cosméticas o terapéuticas. Cuando un concepto todavía no tiene
-        pruebas propias, lo decimos.
-      </p>
     </div>
-
-    <div class="belleza-filtros" role="group" aria-label="Filtrar por tipo de concepto">
-      {
-        CATEGORIAS.map((cat, i) => (
-          <Tag category={cat} selected={i === 0}>
-            {cat}
-          </Tag>
-        ))
-      }
-    </div>
-
-    <div class="belleza-grid">
-      {
-        conceptos.map((c) => {
-          const d = c.data;
-          const cat = badgeTipo(d.tipo);
-          return (
-            <Card
-              elevation="xs"
-              padding="0"
-              class="belleza-card"
-              data-category={cat}
-              as="a"
-              href={`/belleza/${c.id}`}
-            >
-              <div class="belleza-card-photo">
-                <img src={d.imagen} alt={d.alt} loading="lazy" />
-                <span class="belleza-card-codigo">{d.codigo}</span>
-              </div>
-              <div class="belleza-card-body">
-                <Badge tone="brand">{cat}</Badge>
-                <h3>{d.title}</h3>
-                <p class="belleza-card-desc">{d.foco}</p>
-                <span class="belleza-card-cta">
-                  Ver concepto <Icon name="arrow-right" size={13} />
-                </span>
-              </div>
-            </Card>
-          );
-        })
-      }
-    </div>
-
-    <p class="belleza-nota">
-      Estos son conceptos de dirección de marca y de producto, no un
-      catálogo a la venta. Antes de aplicar cualquier ingrediente nuevo
-      sobre la piel, haz una prueba de sensibilidad.
-    </p>
   </div>
 </section>
 
