@@ -1,6 +1,13 @@
 ---
 import Wordmark from "./Wordmark.astro";
+import Icon from "./Icon.astro";
 import { SECCIONES } from "../data/sections";
+
+// Número real de WhatsApp de la marca, confirmado por Oscar. El mensaje
+// predeterminado va codificado en la URL para que el chat no arranque vacío.
+const WHATSAPP_NUMERO = "573138955486";
+const WHATSAPP_MENSAJE = encodeURIComponent("Hola, quiero saber más sobre comounlulo");
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMERO}?text=${WHATSAPP_MENSAJE}`;
 ---
 
 <footer class="site-footer">
@@ -25,6 +32,10 @@ import { SECCIONES } from "../data/sections";
       <span>hola@comounlulo.co</span>
       <span>Bogotá, Colombia</span>
       <a href="https://www.instagram.com/comounlulo.co" target="_blank" rel="noopener">@comounlulo.co</a>
+      <a href={WHATSAPP_URL} target="_blank" rel="noopener" class="footer-whatsapp">
+        <Icon name="message-circle" size={14} color="var(--cream-300)" />
+        WhatsApp
+      </a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -73,6 +84,11 @@ import { SECCIONES } from "../data/sections";
     font-size: var(--fs-body-sm);
     color: var(--cream-300);
     border-bottom: none;
+  }
+  .footer-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
   }
   .footer-col a:hover {
     color: var(--cream-100);
