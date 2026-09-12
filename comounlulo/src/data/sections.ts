@@ -7,6 +7,7 @@ const TODAS_LAS_SECCIONES = [
   ["lulo", "Por qué el lulo"],
   ["manifiesto", "Verse como un lulo"],
   ["fundadores", "Fundadores"],
+  ["caminos", "Tres formas de vivirla"],
   ["cocina", "Cocina"],
   ["belleza", "Belleza"],
   ["bienestar", "Bienestar"],
@@ -20,8 +21,9 @@ export const SECCIONES = TODAS_LAS_SECCIONES.filter(
 
 // Subconjunto para el menú de arriba (header + panel móvil). Cocina, Belleza
 // y Bienestar ya tienen su propio acceso directo en "Una fruta. Tres formas
-// de descubrirla." (TresCaminos), y Fundadores se abre desde el botón del
-// Manifiesto ("Conócenos, nuestra historia completa"), así que no se repiten
-// aquí arriba.
+// de descubrirla." (TresCaminos, id "caminos", que sí tiene su propio ítem de
+// nav más abajo), y Fundadores se abre desde el botón del Manifiesto
+// ("Conócenos, nuestra historia completa"), así que no se repiten aquí
+// arriba.
 const OCULTAR_DEL_MENU = new Set(["fundadores", "cocina", "belleza", "bienestar"]);
 export const NAV_SECCIONES = SECCIONES.filter(([id]) => !OCULTAR_DEL_MENU.has(id));
