@@ -1,11 +1,9 @@
 ---
 import { getCollection } from "astro:content";
-import SectionHead from "../components/SectionHead.astro";
 import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import Tag from "../components/Tag.astro";
-import PilarToggle from "../components/PilarToggle.astro";
 
 const temasRaw = await getCollection("bienestar");
 const temas = temasRaw.sort((a, b) => a.data.order - b.data.order);
@@ -22,18 +20,14 @@ function badgeTipo(tipo: string) {
 const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Origen"];
 ---
 
-<section id="bienestar" class="bienestar">
+<section id="bienestar" class="bienestar" hidden>
   <div class="bienestar-inner">
-    <SectionHead
-      eyebrow="Bienestar"
-      title="El lulo también se entiende."
-      lead="Bienestar traduce ciencia nutricional a lenguaje cotidiano sin convertir el alimento en medicamento. Cada contenido diferencia composición, plausibilidad biológica, evidencia in vitro y evidencia clínica."
-    />
+    <button type="button" class="pilar-close" data-pilar-close="bienestar">
+      <Icon name="x" size={14} />
+      Ocultar esta sección
+    </button>
 
-    <PilarToggle pilar="bienestar" labelOpen={`Ver los ${temas.length} temas`} />
-
-    <div id="bienestar-panel" class="bienestar-panel" hidden>
-      <div class="bienestar-filtros" role="group" aria-label="Filtrar por tipo de contenido">
+    <div class="bienestar-filtros" role="group" aria-label="Filtrar por tipo de contenido">
         {
           CATEGORIAS.map((cat, i) => (
             <Tag category={cat} selected={i === 0}>
@@ -75,12 +69,11 @@ const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Orig
         }
       </div>
 
-      <p class="bienestar-nota">
-        Estas notas describen ciencia nutricional y hábitos cotidianos. No
-        diagnostican, no tratan ni curan condiciones, y no sustituyen la
-        orientación de un profesional de la salud.
-      </p>
-    </div>
+    <p class="bienestar-nota">
+      Estas notas describen ciencia nutricional y hábitos cotidianos. No
+      diagnostican, no tratan ni curan condiciones, y no sustituyen la
+      orientación de un profesional de la salud.
+    </p>
   </div>
 </section>
 
@@ -95,6 +88,25 @@ const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Orig
     max-width: var(--max-content);
     margin: 0 auto;
     padding: var(--section-y) var(--gutter-page);
+  }
+  .pilar-close {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0;
+    margin-bottom: var(--space-8);
+    transition: var(--transition-base);
+  }
+  .pilar-close:hover {
+    color: var(--text-strong);
   }
 
   .bienestar-filtros {

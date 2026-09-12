@@ -22,14 +22,16 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
   lanzar de verdad, el contenido de este archivo pasa a ser el de
   index.astro y este archivo se retira.
 
-  Estructura por pilares: TresCaminos (intro, "Una fruta. Tres formas de
+  Estructura por pilares: TresCaminos ("Una fruta. Tres formas de
   descubrirla.") → Cocina (B01-B12) → Belleza (B01-B12) → Bienestar
-  (S01-S12), en ese orden. TresCaminos es el acceso directo a esas 3
-  secciones (por eso Cocina/Belleza/Bienestar no se repiten en el menú de
-  arriba — ver NAV_SECCIONES en src/data/sections.ts). Cada pilar arranca
-  colapsado (solo título + frase) para no alargar la página; el visitante
-  elige cuál abrir desde TresCaminos, el menú o el botón propio de cada
-  sección — solo un pilar queda abierto a la vez (acordeón). Los tips
+  (S01-S12), en ese orden. TresCaminos es la ÚNICA puerta de entrada a
+  esas 3 secciones: cada una arranca oculta (atributo hidden en la propia
+  section, sin título ni botón propio) y solo se abre al hacer clic en
+  "Explorar Cocina/Belleza/Bienestar" desde TresCaminos (o llegando con
+  ese hash en la URL, por ejemplo desde el enlace del footer). Por eso
+  tampoco se repiten en el menú de arriba (ver NAV_SECCIONES en
+  src/data/sections.ts). Cada sección trae su propio botón "Ocultar esta
+  sección" para cerrarla; solo una queda abierta a la vez. Los tips
   genéricos de hábitos (Tips.astro, src/content/tips/) quedan en el repo
   sin ruta pública — no se perdieron, solo se desvincularon al reenfocar
   Bienestar en la ciencia del lulo.
@@ -58,39 +60,46 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
   const PILARES = ["cocina", "belleza", "bienestar"];
 
   function setPilarOpen(id: string, open: boolean) {
-    const toggle = document.querySelector<HTMLButtonElement>(`[data-pilar-toggle="${id}"]`);
-    const panel = document.getElementById(`${id}-panel`);
-    if (!toggle || !panel) return;
-    toggle.setAttribute("aria-expanded", String(open));
-    panel.hidden = !open;
-    const label = toggle.querySelector<HTMLElement>(".pilar-toggle-label");
-    if (label) {
-      label.textContent = open
-        ? (toggle.dataset.labelClose ?? "Ocultar")
-        : (toggle.dataset.labelOpen ?? "Ver más");
+    const section = document.getElementById(id);
+    if (!section) return;
+    section.hidden = !open;
+  }
+
+  function openPilar(id: string) {
+    PILARES.forEach((p) => setPilarOpen(p, p === id));
+    history.replaceState(null, "", `#${id}`);
+    const section = document.getElementById(id);
+    if (section) {
+      requestAnimationFrame(() => {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
     }
   }
 
-  function openOnly(id: string) {
-    PILARES.forEach((p) => setPilarOpen(p, p === id));
+  function closePilar(id: string) {
+    setPilarOpen(id, false);
+    history.replaceState(null, "", "#caminos");
+    const caminos = document.getElementById("caminos");
+    if (caminos) {
+      caminos.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
-  document.querySelectorAll<HTMLButtonElement>("[data-pilar-toggle]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const id = btn.dataset.pilarToggle!;
-      const isOpen = btn.getAttribute("aria-expanded") === "true";
-      if (isOpen) {
-        setPilarOpen(id, false);
-      } else {
-        openOnly(id);
-      }
+  document.querySelectorAll<HTMLAnchorElement>("[data-pilar-open]").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      openPilar(link.dataset.pilarOpen!);
     });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-pilar-close]").forEach((btn) => {
+    btn.addEventListener("click", () => closePilar(btn.dataset.pilarClose!));
   });
 
   function openFromHash() {
     const id = location.hash.replace("#", "");
     if (PILARES.includes(id)) {
-      openOnly(id);
+      openPilar(id);
     }
   }
 

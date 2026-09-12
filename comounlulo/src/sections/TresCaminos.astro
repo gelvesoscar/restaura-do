@@ -42,7 +42,7 @@ const CAMINOS = [
             <span class="camino-eyebrow">{c.eyebrow}</span>
             <h3>{c.titulo}</h3>
             <p>{c.texto}</p>
-            <a href={`#${c.id}`} class="camino-cta">
+            <a href={`#${c.id}`} class="camino-cta" data-pilar-open={c.id}>
               {c.cta} <Icon name="arrow-right" size={13} />
             </a>
           </div>
