@@ -6,6 +6,7 @@ queSabemos: 'El lulo aporta agua, carbohidratos naturales y minerales. Puede for
 comoAprovecharlo: 'Combínalo, por ejemplo, con yogur natural o una fuente de proteína si buscas un snack más completo.'
 queNoAfirmamos: 'No atribuir aumento de rendimiento, recuperación acelerada ni efecto electrolítico superior a bebidas formuladas.'
 conceptoVisual: 'Vaso de lulo poco azucarado junto a tenis y toalla en ambiente luminoso; alimento real, no bebida deportiva comercial.'
+imagen: '/images/salud/h10-antes-despues-moverte.webp'
 alt: 'Vaso de lulo poco azucarado junto a tenis y toalla en ambiente luminoso, alimento real, no bebida deportiva comercial.'
 order: 10
 ---

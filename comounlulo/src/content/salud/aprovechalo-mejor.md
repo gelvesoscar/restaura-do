@@ -6,6 +6,7 @@ queSabemos: 'La mejor conclusión no es buscar una dosis milagrosa: es aprovecha
 comoAprovecharlo: 'Rota entre fruta macerada, bowls, bebidas poco endulzadas, salsas y recetas de Cocina Como un Lulo.'
 queNoAfirmamos: 'No fijar una frecuencia o dosis universal. Las necesidades cambian entre personas.'
 conceptoVisual: 'Mesa contemporánea con varias formas reales de consumir lulo: fruta abierta, bowl, vaso y salsa; cierre aspiracional pero alcanzable.'
+imagen: '/images/salud/h12-aprovechalo-mejor.webp'
 alt: 'Mesa contemporánea con varias formas reales de consumir lulo: fruta abierta, bowl, vaso y salsa, cierre aspiracional pero alcanzable.'
 order: 12
 ---

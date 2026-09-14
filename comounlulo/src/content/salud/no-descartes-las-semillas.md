@@ -6,6 +6,7 @@ queSabemos: 'Las semillas representaron cerca del 11,8% del peso del fruto estud
 comoAprovecharlo: 'Cuando la preparación lo permita, conservar las semillas evita desechar automáticamente una parte interesante del fruto.'
 queNoAfirmamos: 'No afirmar que comer semillas aporta una dosis terapéutica de espermidina ni beneficios anti-aging demostrados.'
 conceptoVisual: 'Macro editorial de semillas reales dentro de la pulpa del lulo, con algunas semillas separadas en pequeña cuchara de cerámica.'
+imagen: '/images/salud/h06-no-descartes-semillas.webp'
 alt: 'Macro editorial de semillas reales dentro de la pulpa del lulo, con algunas semillas separadas en pequeña cuchara de cerámica.'
 order: 6
 ---
