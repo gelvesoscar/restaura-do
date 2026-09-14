@@ -13,15 +13,15 @@ const PRECIO = 179000;
 
 const SKU = {
   nombre: "Botella inteligente comounlulo",
-  variante: "500 o 750 ml, capacidad por confirmar · interior en acero inoxidable 316, exterior en 304 · doble pared al vacío",
-  colores: ["Noche (negro)", "Pulpa clara (blanco)", "Flor (rosa)", "Agua (azul)"],
+  variante: "500 ml (7 × 24,5 cm) o 750 ml (7,7 × 27 cm) · interior en acero inoxidable SUS316L, exterior en SUS304 · doble pared al vacío",
+  colores: ["Noche (negro)", "Pulpa clara (blanco)", "Flor (rosa)", "Agua (azul claro)"],
   bullets: [
     "Recordatorio de toma: vibra y se ilumina cuando llevas mucho tiempo sin tomar agua. El intervalo lo defines tú desde la app, no es un tiempo fijo de fábrica.",
     "Pantalla de temperatura: un toque y el aro de la tapa muestra la temperatura exacta del agua, en grados centígrados o Fahrenheit.",
-    "Esterilización UV-C: un LED en la tapa mantiene limpio el interior de la botella, sin químicos ni pastillas. El ciclo se programa por horario y se ajusta en duración desde la app, a diferencia de otras botellas UV con ciclo fijo de 180 segundos.",
+    "Esterilización UV-C: un LED de 260 a 280 nanómetros (15 mW) en la tapa mantiene limpio el interior de la botella, sin químicos ni pastillas. El ciclo se programa por horario y se ajusta en duración desde la app, a diferencia de otras botellas UV con ciclo fijo de 180 segundos.",
     "Doble pared al vacío: la misma construcción de un termo. Mantiene fría el agua o el jugo de lulo, y caliente lo que va caliente.",
     "App por Bluetooth: consumo del día, recordatorios y desinfección programada, desde el celular.",
-    "Interior en acero inoxidable 316, exterior en 304, y carga USB-C: acero de grado alimenticio, manija de silicona, pintura resistente a rayones.",
+    "Interior en acero inoxidable SUS316L, exterior en SUS304, batería de litio de 800 mAh y carga USB-C: acero de grado alimenticio, manija de silicona, pintura resistente a rayones.",
   ],
 };
 
@@ -81,7 +81,13 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
           </div>
 
           <form id="reserva-form" class="reserva-form">
-            <Select label="Color de tu interés" id="reserva-color" name="color" options={SKU.colores} />
+            <Select
+              label="Color de tu interés"
+              id="reserva-color"
+              name="color"
+              options={SKU.colores}
+              hint="También hay mezcla de colores disponible en un mismo pedido."
+            />
             <Input
               label="Correo"
               type="email"
