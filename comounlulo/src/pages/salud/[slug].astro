@@ -1,0 +1,232 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+
+export async function getStaticPaths() {
+  const items = await getCollection("salud");
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const s = item.data;
+
+const seoDescripcion = `${s.enfoque}. ${s.queSabemos}`.slice(0, 155);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: s.title,
+  description: seoDescripcion,
+  ...(s.imagen ? { image: `https://comounlulo.co${s.imagen}` } : {}),
+  articleSection: "Salud",
+};
+---
+
+<Base
+  title={`${s.title}: comounlulo.co`}
+  description={seoDescripcion}
+  noindex={true}
+  image={s.imagen ? `https://comounlulo.co${s.imagen}` : undefined}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  <article class="salud-articulo">
+    <div class="salud-articulo-inner">
+      <a href="/preview/#salud" class="salud-back">
+        <Icon name="arrow-left" size={14} /> Todos los temas de Salud
+      </a>
+
+      <div class="salud-foto">
+        {s.imagen ? (
+          <img src={s.imagen} alt={s.alt} loading="eager" />
+        ) : (
+          <span class="salud-foto-todo">TODO: {s.conceptoVisual}</span>
+        )}
+        <span class="salud-codigo">{s.codigo}</span>
+      </div>
+
+      <h1>{s.title}</h1>
+      <p class="salud-enfoque">{s.enfoque}</p>
+
+      <div class="salud-bloque salud-sabemos">
+        <span class="salud-bloque-label">
+          <Icon name="flask-conical" size={16} color="var(--green-700)" /> Qué sabemos
+        </span>
+        <p>{s.queSabemos}</p>
+      </div>
+
+      <div class="salud-bloque salud-aprovecha">
+        <span class="salud-bloque-label salud-bloque-label-aprovecha">
+          <Icon name="lightbulb" size={16} color="var(--orange-700)" /> Cómo aprovecharlo
+        </span>
+        <p>{s.comoAprovecharlo}</p>
+      </div>
+
+      <div class="salud-bloque salud-no-afirmamos">
+        <span class="salud-bloque-label salud-bloque-label-neutral">
+          <Icon name="shield-alert" size={16} color="var(--text-muted)" /> Qué no podemos afirmar todavía
+        </span>
+        <p>{s.queNoAfirmamos}</p>
+      </div>
+
+      <p class="salud-fuente">
+        Fuente científica de referencia: Añibarro-Ortega M. et al. (2025).
+        <em>
+          Nutrients, Phytochemicals, and In Vitro Antioxidant and
+          Antimicrobial Activities of Lulo (Solanum quitoense Lam.) Fruit
+          Pulp, Peel, and Seeds.
+        </em>{" "}
+        Foods 14(12):2083. <a href="https://doi.org/10.3390/foods14122083" target="_blank" rel="noopener noreferrer">DOI 10.3390/foods14122083</a>.
+        Los valores citados varían por cultivo, madurez, origen y método
+        analítico.
+      </p>
+
+      <p class="salud-nota-general">
+        Salud traduce ciencia nutricional a lenguaje cotidiano sin convertir
+        el alimento en medicamento. Estas notas no diagnostican, no tratan ni
+        curan condiciones, y no sustituyen la orientación de un profesional
+        de la salud.
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .salud-articulo {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+  .salud-articulo-inner {
+    max-width: 68ch;
+    margin: 0 auto;
+  }
+  .salud-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-link);
+    text-decoration: none;
+    margin-bottom: var(--space-6);
+  }
+  .salud-foto {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--border-hairline);
+    aspect-ratio: 4 / 3;
+    margin-bottom: var(--space-5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-lulo);
+  }
+  .salud-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .salud-foto-todo {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: rgba(255, 255, 255, 0.92);
+    text-align: center;
+    max-width: 32ch;
+    padding: var(--space-6);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+  .salud-codigo {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    background: rgba(31, 43, 26, 0.55);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+  }
+  .salud-articulo h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-display-m);
+    line-height: var(--lh-heading);
+    color: var(--text-strong);
+    margin: 0 0 var(--space-3);
+  }
+  .salud-enfoque {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text-muted);
+    margin: 0 0 var(--space-8);
+  }
+  .salud-bloque {
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    margin-bottom: var(--space-5);
+  }
+  .salud-bloque p {
+    margin: 0;
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+  }
+  .salud-bloque-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    color: var(--green-700);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-eyebrow);
+    margin-bottom: var(--space-2);
+  }
+  .salud-bloque-label-aprovecha {
+    color: var(--orange-700);
+  }
+  .salud-bloque-label-neutral {
+    color: var(--text-muted);
+  }
+  .salud-sabemos {
+    background: var(--accent-soft);
+  }
+  .salud-aprovecha {
+    background: var(--brand-soft);
+  }
+  .salud-no-afirmamos {
+    background: var(--cream-200);
+  }
+  .salud-fuente {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0 0 var(--space-6);
+  }
+  .salud-fuente a {
+    color: var(--text-link);
+  }
+  .salud-nota-general {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    line-height: var(--lh-body);
+    margin: 0;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-hairline);
+  }
+  @media (max-width: 700px) {
+    .salud-articulo h1 {
+      font-size: var(--fs-title);
+    }
+  }
+</style>

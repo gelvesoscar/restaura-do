@@ -3,12 +3,13 @@ import Base from "../layouts/Base.astro";
 import IntroCinematico from "../components/IntroCinematico.astro";
 import Inicio from "../sections/Inicio.astro";
 import PorQueLulo from "../sections/PorQueLulo.astro";
+import Conocerla from "../sections/Conocerla.astro";
 import Manifiesto from "../sections/Manifiesto.astro";
 import Fundadores from "../sections/Fundadores.astro";
 import TresCaminos from "../sections/TresCaminos.astro";
 import Recetas from "../sections/Recetas.astro";
 import Belleza from "../sections/Belleza.astro";
-import Bienestar from "../sections/Bienestar.astro";
+import Salud from "../sections/Salud.astro";
 import Tienda from "../sections/Tienda.astro";
 import { MOSTRAR_FUNDADORES } from "../data/sections";
 ---
@@ -23,18 +24,27 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
   index.astro y este archivo se retira.
 
   Estructura por pilares: TresCaminos ("Una fruta. Tres formas de
-  descubrirla.") → Cocina (B01-B12) → Belleza (B01-B12) → Bienestar
-  (S01-S12), en ese orden. TresCaminos es la ÚNICA puerta de entrada a
+  descubrirla.") → Cocina (B01-B12) → Belleza (B01-B12) → Salud
+  (H01-H12), en ese orden. TresCaminos es la ÚNICA puerta de entrada a
   esas 3 secciones: cada una arranca oculta (atributo hidden en la propia
   section, sin título ni botón propio) y solo se abre al hacer clic en
-  "Explorar Cocina/Belleza/Bienestar" desde TresCaminos (o llegando con
+  "Explorar Cocina/Belleza/Salud" desde TresCaminos (o llegando con
   ese hash en la URL, por ejemplo desde el enlace del footer). Por eso
   tampoco se repiten en el menú de arriba (ver NAV_SECCIONES en
   src/data/sections.ts). Cada sección trae su propio botón "Ocultar esta
   sección" para cerrarla; solo una queda abierta a la vez. Los tips
   genéricos de hábitos (Tips.astro, src/content/tips/) quedan en el repo
   sin ruta pública — no se perdieron, solo se desvincularon al reenfocar
-  Bienestar en la ciencia del lulo.
+  este pilar en la ciencia del lulo.
+
+  Conocerla es distinta: es lo que antes vivía como pilar "Bienestar"
+  dentro de Tres Caminos (los 12 artículos S01-S12 sobre ciencia
+  nutricional y hábitos), promovida a sección propia y siempre visible,
+  con su propio ítem de nav, entre Por qué el lulo y el Manifiesto. Ya
+  no se abre ni se cierra: siempre está ahí. Salud (H01-H12) es contenido
+  nuevo y distinto, con mucho más rigor por artículo (composición medida
+  vs. función vs. in vitro vs. clínico), y ocupa el lugar que Bienestar
+  tenía como tercer pilar de Tres Caminos.
 
   Fundadores tampoco está en el menú de arriba: arranca oculta y se abre
   con el botón del Manifiesto ("Conócenos, nuestra historia completa"),
@@ -47,17 +57,18 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
   <IntroCinematico />
   <Inicio />
   <PorQueLulo />
+  <Conocerla />
   <Manifiesto />
   {MOSTRAR_FUNDADORES && <Fundadores />}
   <TresCaminos />
   <Recetas />
   <Belleza />
-  <Bienestar />
+  <Salud />
   <Tienda />
 </Base>
 
 <script>
-  const PILARES = ["cocina", "belleza", "bienestar"];
+  const PILARES = ["cocina", "belleza", "salud"];
 
   function setPilarOpen(id: string, open: boolean) {
     const section = document.getElementById(id);
