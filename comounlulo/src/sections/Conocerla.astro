@@ -1,8 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import SectionHead from "../components/SectionHead.astro";
-import Card from "../components/Card.astro";
-import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import Tag from "../components/Tag.astro";
 
@@ -18,7 +16,12 @@ function badgeTipo(tipo: string) {
   return tipo;
 }
 
-const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Origen"];
+const CATEGORIAS = ["Ciencia", "Nutrición", "Hábitos", "Mitos", "Origen"];
+
+const grupos = CATEGORIAS.map((cat) => ({
+  cat,
+  items: temas.filter((t) => badgeTipo(t.data.tipo) === cat),
+})).filter((g) => g.items.length > 0);
 ---
 
 <section id="conocerla" class="conocerla">
@@ -29,47 +32,63 @@ const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Orig
       lead="12 notas sobre la ciencia real del lulo, con fuente citada y sin promesas de más."
     />
 
-    <div class="conocerla-filtros" role="group" aria-label="Filtrar por tipo de contenido">
+    <div class="conocerla-layout" data-selected="Todos">
+      <nav class="conocerla-sidebar" aria-label="Filtrar notas de Conocerla por categoría">
+        <Tag category="Todos" selected={true} class="conocerla-sidebar-tag" data-cat-select="Todos">
+          <span>Todos</span>
+          <span class="conocerla-sidebar-count">{temas.length}</span>
+        </Tag>
         {
-          CATEGORIAS.map((cat, i) => (
-            <Tag category={cat} selected={i === 0}>
-              {cat}
+          grupos.map((g) => (
+            <Tag category={g.cat} class="conocerla-sidebar-tag" data-cat-select={g.cat}>
+              <span>{g.cat}</span>
+              <span class="conocerla-sidebar-count">{g.items.length}</span>
             </Tag>
           ))
         }
-      </div>
+      </nav>
 
-      <div class="conocerla-grid">
+      <div class="conocerla-list-panel">
         {
-          temas.map((t) => {
-            const d = t.data;
-            const cat = badgeTipo(d.tipo);
-            return (
-              <Card
-                elevation="xs"
-                padding="0"
-                class="conocerla-card"
-                data-category={cat}
-                as="a"
-                href={`/conocerla/${t.id}`}
+          grupos.map((g) => (
+            <div class="conocerla-cat-group" data-cat-panel={g.cat}>
+              <button
+                type="button"
+                class="conocerla-cat-header"
+                data-cat-toggle
+                aria-expanded="false"
+                aria-controls={`conocerla-items-${g.cat}`}
               >
-                <div class="conocerla-card-photo">
-                  <img src={d.imagen} alt={d.alt} loading="lazy" />
-                  <span class="conocerla-card-codigo">{d.codigo}</span>
-                </div>
-                <div class="conocerla-card-body">
-                  <Badge tone="pulpa">{cat}</Badge>
-                  <h3>{d.title}</h3>
-                  <p class="conocerla-card-desc">{d.foco}</p>
-                  <span class="conocerla-card-cta">
-                    Leer <Icon name="arrow-right" size={13} />
-                  </span>
-                </div>
-              </Card>
-            );
-          })
+                <span class="conocerla-cat-header-label">{g.cat}</span>
+                <span class="conocerla-cat-header-count">{g.items.length}</span>
+                <span class="conocerla-chevron">
+                  <Icon name="chevron-down" size={16} />
+                </span>
+              </button>
+              <ul class="conocerla-cat-items" id={`conocerla-items-${g.cat}`}>
+                {g.items.map((t) => {
+                  const d = t.data;
+                  return (
+                    <li>
+                      <a class="conocerla-row" href={`/conocerla/${t.id}`}>
+                        <span class="conocerla-row-photo">
+                          <img src={d.imagen} alt={d.alt} loading="lazy" />
+                        </span>
+                        <span class="conocerla-row-body">
+                          <span class="conocerla-row-title">{d.title}</span>
+                          <span class="conocerla-row-desc">{d.foco}</span>
+                        </span>
+                        <Icon name="arrow-right" size={14} />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))
         }
       </div>
+    </div>
 
     <p class="conocerla-nota">
       Estas notas describen ciencia nutricional y hábitos cotidianos. No
@@ -89,84 +108,138 @@ const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Orig
     padding: var(--section-y) var(--gutter-page);
   }
 
-  .conocerla-filtros {
-    display: flex;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-    margin-bottom: var(--space-6);
-  }
-
-  .conocerla-grid {
+  /* Layout: sidebar vertical (escritorio) + panel de listas */
+  .conocerla-layout {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-5);
+    grid-template-columns: 220px 1fr;
+    gap: var(--space-6);
+    align-items: start;
     margin-bottom: var(--space-8);
   }
-  .conocerla-card {
-    overflow: hidden;
-    gap: 0;
-    transition: var(--transition-base);
+
+  .conocerla-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    position: sticky;
+    top: 96px;
   }
-  .conocerla-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+  :global(.conocerla-sidebar-tag) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
   }
-  .conocerla-card[hidden] {
+  .conocerla-sidebar-count {
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    opacity: 0.65;
+  }
+
+  .conocerla-list-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .conocerla-cat-group[hidden] {
     display: none;
   }
-  .conocerla-card-photo {
-    position: relative;
-    aspect-ratio: 4 / 3;
+
+  .conocerla-cat-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0 0 var(--space-2) 0;
+    margin: 0;
+    font-family: var(--font-body);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-caption);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--orange-700);
+    text-align: left;
+    cursor: default;
+  }
+  .conocerla-cat-header-count {
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    color: var(--text-muted);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+  .conocerla-chevron {
+    display: none;
+    margin-left: auto;
+    transition: transform 0.2s ease;
+  }
+
+  .conocerla-cat-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .conocerla-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
     border: 1px solid var(--border-hairline);
-    border-width: 0 0 1px 0;
+    border-radius: var(--radius-lg);
+    background: var(--surface-card);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-base);
+  }
+  .conocerla-row:hover {
+    background: var(--cream-200);
+    box-shadow: var(--shadow-sm);
+  }
+  .conocerla-row-photo {
+    width: 56px;
+    height: 56px;
+    flex: none;
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
-  .conocerla-card-photo img {
+  .conocerla-row-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-  .conocerla-card-codigo {
-    position: absolute;
-    top: var(--space-2);
-    left: var(--space-2);
-    background: rgba(31, 43, 26, 0.55);
-    color: #fff;
-    font-family: var(--font-body);
-    font-size: 10px;
-    font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-eyebrow);
-    padding: 4px 9px;
-    border-radius: var(--radius-pill);
-  }
-  .conocerla-card-body {
-    padding: var(--space-5);
+  .conocerla-row-body {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
   }
-  .conocerla-card-body h3 {
+  .conocerla-row-title {
     font-family: var(--font-display);
-    font-size: var(--fs-subtitle);
+    font-size: var(--fs-body);
     line-height: var(--lh-heading);
-    margin: 0;
+    color: var(--text-strong);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .conocerla-card-desc {
-    font-family: var(--font-body);
-    font-size: var(--fs-body-sm);
-    line-height: var(--lh-body);
-    color: var(--text-body);
-    margin: 0;
-  }
-  .conocerla-card-cta {
+  .conocerla-row-desc {
     font-family: var(--font-body);
     font-size: var(--fs-caption);
-    color: var(--text-link);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: auto;
+    line-height: var(--lh-body);
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .conocerla-nota {
@@ -177,30 +250,62 @@ const CATEGORIAS = ["Todos", "Ciencia", "Nutrición", "Hábitos", "Mitos", "Orig
     margin: 0;
   }
 
+  /* Móvil / tablet angosta: la barra lateral se convierte en acordeón */
   @media (max-width: 900px) {
-    .conocerla-grid {
-      grid-template-columns: 1fr 1fr;
+    .conocerla-layout {
+      display: block;
     }
-  }
-  @media (max-width: 600px) {
-    .conocerla-grid {
-      grid-template-columns: 1fr;
+    .conocerla-sidebar {
+      display: none;
+    }
+    .conocerla-cat-header {
+      cursor: pointer;
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .conocerla-chevron {
+      display: inline-flex;
+    }
+    .conocerla-cat-group[data-expanded="true"] .conocerla-chevron {
+      transform: rotate(180deg);
+    }
+    .conocerla-cat-items {
+      display: none;
+      padding-top: var(--space-3);
+    }
+    .conocerla-cat-group[data-expanded="true"] .conocerla-cat-items {
+      display: flex;
+    }
+    .conocerla-row-title {
+      white-space: normal;
     }
   }
 </style>
 
 <script>
-  const tags = document.querySelectorAll<HTMLButtonElement>("#conocerla [data-tag]");
-  const cards = document.querySelectorAll<HTMLElement>("#conocerla .conocerla-card");
+  const layout = document.querySelector<HTMLElement>("#conocerla .conocerla-layout");
+  const sidebarBtns = document.querySelectorAll<HTMLButtonElement>("#conocerla [data-cat-select]");
+  const groups = document.querySelectorAll<HTMLElement>("#conocerla .conocerla-cat-group");
 
-  tags.forEach((tag) => {
-    tag.addEventListener("click", () => {
-      const selected = tag.dataset.tag ?? "Todos";
-      tags.forEach((t) => t.setAttribute("aria-pressed", String(t === tag)));
-      cards.forEach((card) => {
-        const match = selected === "Todos" || card.dataset.category === selected;
-        card.hidden = !match;
+  sidebarBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const selected = btn.dataset.catSelect ?? "Todos";
+      sidebarBtns.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      if (layout) layout.dataset.selected = selected;
+      groups.forEach((group) => {
+        const match = selected === "Todos" || group.dataset.catPanel === selected;
+        group.hidden = !match;
       });
+    });
+  });
+
+  const headers = document.querySelectorAll<HTMLButtonElement>("#conocerla [data-cat-toggle]");
+  headers.forEach((header) => {
+    header.addEventListener("click", () => {
+      const expanded = header.getAttribute("aria-expanded") === "true";
+      header.setAttribute("aria-expanded", String(!expanded));
+      const group = header.closest<HTMLElement>(".conocerla-cat-group");
+      group?.setAttribute("data-expanded", String(!expanded));
     });
   });
 </script>
