@@ -76,8 +76,15 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
     section.hidden = !open;
   }
 
+  function setActiveCaminoCard(id: string | null) {
+    document.querySelectorAll<HTMLElement>("[data-camino-card]").forEach((card) => {
+      card.dataset.active = String(card.dataset.caminoCard === id);
+    });
+  }
+
   function openPilar(id: string) {
     PILARES.forEach((p) => setPilarOpen(p, p === id));
+    setActiveCaminoCard(id);
     history.replaceState(null, "", `#${id}`);
     const section = document.getElementById(id);
     if (section) {
@@ -89,6 +96,7 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
 
   function closePilar(id: string) {
     setPilarOpen(id, false);
+    setActiveCaminoCard(null);
     history.replaceState(null, "", "#caminos");
     const caminos = document.getElementById("caminos");
     if (caminos) {

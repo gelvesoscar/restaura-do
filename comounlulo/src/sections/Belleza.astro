@@ -4,6 +4,7 @@ import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import Tag from "../components/Tag.astro";
+import SectionHead from "../components/SectionHead.astro";
 
 const conceptosRaw = await getCollection("belleza");
 const conceptos = conceptosRaw.sort((a, b) => a.data.order - b.data.order);
@@ -31,6 +32,12 @@ const CATEGORIAS = [
       <Icon name="x" size={14} />
       Ocultar esta sección
     </button>
+
+    <SectionHead
+      eyebrow="Belleza"
+      title="Cuidarte."
+      lead="12 conceptos cosméticos responsables, del ritual al I+D, sin inventar beneficios."
+    />
 
     <div class="regla-de-oro">
         <span class="eyebrow">Regla de oro</span>

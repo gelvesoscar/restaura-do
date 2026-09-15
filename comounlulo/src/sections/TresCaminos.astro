@@ -42,7 +42,7 @@ const CAMINOS = [
     <div class="caminos-grid">
       {
         CAMINOS.map((c) => (
-          <div class="camino-card">
+          <div class="camino-card" data-camino-card={c.id}>
             <div class="camino-foto">
               {c.foto ? (
                 <img src={c.foto} alt="" loading="lazy" />
@@ -51,6 +51,10 @@ const CAMINOS = [
               )}
               <span class="camino-icon">
                 <Icon name={c.icon} size={20} color="var(--orange-700)" />
+              </span>
+              <span class="camino-activo-badge">
+                <Icon name="check" size={12} color="var(--text-on-brand)" />
+                Viendo ahora
               </span>
             </div>
             <div class="camino-body">
@@ -96,6 +100,15 @@ const CAMINOS = [
     border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: var(--shadow-md);
+    border: 2px solid transparent;
+    transition: var(--transition-base);
+  }
+  .camino-card[data-active="true"] {
+    border-color: var(--brand);
+    box-shadow: var(--shadow-brand);
+  }
+  .camino-card[data-active="true"] .camino-cta {
+    color: var(--brand-strong);
   }
   .camino-foto {
     position: relative;
@@ -135,6 +148,27 @@ const CAMINOS = [
     box-shadow: var(--shadow-md);
     display: grid;
     place-items: center;
+  }
+  .camino-activo-badge {
+    display: none;
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    align-items: center;
+    gap: 5px;
+    background: var(--brand);
+    color: var(--text-on-brand);
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+  }
+  .camino-card[data-active="true"] .camino-activo-badge {
+    display: inline-flex;
   }
   .camino-body {
     display: flex;

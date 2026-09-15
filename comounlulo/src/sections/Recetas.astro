@@ -4,6 +4,7 @@ import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import Tag from "../components/Tag.astro";
+import SectionHead from "../components/SectionHead.astro";
 
 const recetasRaw = await getCollection("recetas");
 const recetas = recetasRaw.sort((a, b) => a.data.order - b.data.order);
@@ -35,6 +36,12 @@ const METODO = [
       <Icon name="x" size={14} />
       Ocultar esta sección
     </button>
+
+    <SectionHead
+      eyebrow="Cocina"
+      title="Saborearla."
+      lead="20 recetas reales con lulo, de la tradición vallecaucana a la coctelería."
+    />
 
     <div class="metodo">
         <div class="metodo-frase">
