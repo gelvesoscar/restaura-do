@@ -58,25 +58,25 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
 
 <style>
   .manifiesto {
-    background: var(--gradient-lulo);
+    background: linear-gradient(135deg, var(--orange-100) 0%, var(--cream-100) 50%, var(--green-100) 100%);
     padding: var(--section-y) var(--gutter-page);
     scroll-margin-top: 72px;
   }
   .manifiesto-inner {
     max-width: var(--max-prose);
     margin: 0 auto;
-    color: #fff;
+    color: var(--text-body);
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
   }
   .eyebrow-inverse {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--brand-strong);
   }
   .manifiesto-inner h2 {
     font-size: var(--fs-display-l);
     line-height: var(--lh-display);
-    color: #fff;
+    color: var(--text-strong);
     max-width: 26ch;
   }
   .manifiesto-body {
@@ -92,12 +92,14 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
   .manifiesto-quote {
     font-style: italic;
     font-size: var(--fs-body);
-    opacity: 0.92;
+    color: var(--text-strong);
+    opacity: 0.85;
   }
   .manifiesto-closing {
     font-family: var(--font-display);
     font-size: var(--fs-display-m);
     line-height: var(--lh-display);
+    color: var(--text-strong);
   }
   .manifiesto-teaser {
     display: flex;
@@ -119,7 +121,7 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
     font-size: var(--fs-caption);
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text-muted);
   }
   .teaser-texto p {
     font-size: var(--fs-body-sm);
@@ -127,7 +129,7 @@ import { MOSTRAR_FUNDADORES } from "../data/sections";
     max-width: 46ch;
   }
   .teaser-cta {
-    color: #fff;
+    color: var(--text-link);
     text-decoration: underline;
     font-weight: var(--fw-medium);
     width: fit-content;
