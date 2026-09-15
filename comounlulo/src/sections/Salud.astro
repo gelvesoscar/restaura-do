@@ -33,15 +33,16 @@ const piezas = piezasRaw.sort((a, b) => a.data.order - b.data.order);
       </p>
     </div>
 
-    <div class="salud-grid">
+    <div class="salud-grid" data-expanded="false">
       {
-        piezas.map((p) => {
+        piezas.map((p, i) => {
           const d = p.data;
           return (
             <Card
               elevation="xs"
               padding="0"
               class="salud-card"
+              data-extra={i >= 6 ? "true" : "false"}
               as="a"
               href={`/salud/${p.id}`}
             >
@@ -64,6 +65,13 @@ const piezas = piezasRaw.sort((a, b) => a.data.order - b.data.order);
           );
         })
       }
+    </div>
+
+    <div class="salud-vermas-wrap">
+      <button type="button" class="salud-vermas" data-vermas>
+        Ver las {piezas.length} piezas
+        <Icon name="chevron-down" size={16} />
+      </button>
     </div>
 
     <p class="salud-nota">
@@ -144,6 +152,37 @@ const piezas = piezasRaw.sort((a, b) => a.data.order - b.data.order);
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-5);
     margin-bottom: var(--space-8);
+  }
+  .salud-grid[data-expanded="false"] .salud-card[data-extra="true"] {
+    display: none;
+  }
+
+  .salud-vermas-wrap {
+    display: flex;
+    justify-content: center;
+    margin: calc(-1 * var(--space-3)) 0 var(--space-8);
+  }
+  .salud-grid[data-expanded="true"] ~ .salud-vermas-wrap {
+    display: none;
+  }
+  .salud-vermas {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--cream-200);
+    color: var(--text-strong);
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    font-weight: var(--fw-medium);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-pill);
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+  .salud-vermas:hover {
+    background: var(--cream-50);
+    box-shadow: var(--shadow-sm);
   }
   .salud-card {
     overflow: hidden;
@@ -241,3 +280,12 @@ const piezas = piezasRaw.sort((a, b) => a.data.order - b.data.order);
     }
   }
 </style>
+
+<script>
+  const grid = document.querySelector<HTMLElement>("#salud .salud-grid");
+  const verMasBtn = document.querySelector<HTMLButtonElement>("#salud [data-vermas]");
+
+  verMasBtn?.addEventListener("click", () => {
+    if (grid) grid.dataset.expanded = "true";
+  });
+</script>

@@ -69,7 +69,7 @@ const METODO = [
         }
       </div>
 
-      <div class="recetas-grid">
+      <div class="recetas-grid" data-expanded="false">
         {
           recetas.map((receta) => {
             const r = receta.data;
@@ -79,6 +79,7 @@ const METODO = [
                 padding="0"
                 class="receta-card"
                 data-category={r.categoria}
+                data-extra={r.destacado ? "false" : "true"}
                 as="a"
                 href={`/recetas/${receta.id}`}
               >
@@ -105,6 +106,13 @@ const METODO = [
             );
           })
         }
+      </div>
+
+      <div class="recetas-vermas-wrap">
+        <button type="button" class="recetas-vermas" data-vermas>
+          Ver las {recetas.length} recetas
+          <Icon name="chevron-down" size={16} />
+        </button>
       </div>
 
       <div class="recetas-comunidad">
@@ -223,6 +231,37 @@ const METODO = [
   .receta-card[hidden] {
     display: none;
   }
+  .recetas-grid[data-expanded="false"] .receta-card[data-extra="true"] {
+    display: none;
+  }
+
+  .recetas-vermas-wrap {
+    display: flex;
+    justify-content: center;
+    margin: calc(-1 * var(--space-6)) 0 var(--space-10);
+  }
+  .recetas-grid[data-expanded="true"] ~ .recetas-vermas-wrap {
+    display: none;
+  }
+  .recetas-vermas {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--cream-200);
+    color: var(--text-strong);
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    font-weight: var(--fw-medium);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-pill);
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+  .recetas-vermas:hover {
+    background: var(--cream-50);
+    box-shadow: var(--shadow-sm);
+  }
   .receta-card-photo {
     position: relative;
     aspect-ratio: 4 / 3;
@@ -337,6 +376,8 @@ const METODO = [
 <script>
   const tags = document.querySelectorAll<HTMLButtonElement>("#cocina [data-tag]");
   const cards = document.querySelectorAll<HTMLElement>("#cocina .receta-card");
+  const grid = document.querySelector<HTMLElement>("#cocina .recetas-grid");
+  const verMasBtn = document.querySelector<HTMLButtonElement>("#cocina [data-vermas]");
 
   tags.forEach((tag) => {
     tag.addEventListener("click", () => {
@@ -346,6 +387,13 @@ const METODO = [
         const match = selected === "Todas" || card.dataset.category === selected;
         card.hidden = !match;
       });
+      // Un filtro específico debe mostrar todas sus recetas, no solo las
+      // destacadas: si no es "Todas", se despliega el grid completo.
+      if (selected !== "Todas" && grid) grid.dataset.expanded = "true";
     });
+  });
+
+  verMasBtn?.addEventListener("click", () => {
+    if (grid) grid.dataset.expanded = "true";
   });
 </script>

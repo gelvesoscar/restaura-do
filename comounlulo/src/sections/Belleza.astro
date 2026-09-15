@@ -61,9 +61,9 @@ const CATEGORIAS = [
         }
       </div>
 
-      <div class="belleza-grid">
+      <div class="belleza-grid" data-expanded="false">
         {
-          conceptos.map((c) => {
+          conceptos.map((c, i) => {
             const d = c.data;
             const cat = badgeTipo(d.tipo);
             return (
@@ -72,6 +72,7 @@ const CATEGORIAS = [
                 padding="0"
                 class="belleza-card"
                 data-category={cat}
+                data-extra={i >= 6 ? "true" : "false"}
                 as="a"
                 href={`/belleza/${c.id}`}
               >
@@ -91,6 +92,13 @@ const CATEGORIAS = [
             );
           })
         }
+      </div>
+
+      <div class="belleza-vermas-wrap">
+        <button type="button" class="belleza-vermas" data-vermas>
+          Ver los {conceptos.length} conceptos
+          <Icon name="chevron-down" size={16} />
+        </button>
       </div>
 
     <p class="belleza-nota">
@@ -186,6 +194,37 @@ const CATEGORIAS = [
   .belleza-card[hidden] {
     display: none;
   }
+  .belleza-grid[data-expanded="false"] .belleza-card[data-extra="true"] {
+    display: none;
+  }
+
+  .belleza-vermas-wrap {
+    display: flex;
+    justify-content: center;
+    margin: calc(-1 * var(--space-6)) 0 var(--space-10);
+  }
+  .belleza-grid[data-expanded="true"] ~ .belleza-vermas-wrap {
+    display: none;
+  }
+  .belleza-vermas {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--cream-200);
+    color: var(--text-strong);
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    font-weight: var(--fw-medium);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-pill);
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+  .belleza-vermas:hover {
+    background: var(--cream-50);
+    box-shadow: var(--shadow-sm);
+  }
   .belleza-card-photo {
     position: relative;
     aspect-ratio: 4 / 3;
@@ -264,6 +303,8 @@ const CATEGORIAS = [
 <script>
   const tags = document.querySelectorAll<HTMLButtonElement>("#belleza [data-tag]");
   const cards = document.querySelectorAll<HTMLElement>("#belleza .belleza-card");
+  const grid = document.querySelector<HTMLElement>("#belleza .belleza-grid");
+  const verMasBtn = document.querySelector<HTMLButtonElement>("#belleza [data-vermas]");
 
   tags.forEach((tag) => {
     tag.addEventListener("click", () => {
@@ -273,6 +314,11 @@ const CATEGORIAS = [
         const match = selected === "Todos" || card.dataset.category === selected;
         card.hidden = !match;
       });
+      if (selected !== "Todos" && grid) grid.dataset.expanded = "true";
     });
+  });
+
+  verMasBtn?.addEventListener("click", () => {
+    if (grid) grid.dataset.expanded = "true";
   });
 </script>
