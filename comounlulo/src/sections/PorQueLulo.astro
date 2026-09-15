@@ -30,11 +30,13 @@ const datos: [string, string, string][] = [
 
 <section id="lulo" class="lulo">
   <div class="lulo-inner">
-    <SectionHead
-      eyebrow="Por qué el lulo"
-      title="Una fruta que ya era un dicho antes de ser una marca."
-      lead="Esta sección es cultural y botánica, no médica: de dónde viene el lulo, cómo se toma y por qué su nombre ya cargaba la idea de estar bien."
-    />
+    <div class="lulo-hero">
+      <SectionHead
+        eyebrow="Por qué el lulo"
+        title="Una fruta que ya era un dicho antes de ser una marca."
+        lead="Esta sección es cultural y botánica, no médica: de dónde viene el lulo, cómo se toma y por qué su nombre ya cargaba la idea de estar bien."
+      />
+    </div>
     <div class="lulo-grid">
       <Photo
         label="mercado callejero colombiano: un vendedor corta lulos frescos mientras una compradora sostiene dos mitades de la fruta, entre canastos de frutas de colores"
@@ -74,6 +76,41 @@ const datos: [string, string, string][] = [
     max-width: var(--max-content);
     margin: 0 auto;
     padding: var(--section-y) var(--gutter-page);
+  }
+  .lulo-hero {
+    position: relative;
+    isolation: isolate;
+    padding-bottom: var(--space-6);
+  }
+  .lulo-hero::before {
+    content: "";
+    position: absolute;
+    top: -64px;
+    right: -40px;
+    width: 520px;
+    height: 520px;
+    background-image: url("/images/lulo-pulpa-fondo.webp");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+    z-index: -1;
+    mask-image: radial-gradient(circle at 65% 40%, black 0%, black 35%, transparent 72%);
+    -webkit-mask-image: radial-gradient(circle at 65% 40%, black 0%, black 35%, transparent 72%);
+    pointer-events: none;
+  }
+  @media (max-width: 860px) {
+    .lulo-hero::before {
+      width: 380px;
+      height: 380px;
+      top: -40px;
+      right: -60px;
+      opacity: 0.45;
+    }
+  }
+  @media (max-width: 540px) {
+    .lulo-hero::before {
+      display: none;
+    }
   }
   .lulo-grid {
     display: grid;
