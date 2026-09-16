@@ -6,6 +6,6 @@ foco: Fibra y matriz vegetal
 conceptoEditorial: Explicar el vínculo general entre fibra dietaria y alimentación, distinguiéndolo de evidencia específica sobre lulo.
 limiteRigor: No afirmar efectos probióticos ni terapéuticos del lulo.
 imagen: /images/bienestar/s10-salud-intestinal-microbiota.webp
-alt: Imagen conceptual de bienestar digestivo para contenido educativo sobre fibra y microbiota.
+alt: 'Mesa servida con una comida casera rica en fibra, granos, vegetales y lulo.'
 order: 10
 ---

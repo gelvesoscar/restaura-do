@@ -6,6 +6,6 @@ foco: Fenoles, flavonoides, carotenoides y otros
 conceptoEditorial: Explicar qué significa actividad antioxidante de laboratorio y por qué no equivale automáticamente a prevenir enfermedades.
 limiteRigor: 'Usar lenguaje: contiene / se ha identificado / mostró actividad in vitro.'
 imagen: /images/bienestar/s02-antioxidantes-compuestos-bioactivos.webp
-alt: Lulo abierto en composición conceptual sobre antioxidantes y compuestos bioactivos.
+alt: 'Persona sirviendo una bebida de lulo recién preparada junto a una ventana con plantas.'
 order: 2
 ---
