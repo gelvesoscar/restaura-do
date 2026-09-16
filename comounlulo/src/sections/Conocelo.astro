@@ -1,0 +1,394 @@
+---
+import { getCollection } from "astro:content";
+import SectionHead from "../components/SectionHead.astro";
+import Card from "../components/Card.astro";
+import Icon from "../components/Icon.astro";
+
+const temasRaw = await getCollection("conocelo");
+const temas = temasRaw.sort((a, b) => a.data.order - b.data.order);
+
+function badgeTipo(tipo: string) {
+  if (tipo.startsWith("Ciencia") || tipo === "Biblioteca viva") return "Ciencia";
+  if (tipo.startsWith("Nutrición")) return "Nutrición";
+  if (tipo.startsWith("Hábitos")) return "Hábitos";
+  if (tipo.startsWith("Mitos")) return "Mitos";
+  if (tipo.startsWith("Origen") || tipo.startsWith("Circularidad")) return "Origen";
+  return tipo;
+}
+
+const CATEGORIAS = ["Origen", "Mitos", "Ciencia", "Nutrición", "Hábitos"];
+
+const grupos = CATEGORIAS.map((cat) => ({
+  cat,
+  items: temas.filter((t) => badgeTipo(t.data.tipo) === cat),
+})).filter((g) => g.items.length > 0);
+
+// Orden por categoría (Origen, Mitos, Ciencia, Nutrición, Hábitos) para la
+// vista "Todos", en vez del orden numérico S01..S12.
+const temasOrdenados = grupos.flatMap((g) => g.items);
+---
+
+<section id="conocelo" class="conocelo">
+  <div class="conocelo-inner">
+    <SectionHead
+      eyebrow="Ciencia"
+      title="Conocelo."
+      lead="12 notas sobre la ciencia real del lulo, con fuente citada y sin promesas de más."
+    />
+
+    {/* Antes esto era una fila de 6 pastillas (Todos + 5 categorías) que se
+       desbordaba en móvil y se sentía larga incluso en escritorio. Ahora es
+       un único botón desplegable, en cualquier tamaño de pantalla, con el
+       mismo patrón de apertura/cierre (clic afuera, Escape) que el menú
+       hamburguesa de Nav.astro. */}
+    <div class="conocelo-filtro">
+      <button
+        type="button"
+        id="conocelo-filtro-boton"
+        class="conocelo-filtro-trigger"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+        aria-controls="conocelo-filtro-panel"
+      >
+        <span data-filtro-label>Todos</span>
+        <span class="conocelo-filtro-count" data-filtro-count>{temas.length}</span>
+        <span class="conocelo-filtro-chevron">
+          <Icon name="chevron-down" size={16} />
+        </span>
+      </button>
+      <div
+        id="conocelo-filtro-panel"
+        class="conocelo-filtro-panel"
+        role="listbox"
+        aria-label="Filtrar notas por categoría"
+        hidden
+      >
+        <button
+          type="button"
+          class="conocelo-filtro-opcion is-selected"
+          data-cat-select="Todos"
+          role="option"
+          aria-selected="true"
+        >
+          <span>Todos</span>
+          <span class="conocelo-filtro-count">{temas.length}</span>
+        </button>
+        {
+          grupos.map((g) => (
+            <button
+              type="button"
+              class="conocelo-filtro-opcion"
+              data-cat-select={g.cat}
+              role="option"
+              aria-selected="false"
+            >
+              <span>{g.cat}</span>
+              <span class="conocelo-filtro-count">{g.items.length}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="conocelo-grid">
+      {
+        temasOrdenados.map((t) => {
+          const d = t.data;
+          const cat = badgeTipo(d.tipo);
+          return (
+            <Card
+              as="a"
+              href={`/conocelo/${t.id}`}
+              elevation="xs"
+              padding="0"
+              class="conocelo-card"
+              data-cat-item={cat}
+            >
+              <div class="conocelo-card-photo">
+                <img src={d.imagen} alt={d.alt} loading="lazy" />
+                <span class="conocelo-card-badge">{cat}</span>
+              </div>
+              <div class="conocelo-card-body">
+                <h3>{d.title}</h3>
+                <p class="conocelo-card-desc">{d.foco}</p>
+                <span class="conocelo-card-cta">
+                  Leer <Icon name="arrow-right" size={13} />
+                </span>
+              </div>
+            </Card>
+          );
+        })
+      }
+    </div>
+
+    <p class="conocelo-nota">
+      Estas notas describen ciencia nutricional y hábitos cotidianos. No
+      diagnostican, no tratan ni curan condiciones, y no sustituyen la
+      orientación de un profesional de la salud.
+    </p>
+  </div>
+</section>
+
+<style>
+  .conocelo {
+    scroll-margin-top: 72px;
+  }
+  .conocelo-inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: var(--section-y) var(--gutter-page);
+  }
+
+  .conocelo-filtro {
+    position: relative;
+    display: inline-block;
+    margin-bottom: var(--space-6);
+  }
+  .conocelo-filtro-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-strong);
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+  .conocelo-filtro-trigger:hover {
+    background: var(--cream-200);
+  }
+  .conocelo-filtro-trigger[aria-expanded="true"] {
+    border-color: var(--accent);
+  }
+  .conocelo-filtro-chevron {
+    display: inline-flex;
+    transition: var(--transition-base);
+  }
+  .conocelo-filtro-trigger[aria-expanded="true"] .conocelo-filtro-chevron {
+    transform: rotate(180deg);
+  }
+  .conocelo-filtro-count {
+    font-family: var(--font-body);
+    font-size: var(--fs-micro);
+    opacity: 0.65;
+  }
+  .conocelo-filtro-panel {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    left: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 220px;
+    padding: var(--space-2);
+    background: var(--surface-card);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+  .conocelo-filtro-panel[hidden] {
+    display: none;
+  }
+  .conocelo-filtro-opcion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    border: none;
+    background: none;
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-body);
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+  .conocelo-filtro-opcion:hover {
+    background: var(--cream-200);
+  }
+  .conocelo-filtro-opcion.is-selected {
+    color: var(--text-strong);
+    background: var(--brand-tint);
+  }
+
+  .conocelo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+  }
+  .conocelo-card[hidden] {
+    display: none;
+  }
+  .conocelo-card {
+    overflow: hidden;
+    gap: 0;
+    transition: var(--transition-base);
+  }
+  .conocelo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .conocelo-card-photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--border-hairline);
+    border-width: 0 0 1px 0;
+    overflow: hidden;
+    background: var(--gradient-lulo);
+  }
+  .conocelo-card-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .conocelo-card-badge {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    background: rgba(31, 43, 26, 0.55);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: var(--radius-pill);
+  }
+  .conocelo-card-body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .conocelo-card-body h3 {
+    font-family: var(--font-display);
+    font-size: var(--fs-subtitle);
+    line-height: var(--lh-heading);
+    margin: 0;
+  }
+  .conocelo-card-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--text-body);
+    margin: 0;
+  }
+  .conocelo-card-cta {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-link);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+  }
+
+  .conocelo-nota {
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    max-width: 70ch;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .conocelo-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .conocelo-filtro {
+      display: block;
+    }
+    .conocelo-filtro-trigger {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .conocelo-filtro-panel {
+      left: 0;
+      right: 0;
+      min-width: 0;
+    }
+    .conocelo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const trigger = document.getElementById("conocelo-filtro-boton") as HTMLButtonElement | null;
+  const panel = document.getElementById("conocelo-filtro-panel") as HTMLElement | null;
+  const label = trigger?.querySelector<HTMLElement>("[data-filtro-label]");
+  const count = trigger?.querySelector<HTMLElement>("[data-filtro-count]");
+  const options = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("#conocelo-filtro-panel [data-cat-select]"),
+  );
+  const cards = document.querySelectorAll<HTMLElement>("#conocelo .conocelo-card");
+
+  function closePanel() {
+    if (!trigger || !panel) return;
+    panel.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+    document.removeEventListener("keydown", onKeydown);
+    document.removeEventListener("click", onClickOutside, true);
+  }
+
+  function openPanel() {
+    if (!trigger || !panel) return;
+    panel.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    document.addEventListener("keydown", onKeydown);
+    document.addEventListener("click", onClickOutside, true);
+  }
+
+  function onKeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      closePanel();
+      trigger?.focus();
+    }
+  }
+
+  function onClickOutside(e: MouseEvent) {
+    const wrapper = trigger?.closest(".conocelo-filtro");
+    if (wrapper && e.target instanceof Node && !wrapper.contains(e.target)) {
+      closePanel();
+    }
+  }
+
+  trigger?.addEventListener("click", () => {
+    if (panel?.hidden) openPanel();
+    else closePanel();
+  });
+
+  options.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const selected = btn.dataset.catSelect ?? "Todos";
+      const countText = btn.querySelector(".conocelo-filtro-count")?.textContent ?? "";
+
+      options.forEach((b) => {
+        const isSelected = b === btn;
+        b.classList.toggle("is-selected", isSelected);
+        b.setAttribute("aria-selected", String(isSelected));
+      });
+      if (label) label.textContent = selected;
+      if (count) count.textContent = countText;
+
+      cards.forEach((card) => {
+        const match = selected === "Todos" || card.dataset.catItem === selected;
+        card.hidden = !match;
+      });
+
+      closePanel();
+    });
+  });
+</script>

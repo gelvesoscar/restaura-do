@@ -76,8 +76,8 @@ const belleza = defineCollection({
   }),
 });
 
-const conocerla = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/conocerla" }),
+const conocelo = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/conocelo" }),
   schema: z.object({
     codigo: z.string(),
     title: z.string(),
@@ -92,7 +92,7 @@ const conocerla = defineCollection({
 });
 
 // Salud (H01-H12): ciencia nutricional del lulo con rigor por artículo,
-// separada a propósito de Conocerla (origen, historia, cultivo). Ver
+// separada a propósito de Conocelo (origen, historia, cultivo). Ver
 // src/sections/Salud.astro. `imagen` queda opcional: mientras no exista la
 // foto real, la tarjeta y el artículo muestran un TODO visible.
 const salud = defineCollection({
@@ -111,4 +111,4 @@ const salud = defineCollection({
   }),
 });
 
-export const collections = { tips, recetas, belleza, conocerla, salud };
+export const collections = { tips, recetas, belleza, conocelo, salud };

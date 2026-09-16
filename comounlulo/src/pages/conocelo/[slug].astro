@@ -5,7 +5,7 @@ import Icon from "../../components/Icon.astro";
 import Badge from "../../components/Badge.astro";
 
 export async function getStaticPaths() {
-  const items = await getCollection("conocerla");
+  const items = await getCollection("conocelo");
   return items.map((item) => ({
     params: { slug: item.id },
     props: { item },
@@ -23,7 +23,7 @@ const jsonLd = {
   headline: s.title,
   description: seoDescripcion,
   image: `https://comounlulo.co${s.imagen}`,
-  articleSection: "Conocerla",
+  articleSection: "Conocelo",
   keywords: s.tipo,
 };
 ---
@@ -37,8 +37,8 @@ const jsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   <article class="conocerla-articulo">
     <div class="conocerla-articulo-inner">
-      <a href="/#conocerla" class="conocerla-back">
-        <Icon name="arrow-left" size={14} /> Todos los temas de Conocerlo
+      <a href="/#conocelo" class="conocerla-back">
+        <Icon name="arrow-left" size={14} /> Todos los temas de Conocelo
       </a>
 
       <div class="conocerla-foto">
@@ -95,7 +95,7 @@ const jsonLd = {
       </p>
 
       <p class="conocerla-nota-general">
-        Conocerlo traduce ciencia nutricional a lenguaje cotidiano sin
+        Conocelo traduce ciencia nutricional a lenguaje cotidiano sin
         convertir el alimento en medicamento. Estas notas no diagnostican,
         no tratan ni curan condiciones, y no sustituyen la orientación de un
         profesional de la salud.
