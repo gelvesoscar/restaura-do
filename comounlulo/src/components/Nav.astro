@@ -34,19 +34,15 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
     </div>
   </div>
   <nav id="menu-panel" class="menu-panel" aria-label="Secciones" hidden>
-    {
-      links.map(([id, label]) => (
-        <a href={`/#${id}`} data-menu-link={id} class="menu-panel-link">
-          {label}
-        </a>
-      ))
-    }
-    {/* La tienda no tiene enlace propio en `links` (queda solo el botón
-       resaltado del header), pero ese botón se oculta en móvil, así que
-       aquí sí necesita su propia entrada para no desaparecer del todo. */}
-    <Button href="/#tienda" size="sm" class="menu-panel-cta">
-      Ver la tienda
-    </Button>
+    <div class="menu-panel-inner">
+      {
+        links.map(([id, label]) => (
+          <a href={`/#${id}`} data-menu-link={id} class="menu-panel-link">
+            {label}
+          </a>
+        ))
+      }
+    </div>
   </nav>
 </header>
 
@@ -73,40 +69,28 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
     display: flex;
     flex: none;
   }
+  /* El listado de secciones (`.nav-links`) vivía siempre visible en el
+     header de escritorio, en paralelo al menú hamburguesa de móvil. Con
+     más secciones que al principio, esa fila horizontal se sentía
+     recargada, así que ahora el hamburguesa es el único menú, en
+     cualquier tamaño de pantalla: el header solo deja el wordmark y el
+     botón de la tienda, y todo lo demás vive en `.menu-panel`. */
   .nav-links {
-    display: flex;
-    gap: var(--space-5);
-    margin-left: auto;
-    flex-wrap: nowrap;
-    min-width: 0;
-  }
-  .nav-link {
-    font-family: var(--font-body);
-    font-size: var(--fs-body-sm);
-    border-bottom: 2px solid transparent;
-    color: var(--text-muted);
-    padding-bottom: 2px;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: var(--transition-base);
-  }
-  .nav-link.is-active {
-    color: var(--text-strong);
-    border-bottom-color: var(--brand);
+    display: none;
   }
   .nav-actions {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+    margin-left: auto;
   }
   .menu-toggle {
-    display: none;
+    display: inline-flex;
   }
   .menu-panel {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding: var(--space-2) var(--gutter-page) var(--space-5);
+    justify-content: center;
+    padding: 0 var(--gutter-page);
     background: var(--surface-card);
     border-top: 1px solid var(--border-hairline);
     box-shadow: var(--shadow-md);
@@ -114,11 +98,20 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
   .menu-panel[hidden] {
     display: none;
   }
+  .menu-panel-inner {
+    width: 100%;
+    max-width: var(--max-content);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-2) 0 var(--space-5);
+  }
   .menu-panel-link {
     font-family: var(--font-body);
     font-size: var(--fs-body);
     color: var(--text-body);
     text-decoration: none;
+    border-bottom: none;
     padding: var(--space-3) var(--space-3);
     border-radius: var(--radius-sm);
     transition: var(--transition-base);
@@ -130,24 +123,11 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
     color: var(--text-strong);
     background: var(--brand-tint);
   }
-  .menu-panel-cta {
-    margin-top: var(--space-2);
-    align-self: flex-start;
-  }
-  @media (max-width: 760px) {
-    .nav-links {
-      display: none;
-    }
-    .nav-cta {
-      display: none;
-    }
-    .menu-toggle {
-      display: inline-flex;
-    }
-  }
   @media (min-width: 761px) {
-    .menu-panel {
-      display: none !important;
+    .menu-panel-inner {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--space-2);
     }
   }
 </style>
@@ -179,7 +159,7 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
   window.addEventListener("scroll", setActive, { passive: true });
   window.addEventListener("resize", setActive);
 
-  // Menú hamburguesa (móvil)
+  // Menú hamburguesa (único menú, en cualquier tamaño de pantalla)
   const menuButton = document.getElementById("menu-button") as HTMLButtonElement | null;
   const menuPanel = document.getElementById("menu-panel") as HTMLElement | null;
   const menuIcon = menuButton?.querySelector("span") as HTMLElement | null;
@@ -237,8 +217,4 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
     document.querySelectorAll<HTMLAnchorElement>("#menu-panel a"),
   );
   menuCloseTargets.forEach((a) => a.addEventListener("click", closeMenu));
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 760) closeMenu();
-  });
 </script>
