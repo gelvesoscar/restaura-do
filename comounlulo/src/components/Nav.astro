@@ -41,6 +41,12 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
         </a>
       ))
     }
+    {/* La tienda no tiene enlace propio en `links` (queda solo el botón
+       resaltado del header), pero ese botón se oculta en móvil, así que
+       aquí sí necesita su propia entrada para no desaparecer del todo. */}
+    <Button href="/preview/#tienda" size="sm" class="menu-panel-cta">
+      Ver la tienda
+    </Button>
   </nav>
 </header>
 
@@ -123,6 +129,10 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
   .menu-panel-link.is-active {
     color: var(--text-strong);
     background: var(--brand-tint);
+  }
+  .menu-panel-cta {
+    margin-top: var(--space-2);
+    align-self: flex-start;
   }
   @media (max-width: 760px) {
     .nav-links {
@@ -223,7 +233,10 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
     else closeMenu();
   });
 
-  menuLinks.forEach((a) => a.addEventListener("click", closeMenu));
+  const menuCloseTargets = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("#menu-panel a"),
+  );
+  menuCloseTargets.forEach((a) => a.addEventListener("click", closeMenu));
 
   window.addEventListener("resize", () => {
     if (window.innerWidth > 760) closeMenu();
