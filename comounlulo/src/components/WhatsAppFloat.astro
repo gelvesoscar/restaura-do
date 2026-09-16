@@ -1,0 +1,58 @@
+---
+// Botón flotante de WhatsApp, visible en todas las páginas (montado en
+// Base.astro). Mismo número que restaura.do (573138955486): es el WhatsApp
+// personal de Oscar, así que los mensajes de comounlulo y restaura.do
+// llegan al mismo chat, mezclados. Si en algún momento hay un número
+// dedicado a comounlulo, solo hay que cambiar WHATSAPP_NUMBER abajo.
+const WHATSAPP_NUMBER = "573138955486";
+const MENSAJE = "Hola, quiero saber más sobre comounlulo.";
+
+const href = `https://api.whatsapp.com/send?${new URLSearchParams({
+  phone: WHATSAPP_NUMBER,
+  text: MENSAJE,
+}).toString()}`;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="whatsapp-float"
+  aria-label="Escríbenos por WhatsApp"
+  title="Escríbenos por WhatsApp"
+>
+  <img src="/images/whatsapp-lulo.png" alt="" width="56" height="56" loading="lazy" />
+</a>
+
+<style>
+  .whatsapp-float {
+    position: fixed;
+    right: var(--space-5);
+    bottom: var(--space-5);
+    z-index: 40;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-base);
+  }
+  .whatsapp-float:hover {
+    transform: scale(1.06);
+  }
+  .whatsapp-float img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  @media (max-width: 600px) {
+    .whatsapp-float {
+      right: var(--space-4);
+      bottom: var(--space-4);
+      width: 52px;
+      height: 52px;
+    }
+  }
+</style>
