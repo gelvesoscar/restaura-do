@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import SectionHead from "../components/SectionHead.astro";
-import Card from "../components/Card.astro";
 import Icon from "../components/Icon.astro";
 
 const temasRaw = await getCollection("conocelo");
@@ -35,12 +34,23 @@ const grupos = CATEGORIAS.map((cat) => ({
 // vista "Todos", en vez del orden numérico S01..S12.
 const temasOrdenados = grupos.flatMap((g) => g.items);
 
-// Acordeón por categoría: "Todos" abre por defecto mostrando las 12 notas
-// juntas; cada categoría es su propio encabezado clickeable que revela sus
-// artículos (foto + descripción breve) justo debajo, sin panel flotante ni
-// grilla separada que haya que filtrar. Antes esto era una fila de 6
-// pastillas que se desbordaba en móvil y, como desplegable único, no
-// aprovechaba el ancho en escritorio.
+// Mismos datos, dos maquetados distintos según el ancho de pantalla (uno se
+// oculta con CSS y el otro se muestra, ver .conocelo-acordeon--mobile /
+// --desktop más abajo):
+//
+// - Móvil: acordeón lineal clásico. Encabezado y panel son vecinos directos
+//   en el documento, así que al abrir uno, su contenido aparece justo debajo
+//   y empuja al resto hacia abajo, sin dejar huecos.
+// - Escritorio: menú de categorías compacto a la izquierda y un panel de
+//   contenido aparte a la derecha que solo muestra la categoría activa. Al
+//   ser dos columnas independientes (no filas emparejadas), abrir una
+//   categoría con muchos artículos no estira ni desordena la lista de la
+//   izquierda. Dentro del panel de contenido, los artículos además se
+//   acomodan en varias columnas (grid) para aprovechar el ancho disponible
+//   en vez de quedar en una sola lista angosta con espacio vacío al lado.
+//
+// Se generan IDs únicos por variante (prefijo m- / d-) porque ambos bloques
+// existen a la vez en el HTML (uno queda en display:none según el ancho).
 const acordeon = [
   { cat: "Todos", items: temasOrdenados, abierto: true },
   ...grupos.map((g) => ({ cat: g.cat, items: g.items, abierto: false })),
@@ -55,19 +65,12 @@ const acordeon = [
       lead="12 notas sobre la ciencia real del lulo, con fuente citada y sin promesas de más."
     />
 
-    {/* Grid de 2 columnas en escritorio (categoría a la izquierda, sus
-       artículos a la derecha en la misma fila) que en móvil colapsa a una
-       sola columna, por el simple acomodo automático de CSS Grid: cada
-       encabezado y su panel son hijos directos y consecutivos de
-       `.conocelo-acordeon`, así que basta cambiar `grid-template-columns`
-       por breakpoint para pasar de "una fila por categoría, 2 columnas" a
-       "todo apilado en una columna" sin duplicar marcado ni mover nada
-       por JS. */}
-    <div class="conocelo-acordeon">
+    {/* Móvil: acordeón lineal (encabezado + panel intercalados). */}
+    <div class="conocelo-acordeon conocelo-acordeon--mobile">
       {
         acordeon.map(({ cat, items, abierto }) => {
-          const headerId = `conocelo-header-${slug(cat)}`;
-          const panelId = `conocelo-panel-${slug(cat)}`;
+          const headerId = `conocelo-header-m-${slug(cat)}`;
+          const panelId = `conocelo-panel-m-${slug(cat)}`;
           return (
             <>
               <button
@@ -91,30 +94,20 @@ const acordeon = [
                 aria-labelledby={headerId}
                 hidden={!abierto}
               >
-                <div class="conocelo-item-grid">
+                <div class="conocelo-item-list">
                   {items.map((t) => {
                     const d = t.data;
                     const tcat = badgeTipo(d.tipo);
                     return (
-                      <Card
-                        as="a"
-                        href={`/conocelo/${t.id}`}
-                        elevation="xs"
-                        padding="0"
-                        class="conocelo-card"
-                      >
-                        <div class="conocelo-card-photo">
+                      <a href={`/conocelo/${t.id}`} class="conocelo-row">
+                        <span class="conocelo-row-thumb">
                           <img src={d.imagen} alt={d.alt} loading="lazy" />
-                          <span class="conocelo-card-badge">{tcat}</span>
-                        </div>
-                        <div class="conocelo-card-body">
-                          <h3>{d.title}</h3>
-                          <p class="conocelo-card-desc">{d.foco}</p>
-                          <span class="conocelo-card-cta">
-                            Leer <Icon name="arrow-right" size={13} />
-                          </span>
-                        </div>
-                      </Card>
+                        </span>
+                        <span class="conocelo-row-body">
+                          <span class="conocelo-row-title">{d.title}</span>
+                          <span class="conocelo-row-meta">{tcat}</span>
+                        </span>
+                      </a>
                     );
                   })}
                 </div>
@@ -123,6 +116,70 @@ const acordeon = [
           );
         })
       }
+    </div>
+
+    {/* Escritorio: menú compacto a la izquierda + panel de contenido aparte
+       a la derecha (dos columnas independientes, no filas emparejadas). */}
+    <div class="conocelo-acordeon conocelo-acordeon--desktop">
+      <div class="conocelo-menu">
+        {
+          acordeon.map(({ cat, items, abierto }) => {
+            const headerId = `conocelo-header-d-${slug(cat)}`;
+            const panelId = `conocelo-panel-d-${slug(cat)}`;
+            return (
+              <button
+                type="button"
+                id={headerId}
+                class="conocelo-item-header"
+                data-accordion-trigger
+                aria-expanded={abierto ? "true" : "false"}
+                aria-controls={panelId}
+              >
+                <span class="conocelo-item-label">{cat}</span>
+                <span class="conocelo-item-count">{items.length}</span>
+                <span class="conocelo-item-chevron">
+                  <Icon name="chevron-down" size={16} />
+                </span>
+              </button>
+            );
+          })
+        }
+      </div>
+      <div class="conocelo-content">
+        {
+          acordeon.map(({ cat, items, abierto }) => {
+            const headerId = `conocelo-header-d-${slug(cat)}`;
+            const panelId = `conocelo-panel-d-${slug(cat)}`;
+            return (
+              <div
+                id={panelId}
+                class="conocelo-item-panel"
+                role="region"
+                aria-labelledby={headerId}
+                hidden={!abierto}
+              >
+                <div class="conocelo-item-list">
+                  {items.map((t) => {
+                    const d = t.data;
+                    const tcat = badgeTipo(d.tipo);
+                    return (
+                      <a href={`/conocelo/${t.id}`} class="conocelo-row">
+                        <span class="conocelo-row-thumb">
+                          <img src={d.imagen} alt={d.alt} loading="lazy" />
+                        </span>
+                        <span class="conocelo-row-body">
+                          <span class="conocelo-row-title">{d.title}</span>
+                          <span class="conocelo-row-meta">{tcat}</span>
+                        </span>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
     </div>
 
     <p class="conocelo-nota">
@@ -143,10 +200,12 @@ const acordeon = [
     padding: var(--section-y) var(--gutter-page);
   }
 
-  .conocelo-acordeon {
+  .conocelo-acordeon--desktop {
+    display: none;
+  }
+  .conocelo-acordeon--mobile {
     display: grid;
     grid-template-columns: 1fr;
-    row-gap: var(--space-2);
     margin-bottom: var(--space-6);
   }
 
@@ -155,10 +214,10 @@ const acordeon = [
     align-items: center;
     gap: var(--space-2);
     width: 100%;
-    padding: var(--space-3) var(--space-4);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-default);
-    background: var(--surface-card);
+    padding: var(--space-3) 0;
+    border: none;
+    border-bottom: 1px solid var(--border-default);
+    background: none;
     font-family: var(--font-body);
     font-size: var(--fs-body-sm);
     color: var(--text-strong);
@@ -166,15 +225,16 @@ const acordeon = [
     transition: var(--transition-base);
   }
   .conocelo-item-header:hover {
-    background: var(--cream-200);
+    color: var(--brand);
   }
   .conocelo-item-header[aria-expanded="true"] {
-    background: var(--brand-tint);
     border-color: var(--brand);
+    color: var(--brand);
   }
   .conocelo-item-label {
     flex: 1;
     text-align: left;
+    font-weight: var(--fw-medium);
   }
   .conocelo-item-count {
     font-family: var(--font-body);
@@ -190,81 +250,61 @@ const acordeon = [
   }
 
   .conocelo-item-panel {
-    padding: var(--space-2) 0 var(--space-4);
+    padding: var(--space-3) 0 var(--space-4) var(--space-4);
   }
   .conocelo-item-panel[hidden] {
     display: none;
   }
-  .conocelo-item-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: var(--space-4);
+  .conocelo-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
   }
 
-  .conocelo-card {
-    overflow: hidden;
-    gap: 0;
+  .conocelo-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
     transition: var(--transition-base);
   }
-  .conocelo-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+  .conocelo-row:hover {
+    background: var(--cream-200);
   }
-  .conocelo-card-photo {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    border: 1px solid var(--border-hairline);
-    border-width: 0 0 1px 0;
+  .conocelo-row-thumb {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     background: var(--gradient-lulo);
   }
-  .conocelo-card-photo img {
+  .conocelo-row-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-  .conocelo-card-badge {
-    position: absolute;
-    top: var(--space-2);
-    left: var(--space-2);
-    background: rgba(31, 43, 26, 0.55);
-    color: #fff;
-    font-family: var(--font-body);
-    font-size: 10px;
-    font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-eyebrow);
-    text-transform: uppercase;
-    padding: 4px 9px;
-    border-radius: var(--radius-pill);
-  }
-  .conocelo-card-body {
-    padding: var(--space-5);
+  .conocelo-row-body {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: 2px;
+    min-width: 0;
   }
-  .conocelo-card-body h3 {
-    font-family: var(--font-display);
-    font-size: var(--fs-subtitle);
-    line-height: var(--lh-heading);
-    margin: 0;
-  }
-  .conocelo-card-desc {
+  .conocelo-row-title {
     font-family: var(--font-body);
     font-size: var(--fs-body-sm);
+    color: var(--text-strong);
     line-height: var(--lh-body);
-    color: var(--text-body);
-    margin: 0;
   }
-  .conocelo-card-cta {
+  .conocelo-row-meta {
     font-family: var(--font-body);
-    font-size: var(--fs-caption);
-    color: var(--text-link);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: auto;
+    font-size: var(--fs-micro);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-eyebrow);
   }
 
   .conocelo-nota {
@@ -276,37 +316,62 @@ const acordeon = [
   }
 
   @media (min-width: 761px) {
-    .conocelo-acordeon {
-      grid-template-columns: 260px 1fr;
-      column-gap: var(--space-6);
-      row-gap: var(--space-3);
-      align-items: start;
+    .conocelo-acordeon--mobile {
+      display: none;
+    }
+    .conocelo-acordeon--desktop {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+    .conocelo-menu {
+      flex: 0 0 260px;
+      display: flex;
+      flex-direction: column;
+    }
+    .conocelo-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .conocelo-content .conocelo-item-panel {
+      padding: 0;
+    }
+    /* En el panel de escritorio hay más ancho disponible que en el móvil,
+       así que las filas compactas se acomodan en varias columnas (en vez de
+       una sola lista angosta) para aprovechar ese espacio. */
+    .conocelo-content .conocelo-item-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-1) var(--space-4);
     }
   }
 </style>
 
 <script>
-  const triggers = Array.from(
-    document.querySelectorAll<HTMLButtonElement>("#conocelo [data-accordion-trigger]"),
-  );
+  document.querySelectorAll<HTMLElement>("#conocelo .conocelo-acordeon").forEach((container) => {
+    const triggers = Array.from(
+      container.querySelectorAll<HTMLButtonElement>("[data-accordion-trigger]"),
+    );
 
-  function closeAll() {
-    triggers.forEach((h) => {
-      h.setAttribute("aria-expanded", "false");
-      const panel = document.getElementById(h.getAttribute("aria-controls") ?? "");
-      if (panel) panel.hidden = true;
-    });
-  }
+    function closeAll() {
+      triggers.forEach((h) => {
+        h.setAttribute("aria-expanded", "false");
+        const panel = document.getElementById(h.getAttribute("aria-controls") ?? "");
+        if (panel) panel.hidden = true;
+      });
+    }
 
-  triggers.forEach((header) => {
-    header.addEventListener("click", () => {
-      const wasOpen = header.getAttribute("aria-expanded") === "true";
-      const panel = document.getElementById(header.getAttribute("aria-controls") ?? "");
-      closeAll();
-      if (!wasOpen) {
-        header.setAttribute("aria-expanded", "true");
-        if (panel) panel.hidden = false;
-      }
+    triggers.forEach((header) => {
+      header.addEventListener("click", () => {
+        const wasOpen = header.getAttribute("aria-expanded") === "true";
+        const panel = document.getElementById(header.getAttribute("aria-controls") ?? "");
+        closeAll();
+        if (!wasOpen) {
+          header.setAttribute("aria-expanded", "true");
+          if (panel) panel.hidden = false;
+        }
+      });
     });
   });
 </script>
