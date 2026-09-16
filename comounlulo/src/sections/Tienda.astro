@@ -42,7 +42,7 @@ import Icon from "../components/Icon.astro";
               label="Acepto que me escriban sobre el lanzamiento"
               name="consentimiento"
             />
-            <p id="reserva-error" class="reserva-error" hidden>
+            <p id="reserva-error" class="reserva-error" role="alert" aria-live="assertive" hidden>
               Marca la casilla de arriba para poder anotarte.
             </p>
             <p class="reserva-legal">
@@ -51,7 +51,7 @@ import Icon from "../components/Icon.astro";
             <Button size="lg" class="reserva-btn">Anotarme en la lista de espera</Button>
           </form>
 
-          <div id="reserva-exito" class="reserva-exito" hidden>
+          <div id="reserva-exito" class="reserva-exito" role="status" aria-live="polite" hidden>
             <Icon name="check" size={18} color="var(--text-link-hover)" />
             <p>Revisa tu correo: te enviamos un mensaje para confirmar tu anotación. Una vez confirmes, quedas en la lista, y te escribimos apenas tengamos novedades reales.</p>
           </div>

@@ -19,7 +19,7 @@ const {
 } = Astro.props;
 
 const siteUrl = (Astro.site?.toString() ?? "https://www.comounlulo.co/").replace(/\/$/, "");
-const ogImage = image ?? `${siteUrl}/images/lulo-mercado.jpg`;
+const ogImage = image ?? `${siteUrl}/images/lulo-mercado-vendedora.jpg`;
 const canonicalUrl = new URL(Astro.url.pathname, `${siteUrl}/`).toString();
 
 // Se incluye siempre, incluso en páginas noindex: no hace daño mientras el
