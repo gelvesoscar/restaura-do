@@ -186,7 +186,7 @@ import Icon from "../components/Icon.astro";
     }
 
     if (error) error.hidden = true;
-    await anotarseEnListaDeEspera({ correo, color: "" });
+    await anotarseEnListaDeEspera({ correo });
     form.hidden = true;
     if (exito) exito.hidden = false;
   });
