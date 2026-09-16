@@ -16,6 +16,14 @@ function badgeTipo(tipo: string) {
   return tipo;
 }
 
+function slug(s: string) {
+  return s
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-");
+}
+
 const CATEGORIAS = ["Origen", "Mitos", "Ciencia", "Nutrición", "Hábitos"];
 
 const grupos = CATEGORIAS.map((cat) => ({
@@ -26,6 +34,17 @@ const grupos = CATEGORIAS.map((cat) => ({
 // Orden por categoría (Origen, Mitos, Ciencia, Nutrición, Hábitos) para la
 // vista "Todos", en vez del orden numérico S01..S12.
 const temasOrdenados = grupos.flatMap((g) => g.items);
+
+// Acordeón por categoría: "Todos" abre por defecto mostrando las 12 notas
+// juntas; cada categoría es su propio encabezado clickeable que revela sus
+// artículos (foto + descripción breve) justo debajo, sin panel flotante ni
+// grilla separada que haya que filtrar. Antes esto era una fila de 6
+// pastillas que se desbordaba en móvil y, como desplegable único, no
+// aprovechaba el ancho en escritorio.
+const acordeon = [
+  { cat: "Todos", items: temasOrdenados, abierto: true },
+  ...grupos.map((g) => ({ cat: g.cat, items: g.items, abierto: false })),
+];
 ---
 
 <section id="conocelo" class="conocelo">
@@ -36,86 +55,71 @@ const temasOrdenados = grupos.flatMap((g) => g.items);
       lead="12 notas sobre la ciencia real del lulo, con fuente citada y sin promesas de más."
     />
 
-    {/* Antes esto era una fila de 6 pastillas (Todos + 5 categorías) que se
-       desbordaba en móvil y se sentía larga incluso en escritorio. Ahora es
-       un único botón desplegable, en cualquier tamaño de pantalla, con el
-       mismo patrón de apertura/cierre (clic afuera, Escape) que el menú
-       hamburguesa de Nav.astro. */}
-    <div class="conocelo-filtro">
-      <button
-        type="button"
-        id="conocelo-filtro-boton"
-        class="conocelo-filtro-trigger"
-        aria-haspopup="listbox"
-        aria-expanded="false"
-        aria-controls="conocelo-filtro-panel"
-      >
-        <span data-filtro-label>Todos</span>
-        <span class="conocelo-filtro-count" data-filtro-count>{temas.length}</span>
-        <span class="conocelo-filtro-chevron">
-          <Icon name="chevron-down" size={16} />
-        </span>
-      </button>
-      <div
-        id="conocelo-filtro-panel"
-        class="conocelo-filtro-panel"
-        role="listbox"
-        aria-label="Filtrar notas por categoría"
-        hidden
-      >
-        <button
-          type="button"
-          class="conocelo-filtro-opcion is-selected"
-          data-cat-select="Todos"
-          role="option"
-          aria-selected="true"
-        >
-          <span>Todos</span>
-          <span class="conocelo-filtro-count">{temas.length}</span>
-        </button>
-        {
-          grupos.map((g) => (
-            <button
-              type="button"
-              class="conocelo-filtro-opcion"
-              data-cat-select={g.cat}
-              role="option"
-              aria-selected="false"
-            >
-              <span>{g.cat}</span>
-              <span class="conocelo-filtro-count">{g.items.length}</span>
-            </button>
-          ))
-        }
-      </div>
-    </div>
-
-    <div class="conocelo-grid">
+    {/* Grid de 2 columnas en escritorio (categoría a la izquierda, sus
+       artículos a la derecha en la misma fila) que en móvil colapsa a una
+       sola columna, por el simple acomodo automático de CSS Grid: cada
+       encabezado y su panel son hijos directos y consecutivos de
+       `.conocelo-acordeon`, así que basta cambiar `grid-template-columns`
+       por breakpoint para pasar de "una fila por categoría, 2 columnas" a
+       "todo apilado en una columna" sin duplicar marcado ni mover nada
+       por JS. */}
+    <div class="conocelo-acordeon">
       {
-        temasOrdenados.map((t) => {
-          const d = t.data;
-          const cat = badgeTipo(d.tipo);
+        acordeon.map(({ cat, items, abierto }) => {
+          const headerId = `conocelo-header-${slug(cat)}`;
+          const panelId = `conocelo-panel-${slug(cat)}`;
           return (
-            <Card
-              as="a"
-              href={`/conocelo/${t.id}`}
-              elevation="xs"
-              padding="0"
-              class="conocelo-card"
-              data-cat-item={cat}
-            >
-              <div class="conocelo-card-photo">
-                <img src={d.imagen} alt={d.alt} loading="lazy" />
-                <span class="conocelo-card-badge">{cat}</span>
-              </div>
-              <div class="conocelo-card-body">
-                <h3>{d.title}</h3>
-                <p class="conocelo-card-desc">{d.foco}</p>
-                <span class="conocelo-card-cta">
-                  Leer <Icon name="arrow-right" size={13} />
+            <>
+              <button
+                type="button"
+                id={headerId}
+                class="conocelo-item-header"
+                data-accordion-trigger
+                aria-expanded={abierto ? "true" : "false"}
+                aria-controls={panelId}
+              >
+                <span class="conocelo-item-label">{cat}</span>
+                <span class="conocelo-item-count">{items.length}</span>
+                <span class="conocelo-item-chevron">
+                  <Icon name="chevron-down" size={16} />
                 </span>
+              </button>
+              <div
+                id={panelId}
+                class="conocelo-item-panel"
+                role="region"
+                aria-labelledby={headerId}
+                hidden={!abierto}
+              >
+                <div class="conocelo-item-grid">
+                  {items.map((t) => {
+                    const d = t.data;
+                    const tcat = badgeTipo(d.tipo);
+                    return (
+                      <Card
+                        as="a"
+                        href={`/conocelo/${t.id}`}
+                        elevation="xs"
+                        padding="0"
+                        class="conocelo-card"
+                      >
+                        <div class="conocelo-card-photo">
+                          <img src={d.imagen} alt={d.alt} loading="lazy" />
+                          <span class="conocelo-card-badge">{tcat}</span>
+                        </div>
+                        <div class="conocelo-card-body">
+                          <h3>{d.title}</h3>
+                          <p class="conocelo-card-desc">{d.foco}</p>
+                          <span class="conocelo-card-cta">
+                            Leer <Icon name="arrow-right" size={13} />
+                          </span>
+                        </div>
+                      </Card>
+                    );
+                  })}
+                </div>
               </div>
-            </Card>
+            </>
           );
         })
       }
@@ -139,94 +143,64 @@ const temasOrdenados = grupos.flatMap((g) => g.items);
     padding: var(--section-y) var(--gutter-page);
   }
 
-  .conocelo-filtro {
-    position: relative;
-    display: inline-block;
+  .conocelo-acordeon {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: var(--space-2);
     margin-bottom: var(--space-6);
   }
-  .conocelo-filtro-trigger {
-    display: inline-flex;
+
+  .conocelo-item-header {
+    display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: 10px 14px;
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-sm);
+    border: 1px solid var(--border-default);
+    background: var(--surface-card);
     font-family: var(--font-body);
     font-size: var(--fs-body-sm);
     color: var(--text-strong);
-    background: var(--surface-card);
-    border: 1px solid var(--border-default);
     cursor: pointer;
     transition: var(--transition-base);
   }
-  .conocelo-filtro-trigger:hover {
+  .conocelo-item-header:hover {
     background: var(--cream-200);
   }
-  .conocelo-filtro-trigger[aria-expanded="true"] {
-    border-color: var(--accent);
+  .conocelo-item-header[aria-expanded="true"] {
+    background: var(--brand-tint);
+    border-color: var(--brand);
   }
-  .conocelo-filtro-chevron {
-    display: inline-flex;
-    transition: var(--transition-base);
+  .conocelo-item-label {
+    flex: 1;
+    text-align: left;
   }
-  .conocelo-filtro-trigger[aria-expanded="true"] .conocelo-filtro-chevron {
-    transform: rotate(180deg);
-  }
-  .conocelo-filtro-count {
+  .conocelo-item-count {
     font-family: var(--font-body);
     font-size: var(--fs-micro);
     opacity: 0.65;
   }
-  .conocelo-filtro-panel {
-    position: absolute;
-    top: calc(100% + var(--space-2));
-    left: 0;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 220px;
-    padding: var(--space-2);
-    background: var(--surface-card);
-    border: 1px solid var(--border-hairline);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
-  }
-  .conocelo-filtro-panel[hidden] {
-    display: none;
-  }
-  .conocelo-filtro-opcion {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-    padding: var(--space-3);
-    border-radius: var(--radius-sm);
-    border: none;
-    background: none;
-    font-family: var(--font-body);
-    font-size: var(--fs-body-sm);
-    color: var(--text-body);
-    text-align: left;
-    cursor: pointer;
+  .conocelo-item-chevron {
+    display: inline-flex;
     transition: var(--transition-base);
   }
-  .conocelo-filtro-opcion:hover {
-    background: var(--cream-200);
-  }
-  .conocelo-filtro-opcion.is-selected {
-    color: var(--text-strong);
-    background: var(--brand-tint);
+  .conocelo-item-header[aria-expanded="true"] .conocelo-item-chevron {
+    transform: rotate(180deg);
   }
 
-  .conocelo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-5);
-    margin-bottom: var(--space-8);
+  .conocelo-item-panel {
+    padding: var(--space-2) 0 var(--space-4);
   }
-  .conocelo-card[hidden] {
+  .conocelo-item-panel[hidden] {
     display: none;
   }
+  .conocelo-item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-4);
+  }
+
   .conocelo-card {
     overflow: hidden;
     gap: 0;
@@ -301,94 +275,38 @@ const temasOrdenados = grupos.flatMap((g) => g.items);
     margin: 0;
   }
 
-  @media (max-width: 900px) {
-    .conocelo-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  @media (max-width: 600px) {
-    .conocelo-filtro {
-      display: block;
-    }
-    .conocelo-filtro-trigger {
-      width: 100%;
-      justify-content: space-between;
-    }
-    .conocelo-filtro-panel {
-      left: 0;
-      right: 0;
-      min-width: 0;
-    }
-    .conocelo-grid {
-      grid-template-columns: 1fr;
+  @media (min-width: 761px) {
+    .conocelo-acordeon {
+      grid-template-columns: 260px 1fr;
+      column-gap: var(--space-6);
+      row-gap: var(--space-3);
+      align-items: start;
     }
   }
 </style>
 
 <script>
-  const trigger = document.getElementById("conocelo-filtro-boton") as HTMLButtonElement | null;
-  const panel = document.getElementById("conocelo-filtro-panel") as HTMLElement | null;
-  const label = trigger?.querySelector<HTMLElement>("[data-filtro-label]");
-  const count = trigger?.querySelector<HTMLElement>("[data-filtro-count]");
-  const options = Array.from(
-    document.querySelectorAll<HTMLButtonElement>("#conocelo-filtro-panel [data-cat-select]"),
+  const triggers = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("#conocelo [data-accordion-trigger]"),
   );
-  const cards = document.querySelectorAll<HTMLElement>("#conocelo .conocelo-card");
 
-  function closePanel() {
-    if (!trigger || !panel) return;
-    panel.hidden = true;
-    trigger.setAttribute("aria-expanded", "false");
-    document.removeEventListener("keydown", onKeydown);
-    document.removeEventListener("click", onClickOutside, true);
+  function closeAll() {
+    triggers.forEach((h) => {
+      h.setAttribute("aria-expanded", "false");
+      const panel = document.getElementById(h.getAttribute("aria-controls") ?? "");
+      if (panel) panel.hidden = true;
+    });
   }
 
-  function openPanel() {
-    if (!trigger || !panel) return;
-    panel.hidden = false;
-    trigger.setAttribute("aria-expanded", "true");
-    document.addEventListener("keydown", onKeydown);
-    document.addEventListener("click", onClickOutside, true);
-  }
-
-  function onKeydown(e: KeyboardEvent) {
-    if (e.key === "Escape") {
-      closePanel();
-      trigger?.focus();
-    }
-  }
-
-  function onClickOutside(e: MouseEvent) {
-    const wrapper = trigger?.closest(".conocelo-filtro");
-    if (wrapper && e.target instanceof Node && !wrapper.contains(e.target)) {
-      closePanel();
-    }
-  }
-
-  trigger?.addEventListener("click", () => {
-    if (panel?.hidden) openPanel();
-    else closePanel();
-  });
-
-  options.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const selected = btn.dataset.catSelect ?? "Todos";
-      const countText = btn.querySelector(".conocelo-filtro-count")?.textContent ?? "";
-
-      options.forEach((b) => {
-        const isSelected = b === btn;
-        b.classList.toggle("is-selected", isSelected);
-        b.setAttribute("aria-selected", String(isSelected));
-      });
-      if (label) label.textContent = selected;
-      if (count) count.textContent = countText;
-
-      cards.forEach((card) => {
-        const match = selected === "Todos" || card.dataset.catItem === selected;
-        card.hidden = !match;
-      });
-
-      closePanel();
+  triggers.forEach((header) => {
+    header.addEventListener("click", () => {
+      const wasOpen = header.getAttribute("aria-expanded") === "true";
+      const panel = document.getElementById(header.getAttribute("aria-controls") ?? "");
+      closeAll();
+      if (!wasOpen) {
+        header.setAttribute("aria-expanded", "true");
+        if (panel) panel.hidden = false;
+      }
     });
   });
 </script>
