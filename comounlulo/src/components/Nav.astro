@@ -9,20 +9,20 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
 
 <header class="nav">
   <div class="nav-inner">
-    <a href="/preview/#inicio" class="nav-brand">
+    <a href="/#inicio" class="nav-brand">
       <Wordmark size={22} />
     </a>
     <nav class="nav-links" aria-label="Secciones">
       {
         links.map(([id, label]) => (
-          <a href={`/preview/#${id}`} data-nav-link={id} class="nav-link">
+          <a href={`/#${id}`} data-nav-link={id} class="nav-link">
             {label}
           </a>
         ))
       }
     </nav>
     <div class="nav-actions">
-      <Button href="/preview/#tienda" size="sm" class="nav-cta">Ver la tienda</Button>
+      <Button href="/#tienda" size="sm" class="nav-cta">Ver la tienda</Button>
       <IconButton
         id="menu-button"
         icon="menu"
@@ -36,7 +36,7 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
   <nav id="menu-panel" class="menu-panel" aria-label="Secciones" hidden>
     {
       links.map(([id, label]) => (
-        <a href={`/preview/#${id}`} data-menu-link={id} class="menu-panel-link">
+        <a href={`/#${id}`} data-menu-link={id} class="menu-panel-link">
           {label}
         </a>
       ))
@@ -44,7 +44,7 @@ const links = NAV_SECCIONES.filter(([id]) => id !== "inicio");
     {/* La tienda no tiene enlace propio en `links` (queda solo el botón
        resaltado del header), pero ese botón se oculta en móvil, así que
        aquí sí necesita su propia entrada para no desaparecer del todo. */}
-    <Button href="/preview/#tienda" size="sm" class="menu-panel-cta">
+    <Button href="/#tienda" size="sm" class="menu-panel-cta">
       Ver la tienda
     </Button>
   </nav>

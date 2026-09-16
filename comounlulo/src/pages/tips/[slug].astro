@@ -23,8 +23,11 @@ const { Content } = await render(tip);
 >
   <article class="tip-article">
     <div class="tip-article-inner">
-      <a href="/preview/#bienestar" class="tip-back">
-        <Icon name="arrow-left" size={14} /> Todos los hábitos
+      {/* No hay una sección "bienestar" visible a la que volver (Tips
+         quedó sin ruta pública propia, ver comentario en index.astro),
+         así que este enlace vuelve al inicio en vez de a un ancla rota. */}
+      <a href="/" class="tip-back">
+        <Icon name="arrow-left" size={14} /> Volver al inicio
       </a>
       <div class="tip-article-head">
         <span class="tip-article-icon">
@@ -44,7 +47,7 @@ const { Content } = await render(tip);
         ni curan condiciones, y no sustituyen la orientación de un
         profesional de la salud.
       </p>
-      <a href="/preview/#tienda" class="tip-article-cta">
+      <a href="/#tienda" class="tip-article-cta">
         Ver la tienda <Icon name="arrow-right" size={14} />
       </a>
     </div>
