@@ -1,6 +1,5 @@
 export interface WaitlistPayload {
   correo: string;
-  color: string;
 }
 
 // Formulario real en MailerLite: "Lista de espera - Botella"
@@ -37,7 +36,6 @@ export async function anotarseEnListaDeEspera(
     };
 
     addField("fields[email]", payload.correo);
-    addField("fields[color]", payload.color);
     addField("ml-submit", "1");
     addField("anticsrf", "true");
 
