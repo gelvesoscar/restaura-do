@@ -92,7 +92,7 @@ const conocelo = defineCollection({
 });
 
 // Salud (H01-H12): ciencia nutricional del lulo con rigor por artículo,
-// separada a propósito de Conocelo (origen, historia, cultivo). Ver
+// separada a propósito de Conócelo (origen, historia, cultivo). Ver
 // src/sections/Salud.astro. `imagen` queda opcional: mientras no exista la
 // foto real, la tarjeta y el artículo muestran un TODO visible.
 const salud = defineCollection({

@@ -5,7 +5,7 @@ export const MOSTRAR_FUNDADORES = true;
 const TODAS_LAS_SECCIONES = [
   ["inicio", "Inicio"],
   ["lulo", "Por qué el lulo"],
-  ["conocelo", "Conocelo"],
+  ["conocelo", "Conócelo"],
   ["manifiesto", "Verse como un lulo"],
   ["fundadores", "Fundadores"],
   ["caminos", "Tres formas de vivirlo"],
@@ -20,7 +20,7 @@ export const SECCIONES = TODAS_LAS_SECCIONES.filter(
   ([id]) => MOSTRAR_FUNDADORES || id !== "fundadores",
 );
 
-// Subconjunto para el menú de arriba (header + panel móvil). Conocelo es
+// Subconjunto para el menú de arriba (header + panel móvil). Conócelo es
 // una sección propia y siempre visible (entre Por qué el lulo y Verse como
 // un lulo), así que sí tiene su propio ítem de nav. Cocina, Belleza y Salud
 // en cambio ya tienen su propio acceso directo en "Una fruta. Tres formas
