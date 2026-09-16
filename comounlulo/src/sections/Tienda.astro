@@ -1,104 +1,45 @@
 ---
 import SectionHead from "../components/SectionHead.astro";
 import Photo from "../components/Photo.astro";
-import Badge from "../components/Badge.astro";
 import Card from "../components/Card.astro";
-import Select from "../components/Select.astro";
 import Input from "../components/Input.astro";
 import Checkbox from "../components/Checkbox.astro";
 import Button from "../components/Button.astro";
 import Icon from "../components/Icon.astro";
-
-const PRECIO = 179000;
-
-const SKU = {
-  nombre: "Botella inteligente comounlulo",
-  variante: "500 ml (7 × 24,5 cm) o 750 ml (7,7 × 27 cm) · interior en acero inoxidable SUS316L, exterior en SUS304 · doble pared al vacío",
-  colores: ["Noche (negro)", "Pulpa clara (blanco)", "Flor (rosa)", "Agua (azul claro)"],
-  bullets: [
-    "Recordatorio de toma: vibra y se ilumina cuando llevas mucho tiempo sin tomar agua. El intervalo lo defines tú desde la app, no es un tiempo fijo de fábrica.",
-    "Pantalla de temperatura: un toque y el aro de la tapa muestra la temperatura exacta del agua, en grados centígrados o Fahrenheit.",
-    "Esterilización UV-C: un LED de 260 a 280 nanómetros (15 mW) en la tapa mantiene limpio el interior de la botella, sin químicos ni pastillas. El ciclo se programa por horario y se ajusta en duración desde la app, a diferencia de otras botellas UV con ciclo fijo de 180 segundos.",
-    "Doble pared al vacío: la misma construcción de un termo. Mantiene fría el agua o el jugo de lulo, y caliente lo que va caliente.",
-    "App por Bluetooth: consumo del día, recordatorios y desinfección programada, desde el celular.",
-    "Interior en acero inoxidable SUS316L, exterior en SUS304, batería de litio de 800 mAh y carga USB-C: acero de grado alimenticio, manija de silicona, pintura resistente a rayones.",
-  ],
-};
-
-const precioFormato = new Intl.NumberFormat("es-CO", {
-  style: "currency",
-  currency: "COP",
-  maximumFractionDigits: 0,
-})
-  .format(PRECIO)
-  // Intl inserta un espacio (NBSP) entre el símbolo y la cifra; la
-  // convención colombiana lo escribe pegado: "$179.000".
-  .replace(/\u00A0/g, "");
 ---
 
 <section id="tienda" class="tienda">
   <div class="tienda-inner">
-    <SectionHead
-      eyebrow="Tienda"
-      title="Estamos validando si vale la pena fabricar esta botella."
-      lead="Antes de producir, queremos confirmar que de verdad hay interés. Anótate sin costo. Si seguimos adelante, tú te enteras primero. Las demás gamas entran cuando estén listas."
-    />
     <div class="tienda-grid">
-      <div class="tienda-photos">
-        <Photo label="Los cuatro colores reales de fábrica: negro, blanco, rosa y azul, con el aro de luz encendido" ratio="1 / 1" tone="flat" src="/images/botella-colores-reales.jpg" />
-        <div class="tienda-photos-row">
-          <Photo label="Detalle de la tapa: pantalla con aro de luz e indicador UV" ratio="1 / 1" tone="flat" radius="var(--radius-md)" src="/images/botella-tapa-detalle.jpg" />
-          <Photo label="En la mano" ratio="1 / 1" radius="var(--radius-md)" src="/images/botella-01-app-en-mano.jpg" />
-          <Photo label="Botellas rosa y azul sobre la mesa, mostrando pantalla e indicador UV" ratio="1 / 1" tone="pulpa" radius="var(--radius-md)" src="/images/botella-contexto-mesa.jpg" />
-        </div>
+      <div class="tienda-photo">
+        <Photo
+          label="Lulos recién escogidos en el mercado"
+          ratio="4 / 5"
+          tone="flat"
+          src="/images/lulo-mercado.jpg"
+        />
       </div>
 
       <div class="tienda-info">
-        <div class="tienda-badges">
-          <Badge tone="pulpa">Único modelo en evaluación</Badge>
-          <Badge tone="neutral">Aún sin producir · reserva sin costo</Badge>
-        </div>
-        <h3 class="tienda-nombre">{SKU.nombre}</h3>
-        <span class="tienda-variante">{SKU.variante}</span>
-        <p class="tienda-desc">
-          La botella es el objeto más honesto que podíamos hacer primero: no promete nada por dentro de ti, solo
-          te recuerda tomar agua. Restaurar no es un evento; es acordarse todos los días. Esto es un recordatorio
-          que cabe en la mano.
-        </p>
-        <ul class="tienda-bullets">
-          {SKU.bullets.map((b) => <li>{b}</li>)}
-        </ul>
-        <p class="tienda-uv-nota">
-          El UV-C mantiene limpia la botella por dentro y reduce bacterias que causan olor, según el fabricante,
-          hasta 99,99% en pruebas de laboratorio. No purifica agua no potable ni reemplaza una fuente de agua
-          segura.
-        </p>
+        <SectionHead
+          eyebrow="Tienda"
+          title="Muy pronto vas a poder llevarte comounlulo a tu mesa."
+          lead="Todavía estamos probando cuál va a ser la primera forma real de hacerlo. Antes de anunciar nada, queremos estar seguros de poder cumplirlo. Déjanos tu correo y sé de los primeros en enterarte, sin ningún compromiso de compra."
+        />
 
         <Card elevation="sm" class="tienda-card">
-          <div class="tienda-precio-row">
-            <span class="tienda-precio">{precioFormato}</span>
-            <span class="tienda-precio-nota">Precio estimado con el que estamos validando interés · impuestos y envío aún sin confirmar</span>
-          </div>
-
           <form id="reserva-form" class="reserva-form">
-            <Select
-              label="Color de tu interés"
-              id="reserva-color"
-              name="color"
-              options={SKU.colores}
-              hint="También hay mezcla de colores disponible en un mismo pedido."
-            />
             <Input
               label="Correo"
               type="email"
               name="correo"
               id="reserva-correo"
               placeholder="tu@correo.co"
-              hint="Ahí te avisamos apenas confirmemos producción con el proveedor."
+              hint="Ahí te escribimos apenas tengamos algo real que contar."
               required
             />
             <Checkbox
-              label="Acepto que me escriban sobre el lanzamiento y el estado de mi reserva"
+              label="Acepto que me escriban sobre el lanzamiento"
               name="consentimiento"
             />
             <p id="reserva-error" class="reserva-error" hidden>
@@ -112,32 +53,14 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
 
           <div id="reserva-exito" class="reserva-exito" hidden>
             <Icon name="check" size={18} color="var(--text-link-hover)" />
-            <p>Revisa tu correo: te enviamos un mensaje para confirmar tu anotación. Una vez confirmes, quedas en la lista, y te escribimos de nuevo apenas cerremos con el proveedor.</p>
+            <p>Revisa tu correo: te enviamos un mensaje para confirmar tu anotación. Una vez confirmes, quedas en la lista, y te escribimos apenas tengamos novedades reales.</p>
           </div>
 
           <div class="tienda-entrega">
             <Icon name="truck" size={16} color="var(--text-muted)" />
-            Es una prueba de mercado, no una preventa: no hay pago ni fecha de entrega todavía. Quien se anota
-            primero tiene prioridad si decidimos confirmar producción.
+            No hay producto, precio ni fecha confirmados todavía. Anotarte no es un pedido, es decirnos que te
+            interesa lo que viene.
           </div>
-        </Card>
-
-        <Card tone="tint" elevation="none" class="tienda-respaldo">
-          <span class="eyebrow">Respaldo</span>
-          <h4>No es un genérico sin origen</h4>
-          <p>
-            Se fabrica en una planta certificada ISO 9001, con certificaciones FDA, CE, FCC, ROHS, SGS y BRC.
-            Libre de BPA. Sabemos qué fábrica la hace y bajo qué normas responde.
-          </p>
-        </Card>
-
-        <Card tone="pulpa" class="tienda-proximo">
-          <span class="eyebrow">Lo que viene</span>
-          <h4>Las demás gamas, cuando estén confirmadas</h4>
-          <p>
-            Estamos cerrando proveedor para dos referencias más. Cuando la producción esté asegurada, aparecen
-            aquí, no antes.
-          </p>
         </Card>
       </div>
     </div>
@@ -159,88 +82,15 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-16);
-    align-items: start;
-  }
-  .tienda-photos {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-  .tienda-photos-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-3);
+    align-items: center;
   }
   .tienda-info {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
-  }
-  .tienda-badges {
-    display: flex;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-  }
-  .tienda-nombre {
-    font-family: var(--font-display);
-    font-size: var(--fs-display-m);
-    margin: 0;
-    line-height: var(--lh-heading);
-    color: var(--text-strong);
-  }
-  .tienda-variante {
-    font-family: var(--font-body);
-    font-size: var(--fs-body-sm);
-    color: var(--text-muted);
-  }
-  .tienda-dimensiones {
-    font-family: var(--font-body);
-    font-size: var(--fs-caption);
-    color: var(--text-muted);
-    margin: 0;
-  }
-  .tienda-desc {
-    font-size: var(--fs-body);
-    line-height: var(--lh-body);
-    color: var(--text-body);
-    max-width: 46ch;
-    margin: 0;
-  }
-  .tienda-bullets {
-    margin: 0;
-    padding-left: 1.1em;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    font-family: var(--font-body);
-    font-size: var(--fs-body-sm);
-    color: var(--text-body);
-    line-height: var(--lh-body);
-  }
-  .tienda-uv-nota {
-    font-family: var(--font-body);
-    font-size: var(--fs-caption);
-    color: var(--text-muted);
-    line-height: var(--lh-body);
-    margin: 0;
+    gap: var(--space-6);
   }
   .tienda-card {
     gap: var(--space-4) !important;
-  }
-  .tienda-precio-row {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-  .tienda-precio {
-    font-family: var(--font-display);
-    font-size: var(--fs-title);
-    color: var(--text-link-hover);
-  }
-  .tienda-precio-nota {
-    font-family: var(--font-body);
-    font-size: var(--fs-caption);
-    color: var(--text-muted);
   }
   /* Sin :not([hidden]) aqui, esta regla le gana en especificidad a la
      regla nativa `[hidden]{display:none}` del navegador y el formulario
@@ -301,20 +151,6 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
   .tienda-entrega :global(span[aria-hidden]) {
     margin-top: 2px;
   }
-  .tienda-respaldo h4,
-  .tienda-proximo h4 {
-    font-family: var(--font-display);
-    font-size: var(--fs-body);
-    margin: 0;
-    color: var(--text-strong);
-  }
-  .tienda-respaldo p,
-  .tienda-proximo p {
-    font-size: var(--fs-body-sm);
-    line-height: var(--lh-body);
-    margin: 0;
-    color: var(--text-body);
-  }
   @media (max-width: 900px) {
     .tienda-grid {
       grid-template-columns: 1fr;
@@ -340,7 +176,6 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
 
     const data = new FormData(form);
     const correo = String(data.get("correo") ?? "");
-    const color = String(data.get("color") ?? "");
     const consentimiento = data.get("consentimiento");
 
     if (!consentimiento) {
@@ -351,7 +186,7 @@ const precioFormato = new Intl.NumberFormat("es-CO", {
     }
 
     if (error) error.hidden = true;
-    await anotarseEnListaDeEspera({ correo, color });
+    await anotarseEnListaDeEspera({ correo, color: "" });
     form.hidden = true;
     if (exito) exito.hidden = false;
   });
