@@ -1,5 +1,6 @@
 export interface WaitlistPayload {
   correo: string;
+  productoInteres?: string;
 }
 
 // Formulario real en MailerLite: "Lista de espera - Botella"
@@ -36,6 +37,14 @@ export async function anotarseEnListaDeEspera(
     };
 
     addField("fields[email]", payload.correo);
+    // Requiere que exista en MailerLite un campo personalizado con la
+    // clave "producto_interes" (Suscriptores > Campos personalizados).
+    // Si no existe, MailerLite ignora este dato silenciosamente: el envío
+    // igual se completa, pero el voto no queda guardado. Verificar en
+    // producción la primera vez, igual que se hizo antes con el color.
+    if (payload.productoInteres) {
+      addField("fields[producto_interes]", payload.productoInteres);
+    }
     addField("ml-submit", "1");
     addField("anticsrf", "true");
 

@@ -38,6 +38,25 @@ import Icon from "../components/Icon.astro";
               hint="Ahí te escribimos apenas tengamos algo real que contar."
               required
             />
+            <fieldset class="reserva-voto">
+              <legend class="reserva-voto-legend">¿Cuál te gustaría probar primero?</legend>
+              <label class="reserva-voto-opcion">
+                <input type="radio" name="producto_interes" value="Botella inteligente" required />
+                <span>Botella inteligente</span>
+              </label>
+              <label class="reserva-voto-opcion">
+                <input type="radio" name="producto_interes" value="Pulpa de lulo congelada" />
+                <span>Pulpa de lulo congelada</span>
+              </label>
+              <label class="reserva-voto-opcion">
+                <input type="radio" name="producto_interes" value="Mermelada de lulo" />
+                <span>Mermelada de lulo</span>
+              </label>
+              <label class="reserva-voto-opcion">
+                <input type="radio" name="producto_interes" value="Té de cáscara de lulo" />
+                <span>Té de cáscara de lulo</span>
+              </label>
+            </fieldset>
             <Checkbox
               label="Acepto que me escriban sobre el lanzamiento"
               name="consentimiento"
@@ -121,6 +140,46 @@ import Icon from "../components/Icon.astro";
   .reserva-btn {
     width: 100%;
   }
+  .reserva-voto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  .reserva-voto-legend {
+    padding: 0;
+    margin-bottom: 2px;
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-strong);
+  }
+  .reserva-voto-opcion {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--fs-body-sm);
+    color: var(--text-body);
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+  .reserva-voto-opcion:hover {
+    background: var(--cream-200);
+  }
+  .reserva-voto-opcion:has(input:checked) {
+    border-color: var(--brand);
+    background: var(--brand-tint);
+    color: var(--text-strong);
+  }
+  .reserva-voto-opcion input {
+    flex-shrink: 0;
+    accent-color: var(--brand);
+  }
   /* Mismo motivo que .reserva-form: sin :not([hidden]) el bloque de
      exito quedaria visible siempre, incluso antes de enviar el
      formulario. */
@@ -176,6 +235,7 @@ import Icon from "../components/Icon.astro";
 
     const data = new FormData(form);
     const correo = String(data.get("correo") ?? "");
+    const productoInteres = String(data.get("producto_interes") ?? "");
     const consentimiento = data.get("consentimiento");
 
     if (!consentimiento) {
@@ -186,7 +246,7 @@ import Icon from "../components/Icon.astro";
     }
 
     if (error) error.hidden = true;
-    await anotarseEnListaDeEspera({ correo });
+    await anotarseEnListaDeEspera({ correo, productoInteres });
     form.hidden = true;
     if (exito) exito.hidden = false;
   });
